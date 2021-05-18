@@ -42,6 +42,7 @@ class Kernel extends HttpKernel
         'api' => [
             'throttle:api',
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
+            'auth.caixa' =>\App\Http\Middleware\AuthenticateLDAP::class,
         ],
     ];
 

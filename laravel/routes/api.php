@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Resources\AgendamentoResource;
+use App\Models\Agendamento;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -14,10 +16,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth.caixa')->group(function () {
+Route::name('api.')->middleware('auth.caixa')->group(function () {
 
-    Route::get('agendamentos/{tipo}', function($id) {
-
-        return AgendamentoResource::collection(User::all());
-    });
+    Route::get('/agendamentos/{tipo}', function ($tipo) {
+        return AgendamentoResource::collection(Agendamento::with(['unidade', 'tipo'])->get()->where('tipo.id', $tipo)->keyBy->id);
+    })->name('agendamentostipo');
 });

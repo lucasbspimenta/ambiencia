@@ -130,40 +130,32 @@
                 //eventDrop: alterarAgendamento,
                 lazyFetching: true,
                 editable:true,
-                /*
                 eventSources: [
-                        @forelse ($lista_tipos_de_agendamento as $tipo)
-                    {
-                        url: '{{ route("agenda") }}', // use the `url` property
-                        color: '{{ $tipo->cor }}',    // an option!
-                        textColor: 'white',
-                        startParam: 'inicio',
-                        endParam: 'final',
-                        extraParams: {
-                            tipo_id: {{ $tipo->id }},
-                            dataType:"json"
-
-                        }
-                    },
-                    @empty
-
-                    @endforelse
-
+                        @foreach ($lista_tipos_de_agendamento as $tipo)
+                        {
+                            url: '{{ route("api.agendamentostipo",[$tipo->id]) }}', // use the `url` property
+                            color: '{{ $tipo->cor }}',    // an option!
+                            textColor: 'white',
+                            startParam: 'inicio',
+                            endParam: 'final'
+                        },
+                        @endforeach
                 ],
                 eventClick: function(info) {
-                    abrirModalVerAgenda(info.event.id);
+                    console.log(info.event.id);
+                    Livewire.emit('abrirModalVerAgenda', info.event.id);
                 },
                 eventDidMount: function(info) {
 
                     if(info.event.extendedProps.descricao) {
+                        /*
                         var tooltip = tippy(info.el, {
-                            content:  '<b>Descrição:</b> ' + info.event.extendedProps.descricao ,
-                            //content: '<div class="tooltip bs-tooltip-top" role="tooltip"><div class="arrow"></div><div class="tooltip-inner">'+info.event.extendedProps.descricao+'</div></div>',
+                            content: '<ul><li>'+ info.event.extendedProps.descricao +'</li></ul>',
                             allowHTML: true,
                         });
+                         */
                     }
                 },
-                */
             });
 
             calendar.render();

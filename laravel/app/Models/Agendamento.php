@@ -41,6 +41,16 @@ class Agendamento extends Model
         , 'agendamento_tipos_id'
     ];
 
+    public function tipo(): BelongsTo
+    {
+        return $this->belongsTo(AgendamentoTipo::class, 'agendamento_tipos_id');
+    }
+
+    public function unidade()
+    {
+        return $this->belongsTo(Unidade::class, 'unidade_id');
+    }
+
     public function setInicioAttribute($value)
     {
         $this->attributes['inicio'] = (Carbon::canBeCreatedFromFormat($value, 'd/m/Y')) ? Carbon::createFromFormat('d/m/Y', $value)->format('Y-m-d') : $value;
@@ -61,9 +71,14 @@ class Agendamento extends Model
         return (Carbon::canBeCreatedFromFormat($value, 'Y-m-d')) ? Carbon::parse($value)->format('d/m/Y') : $value;
     }
 
-    public function tipo(): BelongsTo
+    public function getInicioAmericanoAttribute()
     {
-        return $this->belongsTo(AgendamentoTipo::class, 'agendamento_tipos_id');
+        return $this->attributes['inicio'];
+    }
+
+    public function getFinalAmericanoAttribute()
+    {
+        return $this->attributes['final'];
     }
 
     protected static function boot()

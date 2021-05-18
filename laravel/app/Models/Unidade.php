@@ -8,4 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class Unidade extends Model
 {
     use HasFactory;
+
+    public function getNomeCompletoAttribute()
+    {
+        return ($this->tipoPv) ? $this->tipoPv . ' ' . $this->nome : $this->tipo . ' ' . $this->nome;
+    }
 }

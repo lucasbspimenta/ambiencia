@@ -15,3 +15,6 @@ Stack trace:
 #2 C:\inetpub\wwwroot\ambiencia\laravel\vendor\laravel\framework\src\Illuminate\Database\Connectors\SqlServerConnector.php(32): Illuminate\Database\Connectors\Connector->createConnection('sqlsrv:Server=1...', Array, Array)
 #3 C:\inetpub\wwwroot\ambiencia\laravel\vendor\laravel\framework\src\Illuminate\Database\Connectors\ConnectionFactory. in C:\inetpub\wwwroot\ambiencia\laravel\vendor\laravel\framework\src\Illuminate\Database\Connectors\Connector.php on line 70
 [15-May-2021 16:17:10 UTC] PHP Fatal error:  Maximum execution time of 30 seconds exceeded in C:\inetpub\wwwroot\ambiencia\laravel\vendor\laravel\framework\src\Illuminate\Database\Connectors\Connector.php on line 46
+[17-May-2021 18:06:50 UTC] PHP Fatal error:  Constant expression contains invalid operations in C:\inetpub\wwwroot\ambiencia\laravel\app\Http\Livewire\Agendamento\Cadastro.php on line 10
+[17-May-2021 18:46:20 UTC] PHP Fatal error:  Constant expression contains invalid operations in C:\inetpub\wwwroot\ambiencia\laravel\app\Http\Livewire\Agendamento\Cadastro.php on line 24
+[18-May-2021 12:10:18 America/Sao_Paulo] PHP Fatal error:  Cannot redeclare App\Models\Agendamento::tipo() in C:\inetpub\wwwroot\ambiencia\laravel\app\Models\Agendamento.php on line 74
