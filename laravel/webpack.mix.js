@@ -11,6 +11,15 @@ const mix = require('laravel-mix');
  |
  */
 
-mix.js('resources/js/app.js', 'public/js')
-    .sass('resources/sass/app.scss', 'public/css')
+mix.setPublicPath('../');
+mix.setResourceRoot('../');
+
+mix.js('resources/js/app.js', '../js')
+    .sass('resources/sass/app.scss', '../css')
+    .postCss('resources/css/app.css', '../css')
     .sourceMaps();
+
+mix.copyDirectory('node_modules/@fortawesome/fontawesome-free/webfonts', '../webfonts');
+mix.copyDirectory('resources/fonts', '../fonts');
+mix.copyDirectory('resources/images', '../images');
+mix.copyDirectory('node_modules/mdbootstrap/img', '../img');

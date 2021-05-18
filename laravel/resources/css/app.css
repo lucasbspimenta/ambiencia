@@ -1,0 +1,11 @@
+/* Sticky footer styles
+-------------------------------------------------- */
+html {
+    position: relative;
+    min-height: 100%;
+}
+body {
+    margin-bottom: 50px; /* Margin bottom by footer height */
+}
+@import "~@fortawesome/fontawesome-free/css/all.css";
+@import url(caixa.css);

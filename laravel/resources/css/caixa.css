@@ -1,0 +1,109 @@
+@import "~fullcalendar/main.min.css";
+@import "~daterangepicker/daterangepicker.css";
+@import "~toastr/build/toastr.min.css";
+
+@font-face {
+    font-family: Futura-lt-book;
+    src: url(../fonts/futura_lt_book.eot);
+    src: url(../fonts/futura_lt_book.eot?#iefix) format("embedded-opentype"),
+    url(../fonts/futura_lt_book.woff) format("woff"),
+    url(../fonts/futura_lt_book.ttf) format("truetype");
+    font-weight: 500;
+    font-style: normal;
+}
+@font-face {
+    font-family: Futura-lt-bold;
+    src: url(../fonts/FuturaLT-Bold.eot);
+    src: url(../fonts/FuturaLT-Bold.eot?#iefix) format("embedded-opentype"),
+    url(../fonts/FuturaLT-Bold.woff) format("woff"),
+    url(../fonts/FuturaLT-Bold.ttf) format("truetype");
+    font-weight: 700;
+    font-style: normal;
+}
+@font-face {
+    font-family: helveticaregularregular;
+    src: url(../fonts/helveticaregular-webfont.eot);
+    src: url(../fonts/helveticaregular-webfont.eot?#iefix)
+    format("embedded-opentype"),
+    url(../fonts/helveticaregular-webfont.woff) format("woff"),
+    url(../fonts/helveticaregular-webfont.ttf) format("truetype"),
+    url(../fonts/helveticaregular-webfont.svg#helveticaregularregular)
+    format("svg");
+    font-weight: 400;
+    font-style: normal;
+}
+@font-face {
+    font-family: Myriad Pro;
+    src: url(../fonts/MyriadPro-Regular.eot);
+    src: url(../fonts/MyriadPro-Regular.eot?#iefix)
+    format("embedded-opentype"),
+    url(../fonts/MyriadPro-Regular.woff) format("woff"),
+    url(../fonts/MyriadPro-Regular.ttf) format("truetype"),
+    url(../fonts/MyriadPro-Regular.svg#MyriadPro-Regular) format("svg");
+    font-weight: 400;
+    font-style: normal;
+}
+
+.navbar.caixa {
+    background-image: url("../images/nova_logo.png");
+    background-color: #005da8 !important;
+    background-repeat: no-repeat;
+    background-position-x: 15px;
+    background-position-y: -10px;
+    padding-left: 60px;
+    font-family: Futura-lt-book;
+    font-size: 115%;
+}
+
+.footer-caixa {
+    background: rgba(0, 0, 0, 0) linear-gradient(to right, #005ca9 1%, #54bbab 100%) repeat scroll 0 0 !important;
+    color: #fff;
+    border-top: 3px solid #f39a00 !important;
+    border-width: 1px 0 0;
+    bottom: 0;
+    margin-bottom: 0;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+}
+
+.text-caixaAzul {
+    color:rgba(0, 92, 169, 1);
+}
+
+.text-futurabold {
+    font-family:Futura-lt-bold;
+}
+
+.text-futura {
+    font-family: Futura-lt-book;
+}
+
+.tabs-filter > .nav-item {
+
+}
+
+
+.tabs-filter > .nav-item > .nav-link {
+    font-size: inherit;
+    color: #212529;
+    padding: 0.2rem 0.2rem;
+    border: 1px solid #EAEAEA;
+}
+
+.tabs-filter > .nav-item > .nav-link.active {
+    color: #005DA8;
+    border: 1px solid #005DA8;
+}
+
+.h-teladisponivel-fullcalendar {
+    height: calc(100vh - (260px));
+    height: -o-calc(100vh - (260px)); /* opera */
+    height: -webkit-calc(100vh - (260px)); /* google, safari */
+    height: -moz-calc(100vh - (260px));
+}
+
+.toast-caixa {
+    margin-top: 30px;
+}
+

@@ -4,7 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 
-use App\Models\Administracao\AgendamentoTipo;
+use App\Models\AgendamentoTipo;
 
 class AgendamentoTipoSeeder extends Seeder
 {
