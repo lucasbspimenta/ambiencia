@@ -49,7 +49,7 @@ class User extends Authenticatable
                 'codigo', // Foreign key on the deployments table...
                 'matricula', // Local key on the projects table...
                 'unidade_codigo' // Local key on the environments table...
-            )->union($todas_unidades);
+            )->withoutGlobalScopes()->union($todas_unidades);
         }
 
         if($this->perfil() && $this->perfil->is_gestor) {
@@ -67,8 +67,21 @@ class User extends Authenticatable
             'codigo', // Foreign key on the deployments table...
             'matricula', // Local key on the projects table...
             'unidade_codigo' // Local key on the environments table...
-        );
+        )->withoutGlobalScopes();
     }
 
+    public function getIsAdminAttribute() {
 
+        return optional($this->perfil)->is_admin;
+    }
+
+    public function getIsGestorAttribute() {
+
+        return optional($this->perfil)->is_gestor;
+    }
+
+    public function getIsRelogAttribute() {
+
+        return optional($this->perfil)->is_relog;
+    }
 }

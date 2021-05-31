@@ -4,13 +4,15 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Auth;
 
 class AgendamentoTipo extends Model
 {
+    use SoftDeletes;
 
     public const VALIDATION_RULES = [
-        'nome' => ['required','unique:agendamento_tipos,nome'],
+        'nome' => ['required'],
         'situacao' => ['required','boolean'],
         'cor' => ['required','regex:/#[a-zA-Z0-9]{6}/i'],
         'descricao' => ['string'],
@@ -34,6 +36,11 @@ class AgendamentoTipo extends Model
         return $this->hasMany(Agendamento::class, 'agendamento_tipos_id', 'id');
     }
 
+    public function getNomeFormatadoAttribute()
+    {
+        return '<span style="width: 13px; height: 11px; margin-right:5px; background-color: '. $this->cor .'" class="d-inline-block align-text-middle"></span>' . $this->nome;
+    }
+
     protected static function boot()
     {
         parent::boot();
@@ -44,6 +51,10 @@ class AgendamentoTipo extends Model
         });
         static::updating(function ($model) {
             $model->updated_by = Auth::id();
+        });
+
+        static::deleting(function($model) {
+            $model->deleted_by = Auth::id();
         });
 
     }

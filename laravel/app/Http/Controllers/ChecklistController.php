@@ -2,18 +2,27 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Checklist;
+use App\Services\AgendamentoService;
+use App\Services\ChecklistService;
 use Illuminate\Http\Request;
 
 class ChecklistController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    protected $checklistService;
+    protected $agendamentoService;
+
+    public function __construct(ChecklistService $checklistService, AgendamentoService $agendamentoService)
+    {
+        $this->checklistService = $checklistService;
+        $this->agendamentoService = $agendamentoService;
+    }
+
     public function index()
     {
-        //
+        $checklists = $this->checklistService->todos();
+        $agendamentos_sem_checklist = $this->agendamentoService->agendamentosSemChecklist();
+        return view('pages.checklist.index', compact('checklists','agendamentos_sem_checklist'));
     }
 
     /**
@@ -43,9 +52,9 @@ class ChecklistController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Checklist $checklist)
     {
-        //
+        return view('pages.checklist.exibir', compact('checklist'));
     }
 
     /**
@@ -54,9 +63,14 @@ class ChecklistController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Checklist $checklist)
     {
-        //
+        app('debugbar')->disable();
+
+        if((boolean)$checklist->concluido)
+            return redirect()->route('checklist.show',['checklist' => $checklist->id]);
+
+        return view('pages.checklist.preenchimento', compact('checklist'));
     }
 
     /**
@@ -82,3 +96,4 @@ class ChecklistController extends Controller
         //
     }
 }
+

@@ -10,17 +10,19 @@ use Livewire\Component;
 
 class Cadastro extends Component
 {
-    public $unidade_id;
+    public $agendamento_id='';
+
+    public $unidade_id='';
     public $inicio='';
     public $final='';
-    public $agendamento_tipos_id;
+    public $agendamento_tipos_id='';
     public $descricao='';
 
     public $tiposagendamentos;
 
     private $agendamentoService;
 
-    protected $listeners = ['limpar' => 'limpar', 'definirDatas' => 'definirDatas'];
+    protected $listeners = ['limpar' => 'limpar', 'definirDatas' => 'definirDatas', 'carregaAgendamento' => 'carregaAgendamento', 'excluirAgendamento' => 'excluir'];
 
     protected $casts = [
         'inicio' => 'date:d/m/Y',
@@ -36,6 +38,7 @@ class Cadastro extends Component
     }
 
     public function definirDatas($inicio, $final) {
+        $this->limpar();
         $this->inicio = $inicio;
         $this->final = $final;
     }
@@ -50,12 +53,15 @@ class Cadastro extends Component
         $this->resetValidation();
         $this->resetErrorBag();
         $this->reset([
+            'agendamento_id',
             'descricao',
             'inicio',
             'final',
             'unidade_id',
             'agendamento_tipos_id'
         ]);
+
+        //dd($this);
     }
 
     public function salvar()
@@ -64,11 +70,39 @@ class Cadastro extends Component
         $this->agendamentoService = new AgendamentoService();
 
         try {
-            $this->agendamentoService->criar($data);
+
+            if($this->agendamento_id && $this->agendamentoService->existsById($this->agendamento_id))
+                $this->agendamentoService->atualizar($data, $this->agendamento_id);
+            else
+                $this->agendamentoService->criar($data);
+
             $this->dispatchBrowserEvent('triggerAgendaGravadaSucesso',$this->inicio);
         }catch (Exception $e){
             $this->dispatchBrowserEvent('triggerError',$e->getMessage());
         }
 
+    }
+
+    public function carregaAgendamento($agendamento_id)
+    {
+        $this->agendamentoService = new AgendamentoService();
+
+        $agendamento = $this->agendamentoService->findById($agendamento_id);
+
+        $this->agendamento_id  = $agendamento->id;
+        $this->descricao  = $agendamento->descricao;
+        $this->inicio  = $agendamento->inicio;
+        $this->final  = $agendamento->final;
+        $this->unidade_id  = $agendamento->unidade_id;
+        $this->agendamento_tipos_id  = $agendamento->agendamento_tipos_id;
+
+    }
+
+    public function excluir($agendamento_id)
+    {
+        $this->agendamentoService = new AgendamentoService();
+        $this->agendamentoService->excluir($agendamento_id);
+        $this->limpar();
+        $this->dispatchBrowserEvent('triggerAgendaExcluidaSucesso');
     }
 }

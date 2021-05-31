@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Scopes\UsuarioUnidadeScope;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Carbon;
@@ -10,6 +11,8 @@ use Illuminate\Support\Facades\Auth;
 
 class Agendamento extends Model
 {
+    protected $with = ['unidade'];
+
     public const VALIDATION_RULES = [
         'unidade_id' => ['required','integer','exists:unidades,id'],
         'inicio' => ['required','date_format:d/m/Y'],
@@ -51,6 +54,11 @@ class Agendamento extends Model
         return $this->belongsTo(Unidade::class, 'unidade_id');
     }
 
+    public function checklist()
+    {
+        return $this->hasOne(Checklist::class);
+    }
+
     public function setInicioAttribute($value)
     {
         $this->attributes['inicio'] = (Carbon::canBeCreatedFromFormat($value, 'd/m/Y')) ? Carbon::createFromFormat('d/m/Y', $value)->format('Y-m-d') : $value;
@@ -81,14 +89,27 @@ class Agendamento extends Model
         return $this->attributes['final'];
     }
 
+    public function getDataCompletaAttribute()
+    {
+        return ($this->final != $this->inicio ? $this->inicio . ' a ' . $this->final : $this->inicio);
+    }
+
     protected static function boot()
     {
         parent::boot();
+
+        static::addGlobalScope(new UsuarioUnidadeScope);
 
         static::creating(function ($model) {
             $model->created_by = Auth::id();
             $model->updated_by = Auth::id();
         });
+
+        static::created(function ($model) {
+            if($model->tipo->com_checklist)
+                Checklist::create(['agendamento_id' => $model->id]);
+        });
+
         static::updating(function ($model) {
             $model->updated_by = Auth::id();
         });

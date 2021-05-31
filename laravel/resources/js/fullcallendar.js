@@ -6,6 +6,7 @@ import timeGridPlugin from '@fullcalendar/timegrid';
 import listPlugin from '@fullcalendar/list';
 import interactionPlugin from '@fullcalendar/interaction';
 import bootstrapPlugin from '@fullcalendar/bootstrap';
+import allLocales from '@fullcalendar/core/locales-all';
 
 window.FullCalendar = Calendar;
 window.dayGridPlugin = dayGridPlugin;
@@ -13,3 +14,6 @@ window.timeGridPlugin = timeGridPlugin;
 window.listPlugin = listPlugin;
 window.interactionPlugin = interactionPlugin;
 window.bootstrapPlugin = bootstrapPlugin;
+window.allLocales = allLocales;
+
+

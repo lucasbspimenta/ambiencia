@@ -19,13 +19,14 @@ class CreateEquipeUnidadesView extends Migration
         as
             SELECT
                 DISTINCT
-                unidade_codigo as unidade,
-                ue.id,
-                ue.nome
-              FROM [dbo].[usuario_unidades] uu
-              JOIN [dbo].[usuario_equipe] ue ON uu.matricula = ue.matricula
-              GROUP BY unidade_codigo, ue.id,
-                ue.nome
+                ATO_UNID.codigo as unidade,
+                ATO_UNID.id as unidade_id,
+                CE.CO_ID as id,
+                CE.NO_EQUIPE as nome
+            FROM [RH_UNIDADES].[dbo].[EMPREGADOS_SEV] RH_EMP_SEV
+            JOIN [dbo].[unidades] ATO_UNID ON RH_EMP_SEV.CO_UNIDADE = ATO_UNID.codigoSev
+            JOIN [RH_UNIDADES].[dbo].[EMPREGADOS_PERFIL_ACESSO] EPA ON UPPER(EPA.CO_MATRICULA) = UPPER(RH_EMP_SEV.CO_MATRICULA)
+            JOIN [RH_UNIDADES].[dbo].[CADASTRO_EQUIPES] CE ON EPA.CO_EQUIPE = CE.CO_ID AND CE.[IC_ATIVO] = 'S'
         ");
     }
 

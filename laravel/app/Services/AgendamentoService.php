@@ -36,11 +36,13 @@ class AgendamentoService
         try {
             $agendamento = Agendamento::findOrFail($id);
 
-            $agendamento->title = $data['descricao'];
-            $agendamento->inicio = $data['inicio'];
-            $agendamento->final = $data['final'];
-            $agendamento->unidade_id = $data['unidade_id'];
-            $agendamento->agendamento_tipos_id = $data['agendamento_tipos_id'];
+            $data = $validator->validated();
+
+            if($data['descricao']) $agendamento->descricao = $data['descricao'];
+            if($data['inicio']) $agendamento->inicio = $data['inicio'];
+            if($data['final']) $agendamento->final = $data['final'];
+            if($data['unidade_id']) $agendamento->unidade_id = $data['unidade_id'];
+            if($data['agendamento_tipos_id']) $agendamento->agendamento_tipos_id = $data['agendamento_tipos_id'];
 
             $agendamento->update();
 
@@ -48,7 +50,7 @@ class AgendamentoService
             DB::rollBack();
             Log::info($e->getMessage());
 
-            throw new InvalidArgumentException('Não foi possivel atualizar o agendamento');
+            throw new InvalidArgumentException('Não foi possivel atualizar o agendamento: ' . $e->getMessage());
         }
 
         DB::commit();
@@ -57,8 +59,28 @@ class AgendamentoService
 
     }
 
-    public function listaAgendamentosPorTipo(AgendamentoTipo $tipo)
+    public function findById($id)
     {
+        return Agendamento::findOrFail($id);
+    }
 
+    public function existsById($id)
+    {
+        return Agendamento::where('id', $id )->exists($id);
+    }
+
+    public function excluir($id)
+    {
+        return Agendamento::findOrFail($id)->delete();
+    }
+
+    public function todos()
+    {
+        return Agendamento::with(['unidade', 'tipo'])->get();
+    }
+
+    public function agendamentosSemChecklist()
+    {
+        return Agendamento::doesntHave('checklist')->get();
     }
 }

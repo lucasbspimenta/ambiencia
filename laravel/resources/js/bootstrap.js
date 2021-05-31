@@ -15,6 +15,7 @@ try {
     //require('./../../node_modules/mdbootstrap/js/mdb.js');
     require('mdbootstrap');
 
+
 } catch (e) {}
 
 /**

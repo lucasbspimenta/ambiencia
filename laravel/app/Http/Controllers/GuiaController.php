@@ -2,81 +2,54 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\ChecklistItemService;
+use App\Services\GuiaService;
 use Illuminate\Http\Request;
 
 class GuiaController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    protected $guiaService;
+
+    public function __construct(GuiaService $guiaService)
+    {
+        $this->guiaService = $guiaService;
+    }
+
     public function index()
     {
-        //
+        $guias = $this->guiaService->todosAtivos();
+
+        return view('pages.guia', compact('guias'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function indexadm()
     {
-        //
+        $checklistItens = ChecklistItemService::todos();
+        $guias = $this->guiaService->todos();
+
+        return view('pages.administracao.guiaadm', compact('guias','checklistItens'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
         //
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function show($id)
     {
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function edit($id)
     {
         //
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, $id)
     {
         //
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
         //

@@ -33,7 +33,54 @@ class UsuarioSeeder extends Seeder
                 'funcao' => 'Assistente Sênior',
                 'fisica' => '7767',
                 'unidade' => '7001'
+            ],
+            [
+                'name' => 'Manoel Neto',
+                'matricula' => 'C132747',
+                'email' => 'lucas.pimenta@caixa.gov.br',
+                'cargo' => 'TBN',
+                'funcao' => 'Assistente Sênior',
+                'fisica' => '7767',
+                'unidade' => '7001'
+            ],
+            [
+                'name' => 'Nara Fiuza',
+                'matricula' => 'C074846',
+                'email' => 'lucas.pimenta@caixa.gov.br',
+                'cargo' => 'TBN',
+                'funcao' => 'Assistente Sênior',
+                'fisica' => '7767',
+                'unidade' => '7001'
+            ],
+            [
+                'name' => 'Thais Aghat Magalhaes Orestes',
+                'matricula' => 'C091844',
+                'email' => 'lucas.pimenta@caixa.gov.br',
+                'cargo' => 'TBN',
+                'funcao' => 'Assistente Sênior',
+                'fisica' => '7767',
+                'unidade' => '7001'
+            ],
+            [
+                'name' => 'Leonardo Jose Martins Carneiro',
+                'matricula' => 'C073029',
+                'email' => 'lucas.pimenta@caixa.gov.br',
+                'cargo' => 'TBN',
+                'funcao' => 'Assistente Sênior',
+                'fisica' => '7767',
+                'unidade' => '7001'
+            ],
+            [
+                'name' => 'Francisca Antonia Narcizo',
+                'matricula' => 'C029188',
+                'email' => 'lucas.pimenta@caixa.gov.br',
+                'cargo' => 'TBN',
+                'funcao' => 'Assistente Sênior',
+                'fisica' => '7767',
+                'unidade' => '7001'
             ]
+
+
         ];
 
         User::insert($usuario);

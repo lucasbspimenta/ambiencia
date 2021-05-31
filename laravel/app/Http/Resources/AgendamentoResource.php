@@ -12,8 +12,8 @@ class AgendamentoResource extends JsonResource
         return [
             'id' => $this->id,
             'descricao' => $this->descricao,
-            'inicio' => $this->inicio_americano,
-            'final' => $this->final_americano,
+            'inicio' => $this->inicio,
+            'final' => $this->final,
             'start' => $this->inicio_americano,
             'end' => $this->final_americano,
             'unidade' => $this->unidade,

@@ -22,4 +22,5 @@ mix.js('resources/js/app.js', '../js')
 mix.copyDirectory('node_modules/@fortawesome/fontawesome-free/webfonts', '../webfonts');
 mix.copyDirectory('resources/fonts', '../fonts');
 mix.copyDirectory('resources/images', '../images');
+mix.copyDirectory('public/vendor', '../vendor');
 mix.copyDirectory('node_modules/mdbootstrap/img', '../img');

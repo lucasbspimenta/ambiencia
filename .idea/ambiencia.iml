@@ -8,7 +8,6 @@
       <sourceFolder url="file://$MODULE_DIR$/laravel/tests" isTestSource="true" packagePrefix="Tests\" />
       <sourceFolder url="file://$MODULE_DIR$/spec" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/tests" isTestSource="true" />
-      <excludeFolder url="file://$MODULE_DIR$/laravel/vendor/maximebf/debugbar" />
       <excludeFolder url="file://$MODULE_DIR$/laravel/vendor/league/commonmark" />
       <excludeFolder url="file://$MODULE_DIR$/laravel/vendor/laravel/ui" />
       <excludeFolder url="file://$MODULE_DIR$/laravel/vendor/doctrine/inflector" />
@@ -40,7 +39,6 @@
       <excludeFolder url="file://$MODULE_DIR$/laravel/vendor/webmozart/assert" />
       <excludeFolder url="file://$MODULE_DIR$/laravel/vendor/guzzlehttp/guzzle" />
       <excludeFolder url="file://$MODULE_DIR$/laravel/vendor/guzzlehttp/promises" />
-      <excludeFolder url="file://$MODULE_DIR$/laravel/vendor/symfony/debug" />
       <excludeFolder url="file://$MODULE_DIR$/laravel/vendor/guzzlehttp/psr7" />
       <excludeFolder url="file://$MODULE_DIR$/laravel/vendor/nunomaduro/collision" />
       <excludeFolder url="file://$MODULE_DIR$/laravel/vendor/swiftmailer/swiftmailer" />
@@ -67,7 +65,6 @@
       <excludeFolder url="file://$MODULE_DIR$/laravel/vendor/facade/ignition" />
       <excludeFolder url="file://$MODULE_DIR$/laravel/vendor/facade/ignition-contracts" />
       <excludeFolder url="file://$MODULE_DIR$/laravel/vendor/league/flysystem" />
-      <excludeFolder url="file://$MODULE_DIR$/laravel/vendor/barryvdh/laravel-debugbar" />
       <excludeFolder url="file://$MODULE_DIR$/laravel/vendor/league/mime-type-detection" />
       <excludeFolder url="file://$MODULE_DIR$/laravel/vendor/nesbot/carbon" />
       <excludeFolder url="file://$MODULE_DIR$/laravel/vendor/ramsey/collection" />
@@ -118,6 +115,23 @@
       <excludeFolder url="file://$MODULE_DIR$/laravel/vendor/symfony/translation-contracts" />
       <excludeFolder url="file://$MODULE_DIR$/laravel/vendor/symfony/var-dumper" />
       <excludeFolder url="file://$MODULE_DIR$/laravel/vendor/theseer/tokenizer" />
+      <excludeFolder url="file://$MODULE_DIR$/laravel/vendor/doctrine/deprecations" />
+      <excludeFolder url="file://$MODULE_DIR$/laravel/vendor/doctrine/event-manager" />
+      <excludeFolder url="file://$MODULE_DIR$/laravel/vendor/doctrine/dbal" />
+      <excludeFolder url="file://$MODULE_DIR$/laravel/vendor/doctrine/cache" />
+      <excludeFolder url="file://$MODULE_DIR$/laravel/vendor/myclabs/php-enum" />
+      <excludeFolder url="file://$MODULE_DIR$/laravel/vendor/psr/http-factory" />
+      <excludeFolder url="file://$MODULE_DIR$/laravel/vendor/phpoffice/phpspreadsheet" />
+      <excludeFolder url="file://$MODULE_DIR$/laravel/vendor/ezyang/htmlpurifier" />
+      <excludeFolder url="file://$MODULE_DIR$/laravel/vendor/bfinlay/laravel-excel-seeder" />
+      <excludeFolder url="file://$MODULE_DIR$/laravel/vendor/markbaker/matrix" />
+      <excludeFolder url="file://$MODULE_DIR$/laravel/vendor/markbaker/complex" />
+      <excludeFolder url="file://$MODULE_DIR$/laravel/vendor/maennchen/zipstream-php" />
+      <excludeFolder url="file://$MODULE_DIR$/laravel/vendor/intervention/image" />
+      <excludeFolder url="file://$MODULE_DIR$/laravel/vendor/barryvdh/laravel-debugbar" />
+      <excludeFolder url="file://$MODULE_DIR$/laravel/vendor/maximebf/debugbar" />
+      <excludeFolder url="file://$MODULE_DIR$/laravel/vendor/symfony/debug" />
+      <excludeFolder url="file://$MODULE_DIR$/laravel/vendor/staudenmeir/eloquent-has-many-deep" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

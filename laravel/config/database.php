@@ -104,6 +104,19 @@ return [
             'prefix_indexes' => true,
         ],
 
+        'atendimento' => [
+            'driver' => 'sqlsrv',
+            'url' => env('DATABASE_URL'),
+            'host' => env('DB_HOST', 'localhost'),
+            'port' => env('DB_PORT', '1433'),
+            'database' => env('DB_DATABASE_ATENDIMENTO', ''),
+            'username' => env('DB_USERNAME_ATENDIMENTO', ''),
+            'password' => env('DB_PASSWORD_ATENDIMENTO', ''),
+            'charset' => 'utf8',
+            'prefix' => '',
+            'prefix_indexes' => true,
+        ],
+
     ],
 
     /*

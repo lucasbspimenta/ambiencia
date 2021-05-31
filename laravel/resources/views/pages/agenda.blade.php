@@ -41,10 +41,10 @@
                                 <h6 class="font-weight-bold mb-3">Exibir como:</h6>
                                 <ul class="nav tabs-primary nav-justified tabs-filter" id="myTab" role="tablist">
                                     <li class="nav-item">
-                                        <a class="nav-link active show" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Calendário</a>
+                                        <a class="nav-link active show" id="calendario-tab" data-toggle="tab" href="#calendario" role="tab" aria-controls="calendario" aria-selected="true">Calendário</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Tabela</a>
+                                        <a class="nav-link" id="tabela-tab" data-toggle="tab" href="#tabela" role="tab" aria-controls="tabela" aria-selected="false">Tabela</a>
                                     </li>
                                 </ul>
                             </section>
@@ -57,11 +57,28 @@
                     <div class="card-body ">
                         <div class="classic-tabs">
 
-                            <div class="tab-content" id="myTabContent">
-                                <div class="tab-pane fade show active h-teladisponivel-fullcalendar" id="home" role="tabpanel" aria-labelledby="home-tab">
+                            <div class="tab-content" >
+                                <div class="tab-pane fade show active h-teladisponivel-fullcalendar" id="calendario" role="tabpanel" aria-labelledby="calendario-tab">
                                     <div id="calendar" ></div>
                                 </div>
-                                <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nesciunt consequuntur possimus dignissimos enim atque dicta excepturi laudantium explicabo sit.</div>
+                                <div class="tab-pane fade h-teladisponivel-fullcalendar" id="tabela" role="tabpanel" aria-labelledby="tabela-tab">
+                                    <div class="table-responsive">
+                                        <table class="table table-striped table-hover table-sm " id="tabela_agendamentos">
+                                            <thead>
+                                            <tr>
+                                                <th scope="col">#Cód</th>
+                                                <th scope="col">Tipo</th>
+                                                <th scope="col">Unidade</th>
+                                                <th scope="col">Descrição</th>
+                                                <th scope="col">Período</th>
+                                                <th scope="col">Opções</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
                             </div>
 
                         </div>
@@ -74,12 +91,6 @@
     <div class="modal fade" id="modal_agenda" tabindex="-1" role="dialog" aria-labelledby="modal_agenda" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
             <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title w-100 text-caixaAzul text-futurabold" id="modal_agenda">Novo Agendamento</h4>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
                 <livewire:agendamento.cadastro :tiposagendamentos="$lista_tipos_de_agendamento" />
             </div>
         </div>
@@ -93,7 +104,7 @@
         document.addEventListener('DOMContentLoaded', function() {
 
             var options = {
-                backdrop: true,
+                backdrop: 'static',
                 keyboard: true,
                 show: false,
                 focus: true
@@ -106,7 +117,9 @@
             var calendarEl = document.getElementById('calendar');
 
             calendar = new FullCalendar.Calendar(calendarEl, {
-                plugins: [ interactionPlugin, dayGridPlugin, listPlugin, timeGridPlugin ],
+                locales: allLocales,
+                locale: 'pt-br',
+                plugins: [ interactionPlugin, dayGridPlugin, listPlugin, timeGridPlugin, bootstrapPlugin ],
                 headerToolbar: {
                     left  : 'prev,next today',
                     center: 'title',
@@ -126,8 +139,8 @@
                 height: '100%',
                 themeSystem: 'bootstrap',
                 select: aoSelecionarData,
-                //eventResize: alterarAgendamento,
-                //eventDrop: alterarAgendamento,
+                eventResize: alterarAgendamento,
+                eventDrop: alterarAgendamento,
                 lazyFetching: true,
                 editable:true,
                 eventSources: [
@@ -142,49 +155,117 @@
                         @endforeach
                 ],
                 eventClick: function(info) {
-                    console.log(info.event.id);
-                    Livewire.emit('abrirModalVerAgenda', info.event.id);
+                    editarAgendamento(info.event.id);
                 },
                 eventDidMount: function(info) {
 
                     if(info.event.extendedProps.descricao) {
-                        /*
-                        var tooltip = tippy(info.el, {
-                            content: '<ul><li>'+ info.event.extendedProps.descricao +'</li></ul>',
-                            allowHTML: true,
+                        //$(info.el).tooltip({title:info.event.extendedProps.descricao})
+                        $(info.el).popover({
+                            title: 'Descrição',
+                            content: info.event.extendedProps.descricao,
+                            trigger: 'hover',
+                            placement:  'auto'
                         });
-                         */
                     }
                 },
             });
 
             calendar.render();
+
+            let formataPeriodo = (data, type, row, meta) => {
+                if(row.final != data)
+                    return data + ' a ' + row.final;
+                return data;
+            }
+
+            let renderBotoesEditarExluir = (data, type, row, meta) => {
+
+                let saida = `<div class="d-flex justify-content-around">
+                    <button onclick="editarAgendamento(${row.id})" type="button" class="btn btn-xs btn-primary m-0"><i class="fa fa-edit" aria-hidden="true"></i></button>
+                    <button onclick="excluirAgendamento(${row.id})" type="button" class="btn btn-xs btn-danger m-0"><i class="fa fa-trash" aria-hidden="true"></i></button>
+                </div>`;
+                return  saida;
+            }
+
+            DATATABLE = $('#tabela_agendamentos').DataTable( {
+                dom: 'ti',
+                paging: false,
+                responsive: true,
+                ajax: {
+                    url: "{{ route("api.agendamentos.index") }}",
+                    dataSrc: ''
+                },
+                columns: [
+                    { "data": "id" },
+                    { "data": "tipo", 'render': DATATABLES_TIPO_AGENDAMENTO },
+                    { "data": "title" },
+                    { "data": "descricao" },
+                    { "data": "inicio", 'render': formataPeriodo },
+                    { "data": "created_by", 'render': renderBotoesEditarExluir },
+                ]
+            } );
+
+            $('a[data-toggle="tab"]').on( 'shown.bs.tab', function (e,) {
+
+                if(e.target.id == 'tabela-tab') {
+                    $('#tabela_agendamentos').css("width", '100%');
+                    DATATABLE.ajax.reload();
+                    DATATABLE.columns.adjust().responsive.recalc();
+                } else {
+                    calendar.render();
+                }
+            });
         });
+
+        window.addEventListener("livewire:load", function (event) {
+            window.livewire.hook('element.updated', () => {
+                ativaJavascriptsModal();
+            });
+        });
+
 
         window.addEventListener('triggerAgendaGravadaSucesso', (event) => {
             toastr.success('Agendamento em '+ event.detail +' gravado com sucesso!');
             calendar.refetchEvents();
+            DATATABLE.ajax.reload();
             $('#modal_agenda').modal('hide');
-        })
+        });
 
         window.addEventListener('triggerError', (event) => {
             toastr.error('Erro ao gravar agendamento: '+ event.detail);
-        })
+        });
+
+        window.addEventListener('triggerAgendaExcluidaSucesso', (event) => {
+            toastr.success('Agendamento excluído com sucesso!');
+            calendar.refetchEvents();
+            DATATABLE.ajax.reload();
+            $('#modal_agenda').modal('hide');
+        });
 
         function abrirModalAgenda(data_inicio, data_final) {
 
+            $('#modal_agenda').off('show.bs.modal');
+            $('#modal_agenda').off('shown.bs.modal');
             $('#modal_agenda').on('show.bs.modal', (e) => Livewire.emit('definirDatas',data_inicio, data_final));
-            $('#modal_agenda').on('shown.bs.modal', (e) => ativaJavascriptsModal());
+            $('#modal_agenda').on('shown.bs.modal', (e) => {ativaJavascriptsModal(); defineDataNoDatePicker('inicio', data_inicio); defineDataNoDatePicker('final', data_final);});
             $('#modal_agenda').modal('show');
         }
 
         function ativaJavascriptsModal() {
+
+
             $('.datepicker').daterangepicker({
                 "singleDatePicker": true,
                 "autoUpdateInput": true,
                 "autoApply": true,
                 "locale": dateRangePickerSettings,
             });
+
+        }
+
+        function defineDataNoDatePicker(id, valor) {
+            $('#' + id).data('daterangepicker').setStartDate(valor);
         }
 
         function aoSelecionarData({startStr, endStr}) {
@@ -193,5 +274,53 @@
             let endStr_f = moment(endStr, "YYYY-MM-DD").subtract(1, 'days').format('DD/MM/YYYY');
             abrirModalAgenda(startStr_f, endStr_f);
         }
+
+        function alterarAgendamento(info, delta) {
+            const event = info.event;
+            console.log(info.event.id);
+            axios.post('{{ route("api.agendamento_update") }}', {
+                id: event.id,
+                inicio: event.startStr,
+                final: (event.endStr ? event.endStr : event.startStr)
+            })
+                .then(function (response) {
+                    toastr.success('Reagendado com sucesso!');
+                    calendar.refetchEvents();
+                })
+                .catch(function (error) {
+                    toastr.error('Erro ao reagendar ' + error);
+                    calendar.refetchEvents();
+                });
+        }
+
+        function editarAgendamento(id) {
+
+            $('#modal_agenda').off('show.bs.modal');
+            $('#modal_agenda').off('shown.bs.modal');
+            $('#modal_agenda').on('show.bs.modal', (e) => Livewire.emit('carregaAgendamento',id));
+            $('#modal_agenda').on('shown.bs.modal', (e) => ativaJavascriptsModal());
+            $('#modal_agenda').modal('show');
+        }
+
+       function excluirAgendamento(agendaId) {
+
+            Swal.fire({
+                title: 'Você tem certeza?',
+                text: "O agendamento será excluído",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Sim, tenho certeza!',
+                cancelButtonText: 'Não'
+            }).then((result) => {
+                if (result.value) {
+                    Livewire.emit('excluirAgendamento', agendaId);
+                } else {
+                    console.log("Canceled");
+                }
+            });
+        }
+
     </script>
 @endpush

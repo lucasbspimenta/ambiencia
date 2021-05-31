@@ -17,7 +17,7 @@ class CreatePerfilsTable extends Migration
         DB::unprepared("
         CREATE VIEW [dbo].[usuario_perfil]
         as
-            SELECT RTRIM([CO_MATRICULA]) as matricula
+            SELECT UPPER(RTRIM([CO_MATRICULA])) as matricula
                 ,EPA.[CO_PERFIL] as id
                 ,RTRIM(CPA.DE_PERFIL) as nome
             FROM [RH_UNIDADES].[dbo].[EMPREGADOS_PERFIL_ACESSO] EPA

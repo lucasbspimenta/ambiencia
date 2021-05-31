@@ -30,6 +30,8 @@ class CreateAgendamentosTable extends Migration
             $table->bigInteger('updated_by')->nullable()->unsigned();
             $table->foreign('updated_by')->references('id')->on('users');
 
+            //$table->unique(['inicio', 'final', 'unidade_id', 'agendamento_tipos_id']);
+
             $table->timestamps();
         });
     }

@@ -1,8 +1,11 @@
 <?php
 
+use App\Http\Controllers\AgendamentoTipoController;
+use App\Http\Controllers\ChecklistItemController;
+use App\Http\Controllers\IntegracaoController;
 use Illuminate\Support\Facades\Route;
 
-use App\Http\Controllers\AgendaController;
+use App\Http\Controllers\AgendamentoController;
 use App\Http\Controllers\ChecklistController;
 use App\Http\Controllers\ImagemController;
 use App\Http\Controllers\GuiaController;
@@ -25,28 +28,17 @@ Route::middleware(['web', 'auth.caixa'])->group(function () {
         return view('index');
     })->name('index');
 
-    Route::post('/upload-image', [ImagemController::class, 'dropZone' ])->name('drag-drop');
-
-    Route::resource('/guia',  GuiaController::class);
-
-    Route::resource('/agenda', AgendaController::class)->names(['index' => 'agenda']);
-
-    Route::get('/checklist',                                [ChecklistController::class, 'index'])->name('checklist.index');
-    Route::match(['get', 'post'],'/checklist/{agenda_id}',  [ChecklistController::class, 'show'])->name('checklist.edit');
-
-    Route::delete('/checklist',                             [ChecklistController::class, 'delete'])->name('checklist.delete');
+    Route::resource('/agenda', AgendamentoController::class)->names(['index' => 'agenda']);
+    Route::resource('/guias', GuiaController::class);
+    Route::resource('/checklist', ChecklistController::class);
 
     Route::prefix('administracao')->name('adm.')->middleware(['web', 'auth.caixa','admin'])->group(function () {
 
-        Route::get('/tipodeagendamento', function () {
-            return view('pages.administracao.tipodeagendamento');
-        })->name('tipodeagendamento');
+        Route::resource('/tipodeagendamento', AgendamentoTipoController::class)->names(['index' => 'tipodeagendamento']);
+        Route::resource('/checklist', ChecklistItemController::class);
+        Route::get('/guia', [GuiaController::class, 'indexadm'])->name('guia.indexadm');
 
-        Route::get('/checklist', function () {
-            return view('pages.administracao.checklistitens');
-        })->name('checklist');
-
-        Route::resource('/guia', AdmGuiaController::class);
+        Route::resource('/integracao', IntegracaoController::class);
     });
 });
 

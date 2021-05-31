@@ -6,6 +6,19 @@ html {
 }
 body {
     margin-bottom: 50px; /* Margin bottom by footer height */
+    font-family: "helveticaregularregular", "Nunito", sans-serif !important;
 }
 @import "~@fortawesome/fontawesome-free/css/all.css";
+@import "~fullcalendar/main.min.css";
+@import "~daterangepicker/daterangepicker.css";
+@import "~toastr/build/toastr.min.css";
+@import "~sweetalert2/dist/sweetalert2.min.css";
+@import "~@simonwep/pickr/dist/themes/classic.min.css";
+@import "~datatables.net-bs4/css/dataTables.bootstrap4.css";
+@import "~select2/dist/css/select2.css";
+@import "~@ttskch/select2-bootstrap4-theme/dist/select2-bootstrap4.css";
+@import '~dropzone/dist/dropzone.css';
+@import '~tippy.js/dist/tippy.css';
+@import "~magnific-popup/dist/magnific-popup.css";
+
 @import url(caixa.css);

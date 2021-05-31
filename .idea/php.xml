@@ -2,7 +2,6 @@
 <project version="4">
   <component name="PhpIncludePathManager">
     <include_path>
-      <path value="$PROJECT_DIR$/laravel/vendor/maximebf/debugbar" />
       <path value="$PROJECT_DIR$/laravel/vendor/league/commonmark" />
       <path value="$PROJECT_DIR$/laravel/vendor/laravel/ui" />
       <path value="$PROJECT_DIR$/laravel/vendor/doctrine/inflector" />
@@ -34,7 +33,6 @@
       <path value="$PROJECT_DIR$/laravel/vendor/webmozart/assert" />
       <path value="$PROJECT_DIR$/laravel/vendor/guzzlehttp/guzzle" />
       <path value="$PROJECT_DIR$/laravel/vendor/guzzlehttp/promises" />
-      <path value="$PROJECT_DIR$/laravel/vendor/symfony/debug" />
       <path value="$PROJECT_DIR$/laravel/vendor/guzzlehttp/psr7" />
       <path value="$PROJECT_DIR$/laravel/vendor/nunomaduro/collision" />
       <path value="$PROJECT_DIR$/laravel/vendor/swiftmailer/swiftmailer" />
@@ -61,7 +59,6 @@
       <path value="$PROJECT_DIR$/laravel/vendor/facade/ignition" />
       <path value="$PROJECT_DIR$/laravel/vendor/facade/ignition-contracts" />
       <path value="$PROJECT_DIR$/laravel/vendor/league/flysystem" />
-      <path value="$PROJECT_DIR$/laravel/vendor/barryvdh/laravel-debugbar" />
       <path value="$PROJECT_DIR$/laravel/vendor/league/mime-type-detection" />
       <path value="$PROJECT_DIR$/laravel/vendor/nesbot/carbon" />
       <path value="$PROJECT_DIR$/laravel/vendor/ramsey/collection" />
@@ -112,6 +109,23 @@
       <path value="$PROJECT_DIR$/laravel/vendor/symfony/translation-contracts" />
       <path value="$PROJECT_DIR$/laravel/vendor/symfony/var-dumper" />
       <path value="$PROJECT_DIR$/laravel/vendor/theseer/tokenizer" />
+      <path value="$PROJECT_DIR$/laravel/vendor/doctrine/deprecations" />
+      <path value="$PROJECT_DIR$/laravel/vendor/doctrine/event-manager" />
+      <path value="$PROJECT_DIR$/laravel/vendor/doctrine/dbal" />
+      <path value="$PROJECT_DIR$/laravel/vendor/doctrine/cache" />
+      <path value="$PROJECT_DIR$/laravel/vendor/myclabs/php-enum" />
+      <path value="$PROJECT_DIR$/laravel/vendor/psr/http-factory" />
+      <path value="$PROJECT_DIR$/laravel/vendor/phpoffice/phpspreadsheet" />
+      <path value="$PROJECT_DIR$/laravel/vendor/ezyang/htmlpurifier" />
+      <path value="$PROJECT_DIR$/laravel/vendor/bfinlay/laravel-excel-seeder" />
+      <path value="$PROJECT_DIR$/laravel/vendor/markbaker/matrix" />
+      <path value="$PROJECT_DIR$/laravel/vendor/markbaker/complex" />
+      <path value="$PROJECT_DIR$/laravel/vendor/maennchen/zipstream-php" />
+      <path value="$PROJECT_DIR$/laravel/vendor/intervention/image" />
+      <path value="$PROJECT_DIR$/laravel/vendor/barryvdh/laravel-debugbar" />
+      <path value="$PROJECT_DIR$/laravel/vendor/maximebf/debugbar" />
+      <path value="$PROJECT_DIR$/laravel/vendor/symfony/debug" />
+      <path value="$PROJECT_DIR$/laravel/vendor/staudenmeir/eloquent-has-many-deep" />
     </include_path>
   </component>
   <component name="PhpProjectSharedConfiguration" php_language_level="7.3" />
