@@ -24,13 +24,13 @@ class LDAPService
 
             $searchHandle = ldap_search($ldapHandle, $searchBase, $searchFilter);
 
-            if($searchHandle)
+            if(!$searchHandle)
                 return null;
                 //throw new Exception("Servidor de Autenticação Indisponível (LDAP: erro na consulta)");
 
             $resultados = ldap_get_entries($ldapHandle, $searchHandle);
 
-            if(!$resultados['count'] != 1)
+            if($resultados['count'] != 1)
                 return null;
                 //throw new Exception("Usuário não localizado. Verifique a matrícula informada.");
 
