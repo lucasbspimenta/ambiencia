@@ -11,16 +11,16 @@ class IntegracaoController extends Controller
 {
     public function index()
     {
-        $demandas_pendentes = Demanda::where('migracao', 'P')->count();
-        $demandas_migradas = Demanda::where('migracao', 'C')->count();
-        $ultima_atualizacao = Demanda::max('updated_at');
+        $demandas_pendentes = Demanda::where('migracao', 'P')->withoutGlobalScopes()->count();
+        $demandas_migradas = Demanda::where('migracao', 'C')->withoutGlobalScopes()->count();
+        $ultima_atualizacao = Demanda::withoutGlobalScopes()->max('updated_at');
 
         return view('pages.administracao.integracao', compact('demandas_pendentes', 'demandas_migradas', 'ultima_atualizacao'));
     }
 
     public function create()
     {
-        $demandas = Demanda::all();
+        $demandas = Demanda::whereIn('migracao', ['P','C'])->get();
         $migradas = 0;
         $atualizadas = 0;
         $errors = [];

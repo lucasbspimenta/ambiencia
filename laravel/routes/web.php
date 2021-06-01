@@ -3,6 +3,7 @@
 use App\Http\Controllers\AgendamentoTipoController;
 use App\Http\Controllers\ChecklistItemController;
 use App\Http\Controllers\IntegracaoController;
+use App\Services\RelatoriosService;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\AgendamentoController;
@@ -31,6 +32,7 @@ Route::middleware(['web', 'auth.caixa'])->group(function () {
     Route::resource('/agenda', AgendamentoController::class)->names(['index' => 'agenda']);
     Route::resource('/guias', GuiaController::class);
     Route::resource('/checklist', ChecklistController::class);
+    Route::resource('/imagem', ImagemController::class);
 
     Route::prefix('administracao')->name('adm.')->middleware(['web', 'auth.caixa','admin'])->group(function () {
 
@@ -40,6 +42,12 @@ Route::middleware(['web', 'auth.caixa'])->group(function () {
 
         Route::resource('/integracao', IntegracaoController::class);
     });
+
+    Route::get('/test', function () {
+        dump(RelatoriosService::InconformidadePorItem());
+    });
+
+
 });
 
 

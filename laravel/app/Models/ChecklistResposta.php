@@ -5,6 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
+use Intervention\Image\Facades\Image;
+use Illuminate\Http\File;
 
 class ChecklistResposta extends Model
 {
@@ -40,6 +43,19 @@ class ChecklistResposta extends Model
         $demandas = !(!is_null($this->resposta) && $this->resposta == -1 && $this->demandas->count() <= 0) ?? true;
 
         return $resposta && $foto && $demandas;
+    }
+
+    public function getFotoAttribute($value)
+    {
+        if(!empty($this->attributes['foto']))
+            return route('imagem.show',[ 'imagem' => $this->id, 'tipo' => 'Resposta']);
+
+        return null;
+    }
+
+    public function getFotoBinaryAttribute($value)
+    {
+        return $this->attributes['foto'];
     }
 
     public static function boot() {

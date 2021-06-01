@@ -47,6 +47,11 @@ class ChecklistItem extends Model
         return !(bool)$this->item_pai_id;
     }
 
+    public function getCorAttribute()
+    {
+        return $this->attributes['cor'] ?? $this->macroitem->cor;
+    }
+
     public function subitens()
     {
         return $this->hasMany(ChecklistItem::class, 'item_pai_id', 'id');

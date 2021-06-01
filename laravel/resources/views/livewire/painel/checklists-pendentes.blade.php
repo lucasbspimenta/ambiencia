@@ -10,7 +10,7 @@
 
             <li class="list-group-item" @if($key%2) style="background-color:#f9f9f9" @endif>
                 <div class="w-100 d-flex justify-content-between">
-                    <a href="{{ route('checklist.edit',['checklist' => 1]) }}" class="text-caixaAzul text-nowrap d-block text-left">{{$checklist->agendamento->unidade->nome_completo}}</a>
+                    <a href="{{ route('checklist.edit',['checklist' => $checklist->id]) }}" class="text-caixaAzul text-nowrap d-block text-left">{{$checklist->agendamento->unidade->nome_completo}}</a>
                     <span>{{$checklist->percentual_preenchimento}}%</span>
                 </div>
                 <div class="w-100" style="height: 11px;">

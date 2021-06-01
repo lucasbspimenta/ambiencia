@@ -15,6 +15,7 @@ class Demanda extends Model
         ,'sistema_item_id'
         , 'descricao'
         , 'unidade_id'
+        , 'migracao'
     ];
 
     public const VALIDATION_RULES = [

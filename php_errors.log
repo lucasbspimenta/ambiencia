@@ -53,3 +53,27 @@ Stack trace:
 [26-May-2021 15:31:17 America/Sao_Paulo] PHP Fatal error:  Allowed memory size of 134217728 bytes exhausted (tried to allocate 62914592 bytes) in C:\inetpub\wwwroot\ambiencia\laravel\vendor\maximebf\debugbar\src\DebugBar\JavascriptRenderer.php on line 1148
 [26-May-2021 15:32:28 America/Sao_Paulo] PHP Fatal error:  Allowed memory size of 134217728 bytes exhausted (tried to allocate 62914592 bytes) in C:\inetpub\wwwroot\ambiencia\laravel\vendor\maximebf\debugbar\src\DebugBar\JavascriptRenderer.php on line 1148
 [27-May-2021 13:01:42 America/Sao_Paulo] PHP Fatal error:  Can't use method return value in write context in C:\inetpub\wwwroot\ambiencia\laravel\storage\framework\views\15e38346a329e5a99a18ed74cfc3c1b8f3618e85.php on line 3
+[01-Jun-2021 07:34:33 America/Sao_Paulo] PHP Warning:  Uncaught PDOException: SQLSTATE[08001]: [Microsoft][ODBC Driver 17 for SQL Server]TCP Provider: The wait operation timed out.
+ in C:\inetpub\wwwroot\ambiencia\laravel\vendor\doctrine\dbal\lib\Doctrine\DBAL\Driver\PDOConnection.php:39
+Stack trace:
+#0 C:\inetpub\wwwroot\ambiencia\laravel\vendor\doctrine\dbal\lib\Doctrine\DBAL\Driver\PDOConnection.php(39): PDO->__construct('sqlsrv:Server=1...', 's553101', 'FoA9C5Sqrc', Array)
+#1 C:\inetpub\wwwroot\ambiencia\laravel\vendor\laravel\framework\src\Illuminate\Database\Connectors\Connector.php(67): Doctrine\DBAL\Driver\PDOConnection->__construct('sqlsrv:Server=1...', 's553101', 'FoA9C5Sqrc', Array)
+#2 C:\inetpub\wwwroot\ambiencia\laravel\vendor\laravel\framework\src\Illuminate\Database\Connectors\Connector.php(46): Illuminate\Database\Connectors\Connector->createPdoConnection('sqlsrv:Server=1...', 's553101', 'FoA9C5Sqrc', Array)
+#3 C:\inetpub\wwwroot\ambiencia\laravel\vendor\laravel\framework\src\Illuminate\Database\Connectors\SqlServerConnector.php(32): Illuminate\D in C:\inetpub\wwwroot\ambiencia\laravel\vendor\doctrine\dbal\lib\Doctrine\DBAL\Driver\PDOConnection.php on line 39
+[01-Jun-2021 07:34:33 America/Sao_Paulo] PHP Fatal error:  Maximum execution time of 30 seconds exceeded in C:\inetpub\wwwroot\ambiencia\laravel\vendor\doctrine\dbal\lib\Doctrine\DBAL\Driver\PDOConnection.php on line 42
+[01-Jun-2021 07:36:30 America/Sao_Paulo] PHP Warning:  Uncaught PDOException: SQLSTATE[08001]: [Microsoft][ODBC Driver 17 for SQL Server]TCP Provider: The wait operation timed out.
+ in C:\inetpub\wwwroot\ambiencia\laravel\vendor\doctrine\dbal\lib\Doctrine\DBAL\Driver\PDOConnection.php:39
+Stack trace:
+#0 C:\inetpub\wwwroot\ambiencia\laravel\vendor\doctrine\dbal\lib\Doctrine\DBAL\Driver\PDOConnection.php(39): PDO->__construct('sqlsrv:Server=1...', 's553101', 'FoA9C5Sqrc', Array)
+#1 C:\inetpub\wwwroot\ambiencia\laravel\vendor\laravel\framework\src\Illuminate\Database\Connectors\Connector.php(67): Doctrine\DBAL\Driver\PDOConnection->__construct('sqlsrv:Server=1...', 's553101', 'FoA9C5Sqrc', Array)
+#2 C:\inetpub\wwwroot\ambiencia\laravel\vendor\laravel\framework\src\Illuminate\Database\Connectors\Connector.php(46): Illuminate\Database\Connectors\Connector->createPdoConnection('sqlsrv:Server=1...', 's553101', 'FoA9C5Sqrc', Array)
+#3 C:\inetpub\wwwroot\ambiencia\laravel\vendor\laravel\framework\src\Illuminate\Database\Connectors\SqlServerConnector.php(32): Illuminate\D in C:\inetpub\wwwroot\ambiencia\laravel\vendor\doctrine\dbal\lib\Doctrine\DBAL\Driver\PDOConnection.php on line 39
+[01-Jun-2021 07:36:30 America/Sao_Paulo] PHP Fatal error:  Maximum execution time of 30 seconds exceeded in C:\inetpub\wwwroot\ambiencia\laravel\vendor\doctrine\dbal\lib\Doctrine\DBAL\Driver\PDOConnection.php on line 42
+[01-Jun-2021 11:25:34 America/Sao_Paulo] PHP Warning:  Uncaught PDOException: SQLSTATE[08001]: [Microsoft][ODBC Driver 17 for SQL Server]TCP Provider: The wait operation timed out.
+ in C:\inetpub\wwwroot\ambiencia\laravel\vendor\doctrine\dbal\lib\Doctrine\DBAL\Driver\PDOConnection.php:39
+Stack trace:
+#0 C:\inetpub\wwwroot\ambiencia\laravel\vendor\doctrine\dbal\lib\Doctrine\DBAL\Driver\PDOConnection.php(39): PDO->__construct('sqlsrv:Server=1...', 's553101', 'FoA9C5Sqrc', Array)
+#1 C:\inetpub\wwwroot\ambiencia\laravel\vendor\laravel\framework\src\Illuminate\Database\Connectors\Connector.php(67): Doctrine\DBAL\Driver\PDOConnection->__construct('sqlsrv:Server=1...', 's553101', 'FoA9C5Sqrc', Array)
+#2 C:\inetpub\wwwroot\ambiencia\laravel\vendor\laravel\framework\src\Illuminate\Database\Connectors\Connector.php(46): Illuminate\Database\Connectors\Connector->createPdoConnection('sqlsrv:Server=1...', 's553101', 'FoA9C5Sqrc', Array)
+#3 C:\inetpub\wwwroot\ambiencia\laravel\vendor\laravel\framework\src\Illuminate\Database\Connectors\SqlServerConnector.php(32): Illuminate\D in C:\inetpub\wwwroot\ambiencia\laravel\vendor\doctrine\dbal\lib\Doctrine\DBAL\Driver\PDOConnection.php on line 39
+[01-Jun-2021 11:25:34 America/Sao_Paulo] PHP Fatal error:  Maximum execution time of 30 seconds exceeded in C:\inetpub\wwwroot\ambiencia\laravel\vendor\doctrine\dbal\lib\Doctrine\DBAL\Driver\PDOConnection.php on line 42

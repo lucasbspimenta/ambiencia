@@ -38,7 +38,7 @@ class LDAPService
 
             $object = new stdClass();
 
-            $object->nome = trim(strtoupper($usuario['no-usuario'][0]));
+            $object->name = trim(strtoupper($usuario['no-usuario'][0]));
             $object->matricula   = trim(strtoupper($usuario['co-usuario'][0]));
             $object->fisica = intval($usuario['nu-lotacaofisica'][0]);
             $object->unidade = intval($usuario['co-unidade'][0]);

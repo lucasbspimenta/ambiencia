@@ -8,6 +8,11 @@ body {
     margin-bottom: 50px; /* Margin bottom by footer height */
     font-family: "helveticaregularregular", "Nunito", sans-serif !important;
 }
+
+main {
+    padding-top: 4.5rem !important;
+}
+
 @import "~@fortawesome/fontawesome-free/css/all.css";
 @import "~fullcalendar/main.min.css";
 @import "~daterangepicker/daterangepicker.css";

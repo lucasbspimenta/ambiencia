@@ -10,14 +10,17 @@ use Illuminate\Support\Facades\Auth;
 class AtendimentoService
 {
     protected $demanda;
-    protected $tabela = 'VIRED_CHECKLIST_INCONFORMES_CAPTURADO';
+
+    protected $tabela = 'WS_DEMANDAS_EXTERNAS';
     protected $campos = array(
-        'NU_DEMANDA_ID'            => array('obrigatorio' => true, 'metodo' => '$this->demanda->id')
-    ,'CO_UNIDADE_CGC'           => array('obrigatorio' => true, 'metodo' => '$this->demanda->unidade_id')
-    ,'CO_MATRICULA_RESPONSAVEL' => array('obrigatorio' => true, 'metodo' => '$this->demanda->responsavel->matricula ?? Auth::id()')
-    ,'DT_CRIACAO'               => array('obrigatorio' => true, 'metodo' => '(new \DateTime())->format("Y-m-d H:i:s")')
-    ,'LOG_BASECONHECIMENTOID'   => array('obrigatorio' => true, 'metodo' => '$this->demanda->sistema_item_id')
-    ,'DE_DEMANDA'               => array('obrigatorio' => true, 'metodo' => '$this->demanda->descricao')
+        'NU_DEMANDA_EXTERNA_ID'     => array('obrigatorio' => true, 'metodo' => '$this->demanda->id')
+        ,'CO_UNIDADE_CGC'           => array('obrigatorio' => true, 'metodo' => '$this->demanda->unidade_id')
+        ,'CO_MATRICULA_RESPONSAVEL' => array('obrigatorio' => true, 'metodo' => '$this->demanda->responsavel->matricula ?? Auth::id()')
+        ,'DT_CRIACAO'               => array('obrigatorio' => true, 'metodo' => '(new \DateTime())->format("Y-m-d H:i:s")')
+        ,'LOG_BASECONHECIMENTOID'   => array('obrigatorio' => true, 'metodo' => '$this->demanda->sistema_item_id')
+        ,'DE_OBSERVACAO'            => array('obrigatorio' => true, 'metodo' => '$this->demanda->descricao')
+        ,'SISTEMA_ORIGEM'           => array('obrigatorio' => true, 'metodo' => '"checklist"')
+        ,'LOG_FOI_PROCESSADO_S_N'   => array('obrigatorio' => true, 'metodo' => '"N"')
     );
 
     function __construct(Demanda $demanda) {

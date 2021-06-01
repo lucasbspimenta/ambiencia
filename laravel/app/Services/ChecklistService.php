@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\Checklist;
 use App\Models\ChecklistItem;
+use App\Models\Demanda;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use InvalidArgumentException;
@@ -52,6 +53,12 @@ class ChecklistService
 
         $checklist->concluido = true;
         $checklist->save();
+
+        foreach($checklist->demandas as $demanda)
+        {
+            $demanda->migracao = 'P';
+            $demanda->save();
+        }
 
         if(env('MIGRAR_DEMANDAS') && env('MIGRAR_DEMANDAS') == 1)
             self::processaDemandas($checklist);

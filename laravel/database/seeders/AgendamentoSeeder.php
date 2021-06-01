@@ -21,21 +21,22 @@ class AgendamentoSeeder extends Seeder
         foreach($agentes as $agente)
         {
             $unidades = $agente->unidades->toArray();
-            $unidades_selecionadas = array_rand($unidades, 20);
+            if(sizeof($unidades) > 0) {
+                $unidades_selecionadas = array_rand($unidades, 20);
 
-            foreach($unidades_selecionadas as $idx => $unidade_index)
-            {
-                $data = $faker->dateTimeBetween($startDate = 'now', $endDate = '+30 days', $timezone = null)->format('Y-m-d');
+                foreach ($unidades_selecionadas as $idx => $unidade_index) {
+                    $data = $faker->dateTimeBetween($startDate = 'now', $endDate = '+30 days', $timezone = null)->format('Y-m-d');
 
-                $agendamento = [
-                    'unidade_id' => $unidades[$unidade_index]['id'],
-                    'inicio' => $data,
-                    'final' => $data,
-                    'agendamento_tipos_id' => $tipos[$idx] ?? $tipos[array_rand($tipos)],
-                    'descricao' => 'Agendamento falso criado por script para teste'
-                ];
+                    $agendamento = [
+                        'unidade_id' => $unidades[$unidade_index]['id'],
+                        'inicio' => $data,
+                        'final' => $data,
+                        'agendamento_tipos_id' => $tipos[$idx] ?? $tipos[array_rand($tipos)],
+                        'descricao' => 'Agendamento falso criado por script para teste'
+                    ];
 
-                Agendamento::create($agendamento);
+                    Agendamento::create($agendamento);
+                }
             }
         }
     }

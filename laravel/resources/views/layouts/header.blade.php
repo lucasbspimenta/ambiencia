@@ -1,5 +1,5 @@
 <header>
-    <nav class="navbar navbar-expand-lg navbar-dark caixa">
+    <nav class="navbar fixed-top navbar-expand-lg navbar-dark caixa">
         <div class="container-fluid">
             <!-- Navbar brand -->
             <a class="navbar-brand logo" title="Caixa" target="_blank" href="/">&nbsp;</a>

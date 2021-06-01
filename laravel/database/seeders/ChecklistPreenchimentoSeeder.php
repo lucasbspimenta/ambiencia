@@ -87,6 +87,7 @@ class ChecklistPreenchimentoSeeder extends Seeder
             'sistema_item_id' => $item->id,
             'descricao' => 'Demanda de teste aberta automaticamente',
             'unidade_id' => $resposta->checklist->agendamento->unidade->id,
+            'migracao' => 'P'
         ];
 
         $demanda = Demanda::create($dados_demandas);
