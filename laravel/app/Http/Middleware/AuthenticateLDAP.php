@@ -22,7 +22,7 @@ class AuthenticateLDAP
 
             default:
                 $matricula = $this->getMatriculaUsuarioDoServidor();
-                $usuario = User::firstOrCreate((array)LDAPService::findByMatricula($matricula)) ?? User::where('matricula', '=', $matricula)->first();
+                $usuario = User::where('matricula', '=', $matricula)->doesntExist() ? User::create((array)LDAPService::findByMatricula($matricula)) : User::where('matricula', '=', $matricula)->first();
                 break;
         }
 
