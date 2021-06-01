@@ -22,7 +22,12 @@ class AuthenticateLDAP
 
             default:
                 $matricula = $this->getMatriculaUsuarioDoServidor();
-                $usuario = User::where('matricula', '=', $matricula)->doesntExist() ? User::create((array)LDAPService::findByMatricula($matricula)) : User::where('matricula', '=', $matricula)->first();
+                $dadosLdap = (array)LDAPService::findByMatricula($matricula);
+
+                if(is_null($dadosLdap))
+                    die('Erro de conexao com o servidor de autenticação - LDAP');
+
+                $usuario = User::where('matricula', '=', $matricula)->doesntExist() ? User::create($dadosLdap) : User::where('matricula', '=', $matricula)->first()->update($dadosLdap);
                 break;
         }
 
