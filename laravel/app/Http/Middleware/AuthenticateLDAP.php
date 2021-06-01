@@ -27,7 +27,13 @@ class AuthenticateLDAP
                 if(is_null($dadosLdap))
                     die('Erro de conexao com o servidor de autenticação - LDAP');
 
-                $usuario = User::where('matricula', '=', $matricula)->doesntExist() ? User::create($dadosLdap) : User::where('matricula', '=', $matricula)->first()->update($dadosLdap);
+                if(User::where('matricula', '=', $matricula)->doesntExist()) {
+                    $usuario = User::create($dadosLdap);
+                } else {
+                    User::where('matricula', '=', $matricula)->first()->update($dadosLdap);
+                    $usuario = User::where('matricula', '=', $matricula)->first();
+                }
+
                 break;
         }
 
