@@ -112,8 +112,9 @@ class Checklist extends Model
 
     public function getPercentualPreenchimentoAttribute()
     {
-        $total_itens = $this->respostas->count();
-        $concluidos  = $this->respostas->where('concluido', 1)->count();
+        $respostas = $this->respostas;
+        $total_itens = $respostas->count();
+        $concluidos  = $respostas->where('concluido', 1)->count();
 
         $percentual = ($total_itens > 0) ? ($concluidos * 100) / $total_itens : 0;
 

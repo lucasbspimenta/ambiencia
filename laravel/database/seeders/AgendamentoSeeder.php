@@ -22,13 +22,13 @@ class AgendamentoSeeder extends Seeder
         {
             $unidades = $agente->unidades->toArray();
             if(sizeof($unidades) > 0) {
-                $unidades_selecionadas = array_rand($unidades, 20);
+                //$unidades_selecionadas = array_rand($unidades, 20);
 
-                foreach ($unidades_selecionadas as $idx => $unidade_index) {
-                    $data = $faker->dateTimeBetween($startDate = 'now', $endDate = '+30 days', $timezone = null)->format('Y-m-d');
+                foreach($unidades as $idx => $unidade) {
+                    $data = $faker->dateTimeBetween($startDate = 'now', $endDate = '+90 days', $timezone = null)->format('Y-m-d');
 
                     $agendamento = [
-                        'unidade_id' => $unidades[$unidade_index]['id'],
+                        'unidade_id' => $unidade['id'],
                         'inicio' => $data,
                         'final' => $data,
                         'agendamento_tipos_id' => $tipos[$idx] ?? $tipos[array_rand($tipos)],

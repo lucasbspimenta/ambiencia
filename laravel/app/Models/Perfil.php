@@ -27,7 +27,7 @@ class Perfil extends Model
 
     public function getIsAdminAttribute() {
 
-        if(strtoupper($this->usuario->equipe->nome) == 'SISTEMAS')
+        if(strtoupper(optional($this->usuario->equipe)->nome) == 'SISTEMAS')
             return true;
 
         if(in_array($this->id, self::getIDsPorPerfilAttribute('admin')))
@@ -38,7 +38,7 @@ class Perfil extends Model
 
     public function getIsGestorAttribute() {
 
-        if(strtoupper($this->usuario->equipe->nome) == 'SISTEMAS')
+        if(strtoupper(optional($this->usuario->equipe)->nome) == 'SISTEMAS')
             return true;
 
         if(in_array($this->id, self::getIDsPorPerfilAttribute('gestor')))
@@ -49,7 +49,7 @@ class Perfil extends Model
 
     public function getIsRelogAttribute() {
 
-        if(strtoupper($this->usuario->equipe->nome) == 'SISTEMAS')
+        if(strtoupper(optional($this->usuario->equipe)->nome) == 'SISTEMAS')
             return true;
 
         if(in_array($this->id, self::getIDsPorPerfilAttribute('agente')))

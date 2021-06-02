@@ -38,8 +38,9 @@ class ChecklistResposta extends Model
 
     public function getConcluidoAttribute()
     {
-        $resposta = !(is_null($this->resposta) && !$this->item->isMacroitem()) ?? true;
-        $foto     = !($this->item->foto == 'S' && !isset($this->foto)) ?? true;
+        $item = $this->item;
+        $resposta = !(is_null($this->resposta) && !$item->isMacroitem()) ?? true;
+        $foto     = !($item->foto == 'S' && !isset($this->foto)) ?? true;
         $demandas = !(!is_null($this->resposta) && $this->resposta == -1 && $this->demandas->count() <= 0) ?? true;
 
         return $resposta && $foto && $demandas;

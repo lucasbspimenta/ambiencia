@@ -22,6 +22,8 @@ class ChecklistPreenchimentoSeeder extends Seeder
 
     public function run(Faker $faker)
     {
+        ini_set('memory_limit','256M');
+
         $respostas_possiveis = [1,0,-1];
         $checklists = Checklist::all();
         $checklists = $checklists->shuffle()->skip(intdiv($checklists->count(),4));
@@ -49,6 +51,8 @@ class ChecklistPreenchimentoSeeder extends Seeder
                             $constraint->upsize();
                         })
                         ->encode('data-url');
+
+                    Image::clearResolvedInstances();
                 }
 
                 $resposta->resposta = $respostas_possiveis[array_rand($respostas_possiveis)];
