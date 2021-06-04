@@ -34,7 +34,7 @@ Route::middleware(['web', 'auth.caixa'])->group(function () {
     Route::resource('/checklist', ChecklistController::class);
     Route::resource('/imagem', ImagemController::class);
 
-    Route::prefix('administracao')->name('adm.')->middleware(['web', 'auth.caixa','admin'])->group(function () {
+    Route::prefix('administracao')->name('adm.')->middleware(['admin'])->group(function () {
 
         Route::resource('/tipodeagendamento', AgendamentoTipoController::class)->names(['index' => 'tipodeagendamento']);
         Route::resource('/checklist', ChecklistItemController::class);
@@ -44,7 +44,7 @@ Route::middleware(['web', 'auth.caixa'])->group(function () {
     });
 
     Route::get('/test', function () {
-        dump(RelatoriosService::InconformidadePorItem());
+        dump(RelatoriosService::VisitaPorTipo());
     });
 
 

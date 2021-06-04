@@ -16,10 +16,13 @@
             <div class="col-4 ">
                 <livewire:painel.proximos-agendamentos />
             </div>
-            <div class="col-3">
+            <div class="col-4">
                 <livewire:painel.checklists-pendentes />
             </div>
-
+            <div class="col-4">
+                <livewire:painel.visitas-por-periodo />
+                <livewire:painel.visitas-por-tipo />
+            </div>
         </div>
         <div class="row mb-3">
             <div class="col-6">

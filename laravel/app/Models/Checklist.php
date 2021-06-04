@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 
 class Checklist extends Model
@@ -112,6 +113,18 @@ class Checklist extends Model
 
     public function getPercentualPreenchimentoAttribute()
     {
+        $sql = "SELECT
+                    DISTINCT
+                       rbr.[checklist_id]
+                       ,COUNT([id]) OVER (PARTITION BY checklist_id) as total
+                       ,SUM([respondido]) OVER (PARTITION BY checklist_id) as total_respondido
+                       , percentual_preenchimento = CAST((SUM([respondido]) OVER (PARTITION BY checklist_id) * 100.00) / COUNT([id]) OVER (PARTITION BY checklist_id) as decimal(16,2))
+                  FROM [laravel].[dbo].[relatorio_base_respostas] rbr
+                  WHERE rbr.[checklist_id] = '". $this->id ."'";
+
+        $dados = collect(DB::select($sql))->first();
+        return (float)$dados->percentual_preenchimento;
+        /*
         $respostas = $this->respostas;
         $total_itens = $respostas->count();
         $concluidos  = $respostas->where('concluido', 1)->count();
@@ -119,6 +132,7 @@ class Checklist extends Model
         $percentual = ($total_itens > 0) ? ($concluidos * 100) / $total_itens : 0;
 
         return round($percentual,2,PHP_ROUND_HALF_ODD);
+        */
     }
 
     public static function boot() {

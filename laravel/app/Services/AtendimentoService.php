@@ -15,7 +15,7 @@ class AtendimentoService
     protected $campos = array(
         'NU_DEMANDA_EXTERNA_ID'     => array('obrigatorio' => true, 'metodo' => '$this->demanda->id')
         ,'CO_UNIDADE_CGC'           => array('obrigatorio' => true, 'metodo' => '$this->demanda->unidade_id')
-        ,'CO_MATRICULA_RESPONSAVEL' => array('obrigatorio' => true, 'metodo' => '$this->demanda->responsavel->matricula ?? Auth::id()')
+        ,'CO_MATRICULA_RESPONSAVEL' => array('obrigatorio' => true, 'metodo' => '$this->demanda->responsavel->matricula ?? Auth::user()->matricula')
         ,'DT_CRIACAO'               => array('obrigatorio' => true, 'metodo' => '(new \DateTime())->format("Y-m-d H:i:s")')
         ,'LOG_BASECONHECIMENTOID'   => array('obrigatorio' => true, 'metodo' => '$this->demanda->sistema_item_id')
         ,'DE_OBSERVACAO'            => array('obrigatorio' => true, 'metodo' => '$this->demanda->descricao')
