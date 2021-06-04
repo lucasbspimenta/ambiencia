@@ -10,7 +10,7 @@
 
     @stack('styles')
 
-    <title>@yield('title')</title>
+    <title>Ambiência - @yield('title')</title>
 
     @livewireStyles
 
