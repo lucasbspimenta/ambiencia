@@ -119,7 +119,7 @@ class Checklist extends Model
                        ,COUNT([id]) OVER (PARTITION BY checklist_id) as total
                        ,SUM([respondido]) OVER (PARTITION BY checklist_id) as total_respondido
                        , percentual_preenchimento = CAST((SUM([respondido]) OVER (PARTITION BY checklist_id) * 100.00) / COUNT([id]) OVER (PARTITION BY checklist_id) as decimal(16,2))
-                  FROM [laravel].[dbo].[relatorio_base_respostas] rbr
+                  FROM [relatorio_base_respostas] rbr
                   WHERE rbr.[checklist_id] = '". $this->id ."'";
 
         $dados = collect(DB::select($sql))->first();

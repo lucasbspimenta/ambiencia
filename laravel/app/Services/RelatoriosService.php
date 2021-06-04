@@ -33,8 +33,8 @@ class RelatoriosService
                   , SUM([respondido]) OVER () as total_respondido
                   , SUM([pendente]) OVER () as total_pendente
                   , percentual_inconforme = CAST(((SUM([inconforme]) OVER (PARTITION BY relbase.id )) * 100.00)/ SUM([inconforme]) OVER () as decimal(12,2))
-              FROM [laravel].[dbo].[relatorio_base_respostas] relbase
-              JOIN [dbo].[usuario_unidades] uu ON uu.unidade_id = relbase.unidade_id AND uu.matricula = '". Auth::user()->matricula ."'
+              FROM [relatorio_base_respostas] relbase
+              JOIN [usuario_unidades] uu ON uu.unidade_id = relbase.unidade_id AND uu.matricula = '". Auth::user()->matricula ."'
               WHERE relbase.pai_id <> relbase.id
                 ";
 
@@ -61,8 +61,8 @@ class RelatoriosService
                   , SUM([respondido]) OVER () as total_respondido
                   , SUM([pendente]) OVER () as total_pendente
                   , percentual_inconforme = CAST(((SUM([inconforme]) OVER (PARTITION BY relbase.pai_id )) * 100.00)/ SUM([inconforme]) OVER () as decimal(12,2))
-              FROM [laravel].[dbo].[relatorio_base_respostas] relbase
-              JOIN [dbo].[usuario_unidades] uu ON uu.unidade_id = relbase.unidade_id AND uu.matricula = '". Auth::user()->matricula ."'
+              FROM [relatorio_base_respostas] relbase
+              JOIN [usuario_unidades] uu ON uu.unidade_id = relbase.unidade_id AND uu.matricula = '". Auth::user()->matricula ."'
               WHERE relbase.pai_id <> relbase.id
                 ";
 
