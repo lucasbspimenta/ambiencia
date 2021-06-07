@@ -9,10 +9,10 @@ class Perfil extends Model
 {
     protected $table = 'usuario_perfil';
 
-    public function usuario()
-    {
-        return $this->hasOne(User::class,'matricula','matricula');
-    }
+//    public function usuario()
+//    {
+//        return $this->hasOne(User::class,'matricula','matricula');
+//    }
 
     public static function getIDsPorPerfilAttribute($perfil) {
 
@@ -27,9 +27,6 @@ class Perfil extends Model
 
     public function getIsAdminAttribute() {
 
-        if(strtoupper(optional($this->usuario->equipe)->nome) == 'SISTEMAS')
-            return true;
-
         if(in_array($this->id, self::getIDsPorPerfilAttribute('admin')))
             return true;
 
@@ -38,9 +35,6 @@ class Perfil extends Model
 
     public function getIsGestorAttribute() {
 
-        if(strtoupper(optional($this->usuario->equipe)->nome) == 'SISTEMAS')
-            return true;
-
         if(in_array($this->id, self::getIDsPorPerfilAttribute('gestor')))
             return true;
 
@@ -48,9 +42,6 @@ class Perfil extends Model
     }
 
     public function getIsRelogAttribute() {
-
-        if(strtoupper(optional($this->usuario->equipe)->nome) == 'SISTEMAS')
-            return true;
 
         if(in_array($this->id, self::getIDsPorPerfilAttribute('agente')))
             return true;

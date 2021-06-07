@@ -59,8 +59,6 @@ class User extends Authenticatable
             }
         }
 
-
-
         return $this->hasManyThrough(
             Unidade::class,
             UserUnidade::class,
@@ -73,15 +71,24 @@ class User extends Authenticatable
 
     public function getIsAdminAttribute() {
 
+        if(strtoupper(optional($this->equipe)->nome) == 'SISTEMAS')
+            return true;
+
         return optional($this->perfil)->is_admin;
     }
 
     public function getIsGestorAttribute() {
 
+        if(strtoupper(optional($this->equipe)->nome) == 'SISTEMAS')
+            return true;
+
         return optional($this->perfil)->is_gestor;
     }
 
     public function getIsRelogAttribute() {
+
+        if(strtoupper(optional($this->equipe)->nome) == 'SISTEMAS')
+            return true;
 
         return optional($this->perfil)->is_relog;
     }
