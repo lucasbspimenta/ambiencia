@@ -2,6 +2,10 @@
 
 return [
 
+    'PERFIL_RELOG' => env('PERFIL_RELOG', '5'),
+    'PERFIL_ADMIN' => env('PERFIL_ADMIN', '1'),
+    'PERFIL_GESTOR' => env('PERFIL_GESTOR', '3,1'),
+
     /*
     |--------------------------------------------------------------------------
     | Application Name

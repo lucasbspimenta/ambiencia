@@ -17,9 +17,9 @@ class Perfil extends Model
     public static function getIDsPorPerfilAttribute($perfil) {
 
         $perfis = array(
-            'agente' => explode(',', env('PERFIL_RELOG')),
-            'gestor' => explode(',', env('PERFIL_GESTOR')),
-            'admin' => explode(',', env('PERFIL_ADMIN'))
+            'agente' => explode(',', config('app.PERFIL_RELOG')),
+            'gestor' => explode(',', config('app.PERFIL_GESTOR')),
+            'admin' => explode(',', config('app.PERFIL_ADMIN'))
         );
 
         return $perfis[$perfil];
