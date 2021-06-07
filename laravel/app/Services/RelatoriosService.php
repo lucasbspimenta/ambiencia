@@ -4,7 +4,7 @@ namespace App\Services;
 
 use App\Models\ChecklistItem;
 use Carbon\Carbon;
-use Exception;
+
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
@@ -20,8 +20,14 @@ class RelatoriosService
         return $itens->toArray();
     }
 
-    public static function InconformidadePorItem()
+    public static function InconformidadePorItem($data_inicial = null, $data_final = null)
     {
+        if(is_null($data_final) || $data_final->greaterThan(Carbon::now()))
+            $data_final = Carbon::now();
+
+        if(is_null($data_inicial))
+            $data_inicial = Carbon::now()->sub(90, 'day');
+
         $itens = ChecklistItem::select('id','nome')->where('situacao',1)->get();
         $itens = $itens->mapWithKeys(function ($item) {
             return [$item['id'] => $item['nome']];
@@ -48,8 +54,14 @@ class RelatoriosService
         return $dados_grafico;
     }
 
-    public static function InconformidadePorMacroitem()
+    public static function InconformidadePorMacroitem($data_inicial = null, $data_final = null)
     {
+        if(is_null($data_final) || $data_final->greaterThan(Carbon::now()))
+            $data_final = Carbon::now();
+
+        if(is_null($data_inicial))
+            $data_inicial = Carbon::now()->sub(90, 'day');
+
         $itens = ChecklistItem::select('id','nome')->where('situacao',1)->get();
         $itens = $itens->mapWithKeys(function ($item) {
             return [$item['id'] => $item['nome']];
@@ -78,11 +90,12 @@ class RelatoriosService
 
     public static function VisitaPorPeriodo($data_inicial = null, $data_final = null)
     {
-        if(is_null($data_final))
+        if(is_null($data_final) || $data_final->greaterThan(Carbon::now()))
             $data_final = Carbon::now();
 
         if(is_null($data_inicial))
             $data_inicial = Carbon::now()->sub(90, 'day');
+
 
         $sql = "
             SELECT
@@ -110,7 +123,7 @@ class RelatoriosService
 
     public static function VisitaPorTipo($data_inicial = null, $data_final = null){
 
-        if(is_null($data_final))
+        if(is_null($data_final) || $data_final->greaterThan(Carbon::now()))
             $data_final = Carbon::now();
 
         if(is_null($data_inicial))
@@ -136,6 +149,24 @@ class RelatoriosService
                         AND (([inicio] BETWEEN '". $data_inicial->format('Y-m-d') ."' AND '". $data_final->format('Y-m-d') ."' OR [final] BETWEEN '". $data_inicial->format('Y-m-d') ."' AND '". $data_final->format('Y-m-d') ."') OR [inicio] IS NULL)
                     WHERE uu.matricula = '". Auth::user()->matricula ."' AND agendamento_tipos_id IS NOT NULL
                 ) visitado";
+
+        $dados = collect(DB::select($sql));
+        return $dados;
+    }
+
+    public static function PreenchimentoChecklist(){
+
+        $sql = "SELECT
+                DISTINCT
+                rcp.*
+                , nome_completo = u.[tipoPv] + ' ' + u.[nome]
+                FROM [relatorio_checklist_preenchimento] rcp
+                JOIN [unidades] u ON u.id = rcp.unidade_id
+                WHERE
+                     matricula = '". Auth::user()->matricula ."'
+                    AND percentual_respondido < 100
+                    AND [final] <= '". Carbon::now()->format('Y-m-d') ."'
+                ";
 
         $dados = collect(DB::select($sql));
         return $dados;

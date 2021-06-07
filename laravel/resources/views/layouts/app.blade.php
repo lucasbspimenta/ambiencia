@@ -17,7 +17,7 @@
 </head>
 <body class="">
 @include('layouts.header')
-<main class="pb-5">
+<main class="pb-3">
     @yield('content')
 </main>
 @include('layouts.footer')

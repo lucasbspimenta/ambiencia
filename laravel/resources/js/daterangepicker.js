@@ -8,7 +8,7 @@ window.dateRangePickerSettings = {
         "cancelLabel": "Cancelar",
         "fromLabel": "De",
         "toLabel": "Até",
-        "customRangeLabel": "Custom",
+        "customRangeLabel": "Personalizado",
         "daysOfWeek": [
             "Dom",
             "Seg",

@@ -4,6 +4,7 @@ use App\Http\Controllers\AgendamentoTipoController;
 use App\Http\Controllers\ChecklistItemController;
 use App\Http\Controllers\IntegracaoController;
 use App\Services\RelatoriosService;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\AgendamentoController;
@@ -11,6 +12,7 @@ use App\Http\Controllers\ChecklistController;
 use App\Http\Controllers\ImagemController;
 use App\Http\Controllers\GuiaController;
 use App\Http\Controllers\GuiaController as AdmGuiaController;
+use Illuminate\Support\Facades\Session;
 
 /*
 |--------------------------------------------------------------------------
@@ -41,10 +43,29 @@ Route::middleware(['web', 'auth.caixa'])->group(function () {
         Route::get('/guia', [GuiaController::class, 'indexadm'])->name('guia.indexadm');
 
         Route::resource('/integracao', IntegracaoController::class);
+
+        Route::get('/simulausuario/{matricula?}', function ($matricula='limpar') {
+
+            if($matricula && strtoupper(trim(Auth::user()->equipe->nome)) == 'SISTEMAS') {
+
+                Session::put('usuario_simulado',$matricula);
+                Session::save();
+                return redirect()->route('index');
+            }
+
+            return redirect()->route('index');
+        })->name('simulausuario');
     });
 
+    Route::get('/limpasimulacao', function () {
+
+            Session::forget('usuario_simulado');
+            Session::save();
+            return redirect()->route('index');
+    })->name('limpasimulacao');
+
     Route::get('/test', function () {
-        dump(RelatoriosService::VisitaPorTipo());
+        dump(RelatoriosService::PreenchimentoChecklist());
     });
 
 

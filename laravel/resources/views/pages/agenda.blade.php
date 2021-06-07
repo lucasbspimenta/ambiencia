@@ -63,7 +63,7 @@
                                 </div>
                                 <div class="tab-pane fade h-teladisponivel-fullcalendar" id="tabela" role="tabpanel" aria-labelledby="tabela-tab">
                                     <div class="table-responsive">
-                                        <table class="table table-striped table-hover table-sm " id="tabela_agendamentos">
+                                        <table class="table table-striped table-hover table-sm h-100" id="tabela_agendamentos">
                                             <thead>
                                             <tr>
                                                 <th scope="col">#Cód</th>
@@ -190,8 +190,10 @@
 
             DATATABLE = $('#tabela_agendamentos').DataTable( {
                 dom: 'ti',
+                scrollY: '50vh',
                 paging: false,
                 responsive: true,
+                scrollCollapse: true,
                 ajax: {
                     url: "{{ route("api.agendamentos.index") }}",
                     dataSrc: ''

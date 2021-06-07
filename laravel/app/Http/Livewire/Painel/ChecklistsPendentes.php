@@ -3,6 +3,7 @@
 namespace App\Http\Livewire\Painel;
 
 use App\Models\Checklist;
+use App\Services\RelatoriosService;
 use Livewire\Component;
 
 class ChecklistsPendentes extends Component
@@ -16,6 +17,6 @@ class ChecklistsPendentes extends Component
 
     public function mount()
     {
-        $this->checklists = Checklist::where('concluido',0)->get()->where('percentual_preenchimento','<=','100')->sortByDesc('agendamento.inicio');
+        $this->checklists = RelatoriosService::PreenchimentoChecklist()->sortByDesc('inicio');
     }
 }

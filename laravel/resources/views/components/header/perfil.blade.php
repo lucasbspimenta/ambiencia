@@ -1,9 +1,21 @@
 @auth
+    @if (Auth::check() && Auth::user()->perfil->is_admin && strtoupper(trim(Auth::user()->equipe->nome)) == 'SISTEMAS')
+        <li class="nav-item text-white">
+            <div class="my-0 mr-3">
+                <select class="form-control bg-white custom-select-sm" onchange="window.location='{{route('adm.simulausuario')}}/' + this.value">
+                        <option value="" selected>Nenhum</option>
+                    @foreach(App\Models\User::where('matricula','!=',Auth::user()->matricula)->get() as $usuario_simular)
+                        <option value="{{$usuario_simular->matricula}}">{{$usuario_simular->matricula}} - {{$usuario_simular->name}}</option>
+                    @endforeach
+                </select>
+            </div>
+        </li>
+    @endif
     <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle hidden-arrow d-flex align-items-center" href="#"
            id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-expanded="false" aria-haspopup="true" aria-expanded="false">
             <img src="http://tedx.caixa/lib/asp/foto.asp?matricula={{ Auth::user()->matricula }}" alt="{{ Str::title(Auth::user()->name) }}" onerror="this.onerror=null; this.src='{{ asset('images/semfoto.png') }}'"
-                 class="rounded-circle"
+                 class="rounded-circle @if (session()->has('usuario_simulado')) border border-danger @endif"
                  height="20"
                  loading="lazy"
                  alt="avatar image">
@@ -17,6 +29,12 @@
                     </small>
                     <table class="table table-sm text-center mb-0">
                         <tbody>
+                        @if (session()->has('usuario_simulado'))
+                            <tr>
+                                <td><small class="font-weight-bold text-danger">Simulando perfil: </small></td>
+                                <td class=""><small>{{ session()->get('usuario_simulado') }}</small><br><a href="{{route('limpasimulacao')}}" class="text-danger font-small"><small>Cancelar</small></a></td>
+                            </tr>
+                            @endif
                         <tr>
                             <td><small class="font-weight-bold">Equipe</small></td>
                             <td class=""><small>{{ Str::title(Auth::user()->equipe->nome) }}</small></td>

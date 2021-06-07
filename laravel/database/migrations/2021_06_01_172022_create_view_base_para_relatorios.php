@@ -26,6 +26,7 @@ class CreateViewBaseParaRelatorios extends Migration
     ,cki.nome
 	,cki.foto as foto_obrigatoria
 	,ck.id as checklist_id
+	,age.id as agendamento_id
     ,inconforme = CASE WHEN ckr.resposta = -1 THEN 1 ELSE 0 END
     ,conforme = CASE WHEN ckr.resposta = 1 THEN 1 ELSE 0 END
     ,naoseaplica = CASE WHEN ckr.resposta = 0 THEN 1 ELSE 0 END
