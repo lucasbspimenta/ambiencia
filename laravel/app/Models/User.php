@@ -12,6 +12,7 @@ class User extends Authenticatable
     use HasFactory, Notifiable;
 
     protected $with = ['perfil','equipe'];
+    protected $appends = ['is_admin','is_gestor','is_relog'];
 
     protected $fillable = [
         'name',
