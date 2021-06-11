@@ -1,6 +1,6 @@
 @auth
-    @if (Auth::check() && Auth::user()->perfil->is_admin && strtoupper(trim(Auth::user()->equipe->nome)) == 'SISTEMAS')
-        <li class="nav-item text-white">
+    @if (Auth::user()->is_admin)
+        <li class="nav-item text-white mt-1">
             <div class="my-0 mr-3">
                 <select class="form-control bg-white custom-select-sm" onchange="window.location='{{route('adm.simulausuario')}}/' + this.value">
                         <option value="" selected>Nenhum</option>
@@ -15,7 +15,7 @@
         <a class="nav-link dropdown-toggle hidden-arrow d-flex align-items-center" href="#"
            id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-expanded="false" aria-haspopup="true" aria-expanded="false">
             <img @if (Auth::user()->is_simulado) src="{{ asset('images/semfoto_red.png') }}" @else src="http://tedx.caixa/lib/asp/foto.asp?matricula={{ Auth::user()->matricula }}" alt="{{ Str::title(Auth::user()->name) }}" onerror="this.onerror=null; this.src='{{ asset('images/semfoto.png') }}'" @endif
-                 class="rounded-circle @if (Auth::user()->is_simulado) border border-danger @endif"
+                 class="rounded-circle @if (Auth::user()->is_admin) border border-warning @endif @if (Auth::user()->is_simulado) border border-danger @endif"
                  height="20"
                  loading="lazy"
                  alt="avatar image">
