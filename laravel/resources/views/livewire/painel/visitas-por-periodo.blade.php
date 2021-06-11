@@ -8,14 +8,30 @@
         </div>
     </div>
     <div class="col-12 d-flex justify-content-between mb-1">
-        <div class="text-caixaAzul font-weight-bold">{{ $dados['total_visitado'] }} de {{  $dados['total_unidades'] }} unidades</div>
-        <div class="text-caixaAzul font-weight-bold">{{ $dados['percentual_visitado'] }}%</div>
+        <div class="text-caixaAzul font-weight-bold">{{ $dados['total_visitado'] ?? 0 }} de {{  $dados['total_unidades'] ?? 0 }} unidades</div>
+        <div class="text-caixaAzul font-weight-bold">{{ $dados['percentual_visitado'] ?? 0.00 }}%</div>
     </div>
     <div class="col-12">
         <div class="progress md-progress" style="height: 30px">
-            <div class="progress-bar bg-success" role="progressbar" style="width: {{ $dados['percentual_visitado'] }}%; height: 30px" aria-valuenow="{{ $dados['percentual_visitado'] }}" aria-valuemin="0" aria-valuemax="100">{{ $dados['percentual_visitado'] }}%</div>
+            <div class="progress-bar bg-success" role="progressbar" style="width: {{ $dados['percentual_visitado'] ?? 0.00 }}%; height: 30px" aria-valuenow="{{ $dados['percentual_visitado'] ?? 0.00 }}" aria-valuemin="0" aria-valuemax="100">{{ $dados['percentual_visitado'] ?? 0.00}}%</div>
         </div>
     </div>
+    @if(sizeof($dados_subordinados) >0)
+    <div>
+        @foreach($dados_subordinados as $subordinado)
+            <div class="col-12 d-flex justify-content-between mb-1">
+                <div class="text-black-50 font-weight-bold">{{ $subordinado->responsavel_nome ?? $subordinado->responsavel ?? $subordinado->equipe_nome }}</div>
+                <div class="text-caixaAzul ">{{ $subordinado->total_visitado ?? 0 }} de {{  $subordinado->total_unidades ?? 0 }} unidades</div>
+                <div class="text-caixaAzul ">{{ $subordinado->percentual_visitado ?? 0.00 }}%</div>
+            </div>
+            <div class="col-12">
+                <div class="progress md-progress" style="height: 10px">
+                    <div class="progress-bar bg-info" role="progressbar" style="width: {{ $subordinado->percentual_visitado ?? 0.00 }}%; height: 10px" aria-valuenow="{{ $subordinado->percentual_visitado ?? 0.00 }}" aria-valuemin="0" aria-valuemax="100">{{ $subordinado->percentual_visitado ?? 0.00}}%</div>
+                </div>
+            </div>
+        @endforeach
+    </div>
+    @endif
 </div>
 @push('scripts')
 

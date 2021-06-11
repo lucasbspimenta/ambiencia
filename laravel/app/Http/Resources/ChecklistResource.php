@@ -18,15 +18,10 @@ class ChecklistResource extends JsonResource
             'id' => $this->id,
             'concluido' => $this->concluido,
             'agendamento_id' => $this->agendamento_id,
-            'agendamento' => $this->agendamento,
+            'agendamento' => array('inicio' => $this->agendamento_inicio, 'final' => $this->agendamento_final),
+            'unidade' => $this->unidade_tipoPv . ' ' . $this->unidade_nome,
             'preenchimento' => $this->percentual_preenchimento,
-            'respostas' => PadraoResource::collection($this->respostas),
-            'created_by' => $this->created_by,
-            'updated_by' => $this->updated_by,
-            'deleted_by' => $this->deleted_by,
-            'deleted_at' => $this->deleted_at,
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at
+            //'respostas' => PadraoResource::collection($this->respostas),
         ];
     }
 }

@@ -83,4 +83,21 @@ class AgendamentoService
     {
         return Agendamento::doesntHave('checklist')->get();
     }
+
+    public function todosCalendario($tipo=null)
+    {
+        if(is_null($tipo))
+            return Agendamento::join('unidades','unidades.id','=','agendamentos.unidade_id')
+                ->join('agendamento_tipos','agendamento_tipos.id','=','agendamentos.agendamento_tipos_id')
+                ->join('unidades_responsavel','agendamentos.unidade_id','=','unidades_responsavel.unidade_id')
+                ->select('agendamentos.id','agendamentos.inicio','agendamentos.final','agendamentos.descricao','unidades.nome','unidades.tipoPv', DB::raw('agendamento_tipos.nome as tipo_nome'),'agendamento_tipos.cor', DB::raw('unidades_responsavel.nome as unidade_responsavel'))
+                ->get();
+        else
+            return Agendamento::join('unidades','unidades.id','=','agendamentos.unidade_id')
+                ->join('agendamento_tipos','agendamento_tipos.id','=','agendamentos.agendamento_tipos_id')
+                ->join('unidades_responsavel','agendamentos.unidade_id','=','unidades_responsavel.unidade_id')
+                ->select('agendamentos.id','agendamentos.inicio','agendamentos.final','agendamentos.descricao','unidades.nome','unidades.tipoPv', DB::raw('agendamento_tipos.nome as tipo_nome'),'agendamento_tipos.cor', DB::raw('unidades_responsavel.nome as unidade_responsavel'))
+                ->where('agendamento_tipos.id','=',$tipo)
+                ->get();
+    }
 }

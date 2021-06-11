@@ -18,6 +18,6 @@ class ChecklistAPIController extends Controller
 
     public function index()
     {
-        return ['data' => ChecklistResource::collection($this->checklistService->todos())];
+        return ['data' => ChecklistResource::collection($this->checklistService->todosDatatables())];
     }
 }

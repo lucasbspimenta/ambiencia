@@ -20,6 +20,6 @@ class ProximosAgendamentos extends Component
 
     public function mount()
     {
-        $this->agendamentos = Agendamento::whereDate('inicio','>=', Date('Y-m-d'))->orderBy('inicio','ASC')->limit(10)->get();
+        $this->agendamentos = Agendamento::whereDate('inicio','>=', Date('Y-m-d'))->orderBy('inicio','ASC')->get();
     }
 }

@@ -5,7 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\AgendamentoResource;
 use App\Services\AgendamentoService;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 
 class AgendamentoAPIController extends Controller
 {
@@ -18,11 +18,11 @@ class AgendamentoAPIController extends Controller
 
     public function index()
     {
-        return AgendamentoResource::collection($this->agendamentoService->todos()->keyBy->id);
+        return AgendamentoResource::collection($this->agendamentoService->todosCalendario()->keyBy->id);
     }
 
     public function indexPorTipo($tipo)
     {
-        return AgendamentoResource::collection($this->agendamentoService->todos()->where('tipo.id', $tipo)->keyBy->id);
+        return AgendamentoResource::collection($this->agendamentoService->todosCalendario($tipo)->keyBy->id);
     }
 }

@@ -21,22 +21,31 @@ class CreateViewRelatorioChecklistPreenchimento extends Migration
             SELECT
             DISTINCT
             uu.[matricula]
+			,uu.coordenador
+			,uu.supervisor
+			,uu.equipe_id
+			,uu.equipe_nome
             ,[checklist_id]
             ,age.inicio
             ,age.final
             ,age.unidade_id
             , SUM(respondido)  as respondido
             , COUNT(relbase.id)  as total
-            ,percentual_respondido = CAST(SUM(respondido) * 100.00 / COUNT(relbase.id) as decimal(16,2))
+            ,percentual_respondido = (CAST(SUM(respondido) * 100.00 / COUNT(relbase.id) as decimal(16,2)) - CASE WHEN relbase.concluido = 0 AND SUM(respondido) > 0 THEN 0.01 ELSE 0 END)
             FROM [relatorio_base_respostas] relbase
-            JOIN [usuario_unidades] uu ON uu.unidade_id = relbase.unidade_id
+            JOIN [unidades_responsavel] uu ON uu.unidade_id = relbase.unidade_id
             JOIN [agendamentos] age ON age.id = relbase.agendamento_id
-
+			--CROSS APPLY (SELECT CASE WHEN ver_conc.concluido = 0 THEN 0.01 ELSE 0 END as total FROM [relatorio_base_respostas] ver_conc WHERE ver_conc.checklist_id = relbase.checklist_id) ver_conc
             GROUP BY uu.[matricula]
             ,[checklist_id]
             ,age.inicio
             ,age.final
             ,age.unidade_id
+			,relbase.concluido
+			,uu.coordenador
+			,uu.supervisor
+			,uu.equipe_id
+			,uu.equipe_nome
               ");
     }
 

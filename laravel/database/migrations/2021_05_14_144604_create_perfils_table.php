@@ -20,8 +20,10 @@ class CreatePerfilsTable extends Migration
             SELECT UPPER(RTRIM([CO_MATRICULA])) as matricula
                 ,EPA.[CO_PERFIL] as id
                 ,RTRIM(CPA.DE_PERFIL) as nome
+				,is_gestorequipe = CASE WHEN CE.CO_GESTOR IS NULL THEN 0 ELSE 1 END
             FROM [RH_UNIDADES].[dbo].[EMPREGADOS_PERFIL_ACESSO] EPA
             LEFT JOIN [RH_UNIDADES].[dbo].[CODIGOS_PERFIL_ACESSO] CPA ON EPA.CO_PERFIL = CPA.CO_PERFIL AND CPA.[IC_ATIVO] = 'S'
+			LEFT JOIN [RH_UNIDADES].[dbo].[CADASTRO_EQUIPES] CE ON CE.CO_GESTOR = CO_MATRICULA
         ");
     }
 

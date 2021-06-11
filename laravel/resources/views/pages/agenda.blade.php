@@ -163,7 +163,8 @@
                         //$(info.el).tooltip({title:info.event.extendedProps.descricao})
                         $(info.el).popover({
                             title: 'Descrição',
-                            content: info.event.extendedProps.descricao,
+                            html: true,
+                            content: info.event.extendedProps.descricao + '</br></br>' + 'Responsável: <b>' + info.event.extendedProps.unidade_responsavel + '</b>',
                             trigger: 'hover',
                             placement:  'auto'
                         });

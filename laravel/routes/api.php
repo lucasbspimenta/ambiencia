@@ -22,19 +22,3 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-
-Route::name('api.')->middleware('auth.caixa')->group(function () {
-
-    Route::get('/unidades', function () {
-        return response()->json(Unidade::all()->toArray());
-    });
-
-    Route::apiResource('guias', GuiaAPIController::class);
-    Route::apiResource('tiposagendamentos', AgendamentoTipoAPIController::class);
-    Route::apiResource('checklists', ChecklistAPIController::class);
-
-    Route::apiResource('agendamentos', AgendamentoAPIController::class);
-    Route::get('agendamentos/tipo/{tipo}', [AgendamentoAPIController::class, 'indexPorTipo'])->name('agendamentostipo');
-
-    Route::post('/agendamento/atualizar', [AgendamentoController::class, 'update'])->name('agendamento_update');
-});

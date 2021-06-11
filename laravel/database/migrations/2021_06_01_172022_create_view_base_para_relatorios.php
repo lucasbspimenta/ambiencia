@@ -18,7 +18,7 @@ class CreateViewBaseParaRelatorios extends Migration
         DB::unprepared("
         CREATE VIEW [dbo].[relatorio_base_respostas]
         as
-            SELECT
+              SELECT
     unidade_id
     ,cki_pai.id as pai_id
     ,cki_pai.nome as pai_nome
@@ -30,16 +30,23 @@ class CreateViewBaseParaRelatorios extends Migration
     ,inconforme = CASE WHEN ckr.resposta = -1 THEN 1 ELSE 0 END
     ,conforme = CASE WHEN ckr.resposta = 1 THEN 1 ELSE 0 END
     ,naoseaplica = CASE WHEN ckr.resposta = 0 THEN 1 ELSE 0 END
-    ,pendente = CASE WHEN ckr.resposta IS NULL THEN 1 ELSE 0 END
 	,foto_enviada = CASE WHEN ckr.foto IS NOT NULL THEN 1 ELSE 0 END
+    ,pendente = CASE
+					WHEN ckr.resposta IS NULL AND cki_pai.id <> cki.id THEN 1
+					WHEN ckr.resposta IS NULL AND cki_pai.id = cki.id AND cki.foto = 'S' AND ckr.foto IS NULL THEN 1
+					WHEN ckr.resposta IS NULL AND cki_pai.id = cki.id AND cki.foto = 'N' THEN 0
+					ELSE 0
+				END
     ,respondido = CASE
 					WHEN ckr.resposta = -1 AND dem.total > 0 AND cki.foto = 'N' THEN 1
 					WHEN ckr.resposta IN (1,0) AND cki.foto = 'N' THEN 1
 					WHEN ckr.resposta = -1 AND dem.total > 0 AND cki.foto = 'S' AND ckr.foto IS NOT NULL THEN 1
 					WHEN ckr.resposta IN (1,0) AND cki.foto = 'S'  AND ckr.foto IS NOT NULL THEN 1
+					WHEN ckr.resposta IS NULL AND cki_pai.id = cki.id AND cki.foto = 'S' AND ckr.foto IS NOT NULL THEN 1
 					ELSE 0
 				END
 	,dem.total as demandas
+	,ck.concluido
     FROM [checklist_items] cki
     INNER JOIN [checklist_items] cki_pai ON cki_pai.id = COALESCE(cki.item_pai_id, cki.id)
     LEFT JOIN [checklist_respostas] ckr ON ckr.checklist_item_id = cki.id

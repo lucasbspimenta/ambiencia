@@ -93,7 +93,7 @@
                 "ajax": "{{ route("api.checklists.index") }}",
                 "columns": [
                     { "data": "id" },
-                    { "data": "agendamento.unidade.nome" },
+                    { "data": "unidade" },
                     { "data": "agendamento.inicio" },
                     { "data": "preenchimento", "render": DATATABLES_PROGRESSO_AZUL },
                     { "data": "agendamento_id", "render": DATATABLES_PROGRESSO_AZUL },

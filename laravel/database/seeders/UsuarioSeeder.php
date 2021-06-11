@@ -78,6 +78,15 @@ class UsuarioSeeder extends Seeder
                 'funcao' => 'Assistente Sênior',
                 'fisica' => '7767',
                 'unidade' => '7001'
+            ],
+            [
+                'name' => 'Josiane Reciolino de Oliveira',
+                'matricula' => 'C045238',
+                'email' => 'lucas.pimenta@caixa.gov.br',
+                'cargo' => 'TBN',
+                'funcao' => 'Assistente Sênior',
+                'fisica' => '7767',
+                'unidade' => '7001'
             ]
 
 

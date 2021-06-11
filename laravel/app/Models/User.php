@@ -14,6 +14,9 @@ class User extends Authenticatable
     protected $with = ['perfil','equipe'];
     protected $appends = ['is_admin','is_gestor','is_relog'];
 
+    public $simulado = false;
+    public $usuario_simulador = null;
+
     protected $fillable = [
         'name',
         'email',
@@ -74,7 +77,7 @@ class User extends Authenticatable
         if(strtoupper(optional($this->equipe)->nome) == 'SISTEMAS')
             return true;
 
-        return optional($this->perfil)->is_admin;
+        return (boolean) optional($this->perfil)->is_admin;
     }
 
     public function getIsGestorAttribute() {
@@ -82,7 +85,12 @@ class User extends Authenticatable
         if(strtoupper(optional($this->equipe)->nome) == 'SISTEMAS')
             return true;
 
-        return optional($this->perfil)->is_gestor;
+        return (boolean) optional($this->perfil)->is_gestor;
+    }
+
+    public function getIsGestorEquipeAttribute() {
+
+        return (boolean) optional($this->perfil)->is_gestorequipe;
     }
 
     public function getIsRelogAttribute() {
@@ -90,6 +98,17 @@ class User extends Authenticatable
         if(strtoupper(optional($this->equipe)->nome) == 'SISTEMAS')
             return true;
 
-        return optional($this->perfil)->is_relog;
+        return (boolean) optional($this->perfil)->is_relog;
+    }
+
+    public function  getIsSimuladoAttribute()
+    {
+        return (boolean) $this->simulado;
+    }
+
+    public function  setIsSimuladoAttribute($value)
+    {
+        return $this->simulado = (boolean) $value;
     }
 }
+

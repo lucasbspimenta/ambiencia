@@ -1,8 +1,13 @@
 <?php
 
 use App\Http\Controllers\AgendamentoTipoController;
+use App\Http\Controllers\API\AgendamentoAPIController;
+use App\Http\Controllers\API\AgendamentoTipoAPIController;
+use App\Http\Controllers\API\ChecklistAPIController;
+use App\Http\Controllers\API\GuiaAPIController;
 use App\Http\Controllers\ChecklistItemController;
 use App\Http\Controllers\IntegracaoController;
+use App\Models\User;
 use App\Services\RelatoriosService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -36,6 +41,23 @@ Route::middleware(['web', 'auth.caixa'])->group(function () {
     Route::resource('/checklist', ChecklistController::class);
     Route::resource('/imagem', ImagemController::class);
 
+    Route::prefix('api')->name('api.')->middleware(['web','auth.caixa'])->group(function () {
+
+        Route::get('/unidades', function () {
+            return response()->json(Unidade::all()->toArray());
+        });
+
+        Route::apiResource('guias', GuiaAPIController::class);
+        Route::apiResource('tiposagendamentos', AgendamentoTipoAPIController::class);
+        Route::apiResource('checklists', ChecklistAPIController::class);
+
+        Route::apiResource('agendamentos', AgendamentoAPIController::class);
+        Route::get('agendamentos/tipo/{tipo}', [AgendamentoAPIController::class, 'indexPorTipo'])->name('agendamentostipo');
+
+        Route::post('/agendamento/atualizar', [AgendamentoController::class, 'update'])->name('agendamento_update');
+    });
+
+
     Route::prefix('administracao')->name('adm.')->middleware(['admin'])->group(function () {
 
         Route::resource('/tipodeagendamento', AgendamentoTipoController::class)->names(['index' => 'tipodeagendamento']);
@@ -48,8 +70,9 @@ Route::middleware(['web', 'auth.caixa'])->group(function () {
 
             if($matricula && strtoupper(trim(Auth::user()->equipe->nome)) == 'SISTEMAS') {
 
-                Session::put('usuario_simulado',$matricula);
-                Session::save();
+                Auth::user()->simulando = strtoupper($matricula);
+                Auth::user()->save();
+
                 return redirect()->route('index');
             }
 
@@ -57,15 +80,24 @@ Route::middleware(['web', 'auth.caixa'])->group(function () {
         })->name('simulausuario');
     });
 
+
+
     Route::get('/limpasimulacao', function () {
 
-            Session::forget('usuario_simulado');
-            Session::save();
-            return redirect()->route('index');
+        $usuario_simulador = User::where('matricula', Auth::user()->usuario_simulador)->first();
+        $usuario_simulador->simulando = null;
+        $usuario_simulador->save();
+
+        Auth::user()->simulando = null;
+        Auth::user()->is_simulado = false;
+        Auth::user()->usuario_simulador = null;
+
+        return redirect()->route('index');
+
     })->name('limpasimulacao');
 
     Route::get('/test', function () {
-        dump(RelatoriosService::PreenchimentoChecklist());
+        dump(RelatoriosService::VisitaPorPeriodoCoordenador('C132747'));
     });
 
 

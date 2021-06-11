@@ -41,7 +41,25 @@ class ChecklistService
     public function todos()
     {
         return Checklist::with(['agendamento','respostas'])->get();
+    }
 
+    public function todosDatatables()
+    {
+        return Checklist::join('relatorio_checklist_preenchimento','relatorio_checklist_preenchimento.checklist_id','=','checklists.id')
+            ->join('agendamentos','checklists.agendamento_id','=','agendamentos.id')
+            ->join('unidades','unidades.id','=','agendamentos.unidade_id')
+            ->select(
+                'checklists.id'
+                , 'checklists.concluido'
+                , 'checklists.agendamento_id'
+                , DB::raw('percentual_respondido as percentual_preenchimento')
+                , DB::raw('agendamentos.inicio as agendamento_inicio')
+                , DB::raw('agendamentos.final as agendamento_final')
+                , DB::raw('unidades.nome as unidade_nome')
+                , DB::raw('unidades.tipoPv as unidade_tipoPv')
+            )
+            ->distinct()
+            ->get();
     }
 
     public function finalizar($checklist_id)
@@ -91,5 +109,11 @@ class ChecklistService
             throw new \Exception("O checklist deve estar concluído para processar as demandas.", 1);
 
         }
+    }
+
+    public function getMacroitemProgresso(Checklist $checklist, ChecklistItem $macroitem)
+    {
+        $percentual = DB::table('checklist_macroitem_preenchimento')->select('percentual_respondido')->where('checklist_id',$checklist->id)->where('pai_id',$macroitem->id)->first();
+        return $percentual->percentual_respondido ?? 0.00;
     }
 }

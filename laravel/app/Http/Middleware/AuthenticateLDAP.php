@@ -20,21 +20,11 @@ class AuthenticateLDAP
             case 'testing':
             case 'local':
                 $matricula = $this->getMatriculaUsuarioDoEnv();
-
-                if (Session::has('usuario_simulado')) {
-                    $matricula = Session::get('usuario_simulado');
-                }
-
                 $usuario = User::where('matricula', '=', $matricula)->first();
                 break;
 
             default:
                 $matricula = $this->getMatriculaUsuarioDoServidor();
-
-                if (Session::has('usuario_simulado')) {
-                    $matricula = Session::get('usuario_simulado');
-                }
-
                 $dadosLdap = (array)LDAPService::findByMatricula($matricula);
 
                 if(is_null($dadosLdap))
@@ -50,13 +40,17 @@ class AuthenticateLDAP
                 break;
         }
 
+        if(!is_null($usuario->simulando) && User::where('matricula', '=', $usuario->simulando)->exists()) {
+            $usuario_simulador = $usuario;
+            $usuario = User::where('matricula', '=', $usuario->simulando)->first();
+            $usuario->is_simulado = true;
+            $usuario->usuario_simulador = $usuario_simulador->matricula;
+        }
+
         if($usuario){
             Auth::login($usuario);
             return $next($request);
         }
-
-        Session::forget('usuario_simulado',$matricula);
-        Session::save();
 
         return response('Não autorizado!', 403);
     }

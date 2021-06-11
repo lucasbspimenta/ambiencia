@@ -14,8 +14,8 @@
     <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle hidden-arrow d-flex align-items-center" href="#"
            id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-expanded="false" aria-haspopup="true" aria-expanded="false">
-            <img src="http://tedx.caixa/lib/asp/foto.asp?matricula={{ Auth::user()->matricula }}" alt="{{ Str::title(Auth::user()->name) }}" onerror="this.onerror=null; this.src='{{ asset('images/semfoto.png') }}'"
-                 class="rounded-circle @if (session()->has('usuario_simulado')) border border-danger @endif"
+            <img @if (Auth::user()->is_simulado) src="{{ asset('images/semfoto_red.png') }}" @else src="http://tedx.caixa/lib/asp/foto.asp?matricula={{ Auth::user()->matricula }}" alt="{{ Str::title(Auth::user()->name) }}" onerror="this.onerror=null; this.src='{{ asset('images/semfoto.png') }}'" @endif
+                 class="rounded-circle @if (Auth::user()->is_simulado) border border-danger @endif"
                  height="20"
                  loading="lazy"
                  alt="avatar image">
@@ -29,10 +29,10 @@
                     </small>
                     <table class="table table-sm text-center mb-0">
                         <tbody>
-                        @if (session()->has('usuario_simulado'))
+                        @if (Auth::user()->is_simulado)
                             <tr>
                                 <td><small class="font-weight-bold text-danger">Simulando perfil: </small></td>
-                                <td class=""><small>{{ session()->get('usuario_simulado') }}</small><br><a href="{{route('limpasimulacao')}}" class="text-danger font-small"><small>Cancelar</small></a></td>
+                                <td class=""><small>{{ Auth::user()->matricula }}</small><br><a href="{{route('limpasimulacao')}}" class="text-danger font-small"><small>Cancelar</small></a></td>
                             </tr>
                             @endif
                         <tr>

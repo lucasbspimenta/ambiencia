@@ -20,9 +20,9 @@ class ChecklistController extends Controller
 
     public function index()
     {
-        $checklists = $this->checklistService->todos();
+        //$checklists = $this->checklistService->todos();
         $agendamentos_sem_checklist = $this->agendamentoService->agendamentosSemChecklist();
-        return view('pages.checklist.index', compact('checklists','agendamentos_sem_checklist'));
+        return view('pages.checklist.index', compact('agendamentos_sem_checklist'));
     }
 
     /**

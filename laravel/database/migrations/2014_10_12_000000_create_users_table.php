@@ -22,6 +22,7 @@ class CreateUsersTable extends Migration
             $table->string('funcao')->nullable();
             $table->integer('fisica')->nullable();
             $table->integer('unidade')->nullable();
+            $table->char('simulando',7)->nullable()->default(null);
             $table->rememberToken();
             $table->timestamps();
         });

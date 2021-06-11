@@ -34,11 +34,13 @@ class Item extends Component
     {
         $this->resposta->save();
         $this->emit('atualizaProgressoChecklist')->to('checklist.botao-finalizar');
+        $this->emit('atualizaProgressoMacroitem' . $this->macroitem->id)->to('checklist.macroitem-progresso');
     }
 
     public function atualizar()
     {
         $this->resposta->refresh();
         $this->emit('atualizaProgressoChecklist')->to('checklist.botao-finalizar');
+        $this->emit('atualizaProgressoMacroitem' . $this->macroitem->id)->to('checklist.macroitem-progresso');
     }
 }

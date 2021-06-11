@@ -78,7 +78,7 @@
             <div class="col-4">
                 @if($checklist->fotosObrigatorias)
                     <div class="card mb-3">
-                        <div class="card-header bg-transparent" data-toggle="collapse" href="#fotos" aria-expanded="true" aria-controls="fotos" role="button">
+                        <div class="card-header bg-transparent text-caixaAzul font-weight-bold" style="font-size:14px" data-toggle="collapse" href="#fotos" aria-expanded="true" aria-controls="fotos" role="button">
                             Fotos Obrigatórias
                         </div>
                         <div class="card-body collapse p-3 show" id="fotos">
@@ -86,8 +86,8 @@
                                 @foreach($checklist->fotosObrigatorias as $key => $resposta)
                                     <div class="col col-auto pl-0">
                                         <figure class="figure">
-                                            <div>{{$resposta->item->nome}}</div>
-                                            <div style="height: 100px; width: 80px;">
+                                            <div style="width: 100px;"><small class="text-truncate text-caixaAzul d-block">{{$resposta->item->nome}}</small></div>
+                                            <div style="height: 100px; width: 100px;">
                                                 <img class="img-thumbnail rounded" style="width: inherit; height: inherit; object-fit: cover;" src="{{ $resposta->foto }}">
                                             </div>
                                         </figure>
@@ -98,19 +98,31 @@
                     </div>
                 @endif
                 <div class="card">
-                    <div class="card-header bg-transparent" data-toggle="collapse" href="#demandas" aria-expanded="true" aria-controls="demandas" role="button">
+                    <div class="card-header bg-transparent text-caixaAzul font-weight-bold" style="font-size:14px" data-toggle="collapse" href="#demandas" aria-expanded="true" aria-controls="demandas" role="button">
                         Demandas vinculadas
                     </div>
-                    <div class="card-body collapse p-3 show" id="demandas">
+                    <div class="card-body collapse p-1 show" id="demandas">
                         <div class="list-group list-group-flush">
                             @forelse($checklist->demandas as $demanda)
                                 <a href="#!" class="list-group-item list-group-item-action flex-column align-items-start">
                                     <div class="d-flex w-100 justify-content-between">
-                                        <h5 class="mb-2 h5">{{$demanda->sistema_item->nome}}</h5>
-                                        <small>{{$demanda->sistema->nome}}</small>
+                                        <div class="w-100">
+                                            <small class="d-block mb-1 text-caixaAzul">{{$demanda->sistema->nome}}</small>
+                                            <small class="d-block text-black-50">{{$demanda->sistema_item->nome}}</small>
+                                        </div>
+                                        <div class="flex-shrink-1">
+                                            @if(trim($demanda->migracao) == 'P')
+                                                <span class="badge badge-info z-depth-0" style="font-size:85%">A processar</span>
+                                            @endif
+                                            @if(trim($demanda->migracao) == 'C')
+                                                <span class="badge badge-default z-depth-0" style="font-size:85%">Processado</span>
+                                            @endif
+                                        </div>
                                     </div>
-                                    <p class="mb-2">{{$demanda->descricao}}</p>
                                     <div class="d-flex w-100 justify-content-between">
+                                        <p class="mb-2 mt-2 w-100 text-truncate d-block">{{$demanda->descricao}}</p>
+                                    </div>
+                                    <div class="d-flex w-100 justify-content-start">
                                         @foreach($demanda->load('respostas')->respostas->where('checklist_id', $checklist->id) as $key_resp => $resposta)
 
                                             <div>

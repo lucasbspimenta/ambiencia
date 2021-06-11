@@ -93,6 +93,8 @@
                 type: 'image',
                 alignTop: true
             });
+
+            //console.log(Livewire.all());
         });
 
         window.addEventListener('triggerSucesso', (event) => {
@@ -111,6 +113,11 @@
 
         window.addEventListener('atualizarResposta', (event) => {
             atualizaRespostaPorId(event.detail.resposta_id);
+        });
+
+        window.addEventListener('fecharMacroitem', (event) => {
+            console.log('Fecha macroitem', event);
+            $('#macroitem-' + event.detail.id).collapse('hide');
         });
 
         function abrirDemanda(demanda_id, resposta_id, componente) {
