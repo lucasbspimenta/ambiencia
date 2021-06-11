@@ -24,7 +24,7 @@ class CreateViewMacroitemPreenchimento extends Migration
             ,COUNT(relbase.id)  as total
             ,SUM(respondido)  as respondido
             ,percentual_respondido = CAST(SUM(respondido) * 100.00 / COUNT(relbase.id) as decimal(16,2))
-           FROM [laravel].[dbo].[relatorio_base_respostas] relbase
+           FROM [relatorio_base_respostas] relbase
            GROUP BY [checklist_id]
             ,[pai_id]
             ,[pai_nome]

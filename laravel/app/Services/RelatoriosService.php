@@ -147,7 +147,7 @@ class RelatoriosService
                     ,visitado = CASE WHEN COUNT(age.[agendamento_id]) OVER (PARTITION BY uu.unidade_id) > 0 THEN 1 ELSE 0 END
                     FROM
                     [unidades_responsavel] uu
-                    LEFT JOIN [laravel].[dbo].[relatorio_base_agendamentos] age ON uu.unidade_id = age.unidade_id
+                    LEFT JOIN [relatorio_base_agendamentos] age ON uu.unidade_id = age.unidade_id
                     AND (([agendamento_inicio] BETWEEN '". $data_inicial->format('Y-m-d') ."' AND '". $data_final->format('Y-m-d') ."' OR [agendamento_final] BETWEEN '". $data_inicial->format('Y-m-d') ."' AND '". $data_final->format('Y-m-d') ."') OR [agendamento_inicio] IS NULL)
                     WHERE uu.supervisor = '". $supervisor ."'
                 ) visitado
@@ -187,7 +187,7 @@ class RelatoriosService
                     ,visitado = CASE WHEN COUNT(age.[agendamento_id]) OVER (PARTITION BY uu.unidade_id) > 0 THEN 1 ELSE 0 END
                     FROM
                     [unidades_responsavel] uu
-                    LEFT JOIN [laravel].[dbo].[relatorio_base_agendamentos] age ON uu.unidade_id = age.unidade_id
+                    LEFT JOIN [relatorio_base_agendamentos] age ON uu.unidade_id = age.unidade_id
                     AND (([agendamento_inicio] BETWEEN '". $data_inicial->format('Y-m-d') ."' AND '". $data_final->format('Y-m-d') ."' OR [agendamento_final] BETWEEN '". $data_inicial->format('Y-m-d') ."' AND '". $data_final->format('Y-m-d') ."') OR [agendamento_inicio] IS NULL)
                     WHERE uu.coordenador = '". $coordenador ."'
                 ) visitado
