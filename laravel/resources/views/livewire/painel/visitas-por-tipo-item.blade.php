@@ -24,11 +24,15 @@
             @php
                 
                 $visitas = $visitas->groupBy('responsavel_nome');
-                $total = $visitas->groupBy('tipo_id')->map(function ($row) {
-                    //dd($row);
-                    return $row->sum('total_tipo');
+                $total_por_responsavel = [];
+                $visitas->each(function ($item4, $key4) use(&$total_por_responsavel) {
+                    //dump($item4, $key4, $total_por_responsavel);
+                    $total_por_responsavel[$key4] = $item4->groupBy('tipo_id')->map(function ($row) {
+                        //dd($row);
+                        return $row->sum('total_tipo');
+                    });
                 });
-                //dd($visitas, $total);
+                //dd($visitas, $total_por_responsavel);
             @endphp
             <li class="p-0 treeview-animated-items list-group-item">
                 <div class="px-2 py-2 treeview-animated-element d-flex rounded-0">
@@ -39,8 +43,8 @@
                         <div class="col-12">
                             <div class="progress" style="height: 15px">
                                 @foreach($tipos as $tipo)
-                                    @if(isset($total[$tipo->id]))
-                                        <div class="progress-bar" role="progressbar" style="width: {{ ($total[$tipo->id] * 100)/$total->sum() ?? 0.00 }}%; height: 15px; background-color: {{$tipo->cor}}" aria-valuenow="{{ ($total[$tipo->id] * 100)/$total->sum() ?? 0.00 }}" aria-valuemin="0" aria-valuemax="100">{{ number_format(($total[$tipo->id] * 100)/$total->sum() ?? 0.00, 2, ',', '.') }}%</div>
+                                    @if(isset($total_por_responsavel[$tipo->id]))
+                                        <div class="progress-bar" role="progressbar" style="width: {{ ($total_por_responsavel[$tipo->id] * 100)/$total_por_responsavel->sum() ?? 0.00 }}%; height: 15px; background-color: {{$tipo->cor}}" aria-valuenow="{{ ($total_por_responsavel[$tipo->id] * 100)/$total_por_responsavel->sum() ?? 0.00 }}" aria-valuemin="0" aria-valuemax="100">{{ number_format(($total_por_responsavel[$tipo->id] * 100)/$total_por_responsavel->sum() ?? 0.00, 2, ',', '.') }}%</div>
                                     @endif
                                 @endforeach
                             </div>

@@ -74,11 +74,12 @@ class VisitasPorTipo extends Component
                     //$this->contador_unidades_nivel['3|'.$key3] = $item3->sum('total_unidades');
                     //$this->contador_visitas_nivel['3|'.$key3] = $item3->sum('total_visitado'); 
                     
-                    // $this->visitas[$key][$key2][$key3] = $item3->groupBy('responsavel_nome');
-                    // $this->visitas[$key][$key2][$key3]->each(function ($item4, $key4) {
-                    //     //$this->contador_unidades_nivel['4|'.$key4] = $item4->sum('total_unidades');
-                    //     //$this->contador_visitas_nivel['4|'.$key4] = $item4->sum('total_visitado');                    
-                    // });                
+                    $this->visitas[$key][$key2][$key3] = $item3->groupBy('responsavel_nome');
+                    $this->visitas[$key][$key2][$key3]->each(function ($item4, $key4) {
+                        $this->contador_visitas_nivel['4|'.$key4] = $item4->groupBy('tipo_id')->map(function ($row) {
+                            return $row->sum('total_tipo');
+                        });
+                     });                
                     
                     
                 });
