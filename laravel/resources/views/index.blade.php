@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('title', 'Checklist')
 @section('content')
-    <div class="container-fluid mb-5">
+    <div class="mb-5 container-fluid">
 
         <div class="row d-flex justify-content-between">
             <div class="col col-md-auto d-flex align-items-center">
@@ -11,14 +11,14 @@
                 </h4>
             </div>
             <div class="col-auto d-flex">
-                <div id="reportrange" class="d-inline-block mr-3" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width: 100%">
+                <div id="reportrange" class="mr-3 d-inline-block" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width: 100%">
                     <i class="fa fa-calendar"></i>&nbsp;
                     <span></span> <i class="fa fa-caret-down"></i>
                 </div>
             </div>
         </div>
         <hr class="mt-2 mb-3"/>
-        <div class="row mb-4">
+        <div class="mb-4 row">
             <div class="col-4 ">
                 <livewire:painel.proximos-agendamentos />
             </div>
@@ -30,7 +30,7 @@
                 <livewire:painel.visitas-por-tipo />
             </div>
         </div>
-        <div class="row mb-3">
+        <div class="mb-3 row">
             <div class="col-6">
                 <livewire:painel.inconformidade-por-item />
             </div>
@@ -107,11 +107,16 @@
                 atualizarData(picker.startDate.format('YYYY-MM-DD'), picker.endDate.format('YYYY-MM-DD'));
             });
 
+            $('.treeview-animated').mdbTreeview();
         });
 
         function atualizarData(data_inicio, data_final)
         {
             Livewire.emit('atualizarData', data_inicio, data_final);
         }
+
+        document.addEventListener('atualizarTreeview', function() {
+            $('.treeview-animated').mdbTreeview();
+        });
     </script>
 @endpush

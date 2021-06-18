@@ -14,6 +14,10 @@ const mix = require('laravel-mix');
 mix.setPublicPath('../');
 mix.setResourceRoot('../');
 
+mix.autoload({
+    jquery: ['$', 'global.jQuery',"jQuery","global.$","jquery","global.jquery"]
+});
+
 mix.js('resources/js/app.js', '../js')
     .sass('resources/sass/app.scss', '../css')
     .postCss('resources/css/app.css', '../css')

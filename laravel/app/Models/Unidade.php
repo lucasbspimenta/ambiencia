@@ -25,6 +25,11 @@ class Unidade extends Model
         return $this->hasMany(Demanda::class,'unidade_id','id')->whereNull('demanda_situacao');
     }
 
+    public function responsavel()
+    {
+        return $this->hasOne(UnidadeResponsavel::class,'unidade_id','id');
+    }
+
     protected static function boot()
     {
         parent::boot();

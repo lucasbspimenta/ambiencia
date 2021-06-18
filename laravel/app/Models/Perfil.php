@@ -19,7 +19,8 @@ class Perfil extends Model
         $perfis = array(
             'agente' => explode(',', config('app.PERFIL_RELOG')),
             'gestor' => explode(',', config('app.PERFIL_GESTOR')),
-            'admin' => explode(',', config('app.PERFIL_ADMIN'))
+            'admin' => explode(',', config('app.PERFIL_ADMIN')),
+            'matriz' => explode(',', config('app.PERFIL_MATRIZ'))
         );
 
         return $perfis[$perfil];
@@ -44,6 +45,14 @@ class Perfil extends Model
     public function getIsRelogAttribute() {
 
         if(in_array($this->id, self::getIDsPorPerfilAttribute('agente')))
+            return true;
+
+        return false;
+    }
+
+    public function getIsMatrizAttribute() {
+
+        if(in_array($this->id, self::getIDsPorPerfilAttribute('matriz')))
             return true;
 
         return false;

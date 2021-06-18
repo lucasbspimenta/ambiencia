@@ -29,8 +29,8 @@ class CreateViewUnidadesResponsavel extends Migration
                 ,ud.[funcao]
                 ,ud.[fisica]
                 ,ud.[unidade]
-				,UPPER(RTRIM(COALESCE(RH_EMP_SEV.CO_COORDENADOR,EQP_UNID.coordenador))) as coordenador
-				,UPPER(RTRIM(RH_EMP_SEV.CO_SUPERVISOR)) as supervisor
+				,UPPER(RTRIM(COALESCE(NULLIF(RH_EMP_SEV.CO_COORDENADOR,''),EQP_UNID.coordenador))) as coordenador
+				,COALESCE(UPPER(RTRIM(NULLIF(RH_EMP_SEV.CO_SUPERVISOR,''))), UPPER(RTRIM(COALESCE(NULLIF(RH_EMP_SEV.CO_COORDENADOR,''),EQP_UNID.coordenador)))) as supervisor
 				,EQP_UNID.id as equipe_id
 				,EQP_UNID.nome as equipe_nome
             FROM [RH_UNIDADES].[dbo].[EMPREGADOS_SEV] RH_EMP_SEV

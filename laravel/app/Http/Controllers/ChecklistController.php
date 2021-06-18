@@ -6,6 +6,7 @@ use App\Models\Checklist;
 use App\Services\AgendamentoService;
 use App\Services\ChecklistService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ChecklistController extends Controller
 {
@@ -67,7 +68,7 @@ class ChecklistController extends Controller
     {
         app('debugbar')->disable();
 
-        if((boolean)$checklist->concluido)
+        if((boolean)$checklist->concluido || $checklist->agendamento->unidade->responsavel->matricula != Auth::user()->matricula)
             return redirect()->route('checklist.show',['checklist' => $checklist->id]);
 
         return view('pages.checklist.preenchimento', compact('checklist'));

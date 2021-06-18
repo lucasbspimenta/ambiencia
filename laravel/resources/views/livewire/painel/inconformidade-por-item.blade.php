@@ -8,11 +8,15 @@
         </div>
     </div>
     <canvas id="grafico_inconformes_por_item" class="p-2"></canvas>
+    
 </div>
 @push('scripts')
     <script>
+        var grafico_inconformes_por_item;
+
+        document.addEventListener('DOMContentLoaded', function() {
         const data_inconformes_por_item = {
-            labels:  {!! json_encode($dados->keys()) !!}, //["Ag. Divinópolis", "Ag. Itaúna", "Ag. Extrema", "Ag. Garapari", "Ag. Cabo Frio"],
+            labels:  {!! json_encode($dados->keys()) !!}, 
             datasets: [
                 {
                     label: "%",
@@ -47,6 +51,30 @@
             },
         };
         var ctx_inconformes_por_item = document.getElementById('grafico_inconformes_por_item');
-        var grafico_inconformes_por_item = new Chart(ctx_inconformes_por_item, config_inconformes_por_item);
+        grafico_inconformes_por_item = new Chart(ctx_inconformes_por_item, config_inconformes_por_item);
+
+        });
+
+        window.addEventListener('atualizarGraficoItem', (event) => {
+
+            atualizarGrafico(grafico_inconformes_por_item, event.detail.label, event.detail.cores, event.detail.dados);
+        });
+
+        function atualizarGrafico(grafico, label, cores, dados)
+        {
+            let novos_dados = {
+                labels:  eval(label), 
+                datasets: [
+                    {
+                        label: "%",
+                        backgroundColor: eval(cores),
+                        data: eval(dados)
+                    }
+                ]
+            }
+            grafico.data = novos_dados;
+
+            grafico.update();
+        }
     </script>
 @endpush

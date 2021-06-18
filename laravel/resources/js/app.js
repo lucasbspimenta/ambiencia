@@ -10,3 +10,4 @@ require('./dropzone');
 require('./tippy');
 require('./magnific-popup');
 require('./chartjs');
+require('./treeview');

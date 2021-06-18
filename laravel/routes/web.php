@@ -9,6 +9,7 @@ use App\Http\Controllers\ChecklistItemController;
 use App\Http\Controllers\IntegracaoController;
 use App\Models\User;
 use App\Services\RelatoriosService;
+use App\Services\RelatoriosVisitasService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -97,7 +98,7 @@ Route::middleware(['web', 'auth.caixa'])->group(function () {
     })->name('limpasimulacao');
 
     Route::get('/test', function () {
-        dump(RelatoriosService::VisitaPorPeriodoCoordenador('C132747'));
+        
     });
 
 

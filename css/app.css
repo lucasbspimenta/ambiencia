@@ -27020,7 +27020,24 @@ h4 {
     width: 4px; }
 
 
+.treeview-animated .treeview-animated-list .treeview-animated-items .closed:hover {
+    background-color: #EAEAEA;
+}
 
+.treeview-animated .treeview-animated-list .treeview-animated-items .open {
+    background-color: #EAEAEA;
+    transition: all 0.1s linear;
+}
+
+.treeview-animated .treeview-animated-list .treeview-animated-items .open span, 
+.treeview-animated .treeview-animated-list .treeview-animated-items .open:hover span {
+    color: rgba(0, 0, 0, 0.5) !important;
+}
+
+.treeview-animated .treeview-animated-list .treeview-animated-element:hover {
+    background-color: #EAEAEA;
+    cursor: inherit;
+}
 /* Sticky footer styles
 -------------------------------------------------- */
 html {

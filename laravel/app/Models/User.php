@@ -101,6 +101,14 @@ class User extends Authenticatable
         return (boolean) optional($this->perfil)->is_relog;
     }
 
+    public function getIsMatrizAttribute() {
+
+        if(strtoupper(optional($this->equipe)->nome) == 'SISTEMAS')
+            return true;
+
+        return (boolean) optional($this->perfil)->is_matriz;
+    }
+
     public function  getIsSimuladoAttribute()
     {
         return (boolean) $this->simulado;
