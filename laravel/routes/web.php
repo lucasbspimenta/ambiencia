@@ -88,8 +88,8 @@ Route::middleware(['web', 'auth.caixa'])->group(function () {
 
     })->name('limpasimulacao');
 
-    Route::get('/test', function () {
-
+    Route::get('/otimizar', function () {
+        dump(Artisan::call('optimize:clear'));
     });
 
 });
