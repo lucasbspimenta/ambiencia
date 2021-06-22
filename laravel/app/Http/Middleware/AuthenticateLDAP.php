@@ -14,6 +14,7 @@ class AuthenticateLDAP
     public function handle($request, Closure $next)
     {
         $matricula = '';
+        set_time_limit(0);
 
         switch(App::environment())
         {
