@@ -6,7 +6,6 @@ use App\Http\Helpers\DateHelper;
 use App\Services\RelatoriosService;
 use Carbon\Carbon;
 use Livewire\Component;
-use Illuminate\Support\Facades\Auth;
 
 class InconformidadePorMacroitem extends Component
 {
@@ -14,7 +13,7 @@ class InconformidadePorMacroitem extends Component
     public $cores = [];
     public $data_inicio;
     public $data_final;
-    public $perfil;
+    public $hierarquia;
 
     protected $listeners = ['atualizarData' => 'atualizarData'];
 
@@ -28,39 +27,35 @@ class InconformidadePorMacroitem extends Component
         $this->data_inicio = DateHelper::getInicioTrimestre(Carbon::parse('now'));
         $this->data_final = DateHelper::getFinalTrimestre(Carbon::parse('now'));
 
-        $this->perfil = null;
+        $this->carregaDados();
+    }
 
-        if(Auth::user()->is_gestor)
-            $this->perfil = 'supervisor';
+    private function carregaDados()
+    {
+        $dados = RelatoriosService::InconformidadePorMacroitem($this->data_inicio, $this->data_final);
 
-        if(Auth::user()->is_gestor_equipe)
-            $this->perfil = 'coordenador';
+        $itens = $dados->mapWithKeys(function ($item) {
+            return [$item->id => $item->nome];
+        });
 
-        if(Auth::user()->is_matriz)
-            $this->perfil = 'matriz';
+        $this->cores = $dados->mapWithKeys(function ($item) {
+            return [$item->id => $item->cor];
+        });
+        //dd($itens);
 
-        $this->dados = RelatoriosService::InconformidadePorMacroitem($this->data_inicio, $this->data_final, $this->perfil);
-        $cores = RelatoriosService::CorPorItem();
+        $dados_grafico = $dados->mapWithKeys(function ($item) use ($itens) {
+            return [$itens[$item->id] => (float) $item->percentual_inconforme];
+        });
 
-        foreach($this->dados as $key => $item)
-        {
-            $this->cores[] = $cores[$key];
-        }
+        $this->dados = $dados_grafico;
+
+        $this->dispatchBrowserEvent('atualizarGraficoMacroItem', ['label' => json_encode($this->dados->keys()), 'cores' => json_encode($this->cores->values()), 'dados' => json_encode($this->dados->values())]);
     }
 
     public function atualizarData($data_inicio, $data_final)
     {
-        $this->data_inicio  = Carbon::createFromFormat('Y-m-d', $data_inicio);
-        $this->data_final  = Carbon::createFromFormat('Y-m-d', $data_final);
-        $this->dados = RelatoriosService::InconformidadePorMacroitem($this->data_inicio, $this->data_final, $this->perfil);
-
-        $cores = RelatoriosService::CorPorItem();
-
-        foreach($this->dados as $key => $item)
-        {
-            $this->cores[] = $cores[$key];
-        }
-
-        $this->dispatchBrowserEvent('atualizarGraficoMacroItem', [ 'label' => json_encode($this->dados->keys()), 'cores' => json_encode(array_values($this->cores)), 'dados' => json_encode($this->dados->values())]);
+        $this->data_inicio = Carbon::createFromFormat('Y-m-d', $data_inicio);
+        $this->data_final = Carbon::createFromFormat('Y-m-d', $data_final);
+        $this->carregaDados();
     }
 }

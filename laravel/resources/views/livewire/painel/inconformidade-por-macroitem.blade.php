@@ -2,7 +2,8 @@
     <div class="card-body pb-1">
         <div class="d-flex justify-content-between">
             <h5 class="font-weight-bold text-caixaAzul text-futurabold">Inconformidade por macroitem</br>
-                <small class="text-black-50">Percentual de itens sinalizados como inconformes em relação ao total preenchido para o item</small>
+                <small class="text-black-50">Percentual de itens sinalizados como inconformes em relação ao total
+                    preenchido para o item</small>
             </h5>
 
         </div>
@@ -12,16 +13,14 @@
 @push('scripts')
     <script>
         var grafico_inconformes_por_macroitem;
-        
+
         const data_inconformes_por_macroitem = {
-            labels:  {!! json_encode($dados->keys()) !!}, //["Ag. Divinópolis", "Ag. Itaúna", "Ag. Extrema", "Ag. Garapari", "Ag. Cabo Frio"],
-            datasets: [
-                {
-                    label: "%",
-                    backgroundColor: {!! json_encode(array_values($cores)) !!},
-                    data: {!! json_encode($dados->values()) !!}
-                }
-            ]
+            labels: {!! json_encode($dados->keys()) !!}, //["Ag. Divinópolis", "Ag. Itaúna", "Ag. Extrema", "Ag. Garapari", "Ag. Cabo Frio"],
+            datasets: [{
+                label: "%",
+                backgroundColor: {!! json_encode($cores->values()) !!},
+                data: {!! json_encode($dados->values()) !!}
+            }]
         };
         const config_inconformes_por_macroitem = {
             type: 'bar',
@@ -51,24 +50,20 @@
         var ctx_inconformes_por_macroitem = document.getElementById('grafico_inconformes_por_macroitem');
         grafico_inconformes_por_macroitem = new Chart(ctx_inconformes_por_macroitem, config_inconformes_por_macroitem);
 
-        
-
         window.addEventListener('atualizarGraficoMacroItem', (event) => {
 
-            atualizarGrafico(grafico_inconformes_por_macroitem, event.detail.label, event.detail.cores, event.detail.dados);
+            atualizarGrafico(grafico_inconformes_por_macroitem, event.detail.label, event.detail.cores, event.detail
+                .dados);
         });
 
-        function atualizarGrafico(grafico, label, cores, dados)
-        {
+        function atualizarGrafico(grafico, label, cores, dados) {
             let novos_dados = {
-                labels:  eval(label), 
-                datasets: [
-                    {
-                        label: "%",
-                        backgroundColor: eval(cores),
-                        data: eval(dados)
-                    }
-                ]
+                labels: eval(label),
+                datasets: [{
+                    label: "%",
+                    backgroundColor: eval(cores),
+                    data: eval(dados)
+                }]
             }
             grafico.data = novos_dados;
 

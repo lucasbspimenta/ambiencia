@@ -175,3 +175,11 @@ Stack trace:
 #2 C:\inetpub\wwwroot\ambiencia\laravel\vendor\laravel\framework\src\Illuminate\Database\Connectors\Connector.php(46): Illuminate\Database\Connectors\Connector->createPdoConnection('sqlsrv:Server=1...', 's553101', 'FoA9C5Sqrc', Array)
 #3 C:\inetpub\wwwroot\ambiencia\laravel\vendor\laravel\framework\src\Illuminate\Database\Connectors\SqlServerConnector.php(32): Illuminate\D in C:\inetpub\wwwroot\ambiencia\laravel\vendor\doctrine\dbal\lib\Doctrine\DBAL\Driver\PDOConnection.php on line 39
 [18-Jun-2021 16:11:53 America/Sao_Paulo] PHP Fatal error:  Maximum execution time of 30 seconds exceeded in C:\inetpub\wwwroot\ambiencia\laravel\vendor\doctrine\dbal\lib\Doctrine\DBAL\Driver\PDOConnection.php on line 42
+[22-Jun-2021 13:02:05 America/Sao_Paulo] PHP Warning:  Uncaught PDOException: SQLSTATE[08001]: [Microsoft][ODBC Driver 17 for SQL Server]TCP Provider: The wait operation timed out.
+ in C:\inetpub\wwwroot\ambiencia\laravel\vendor\doctrine\dbal\lib\Doctrine\DBAL\Driver\PDOConnection.php:39
+Stack trace:
+#0 C:\inetpub\wwwroot\ambiencia\laravel\vendor\doctrine\dbal\lib\Doctrine\DBAL\Driver\PDOConnection.php(39): PDO->__construct('sqlsrv:Server=1...', 's553101', 'FoA9C5Sqrc', Array)
+#1 C:\inetpub\wwwroot\ambiencia\laravel\vendor\laravel\framework\src\Illuminate\Database\Connectors\Connector.php(67): Doctrine\DBAL\Driver\PDOConnection->__construct('sqlsrv:Server=1...', 's553101', 'FoA9C5Sqrc', Array)
+#2 C:\inetpub\wwwroot\ambiencia\laravel\vendor\laravel\framework\src\Illuminate\Database\Connectors\Connector.php(46): Illuminate\Database\Connectors\Connector->createPdoConnection('sqlsrv:Server=1...', 's553101', 'FoA9C5Sqrc', Array)
+#3 C:\inetpub\wwwroot\ambiencia\laravel\vendor\laravel\framework\src\Illuminate\Database\Connectors\SqlServerConnector.php(32): Illuminate\D in C:\inetpub\wwwroot\ambiencia\laravel\vendor\doctrine\dbal\lib\Doctrine\DBAL\Driver\PDOConnection.php on line 39
+[22-Jun-2021 13:02:05 America/Sao_Paulo] PHP Fatal error:  Maximum execution time of 30 seconds exceeded in C:\inetpub\wwwroot\ambiencia\laravel\vendor\doctrine\dbal\lib\Doctrine\DBAL\Driver\PDOConnection.php on line 42

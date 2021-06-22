@@ -2,170 +2,125 @@
 
 namespace App\Services;
 
+use App\Http\Helpers\DateHelper;
 use App\Models\ChecklistItem;
+use App\Models\User;
 use Carbon\Carbon;
-
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
-
 class RelatoriosService
 {
-    public static function CorPorItem():array
+    public static function CorPorItem(): array
     {
-        $itens = ChecklistItem::where('situacao',1)->get();
+        $itens = ChecklistItem::where('situacao', 1)->get();
         $itens = $itens->mapWithKeys(function ($item) {
             return [$item['nome'] => $item['cor']];
         });
         return $itens->toArray();
     }
 
-    public static function InconformidadePorItem($data_inicial = null, $data_final = null, $perfil = null, $matricula = null)
+    public static function InconformidadePorItem($data_inicial = null, $data_final = null, $matricula = null)
     {
-        if(is_null($data_final) || $data_final->greaterThan(Carbon::now()))
-            $data_final = Carbon::now();
-
-        if(is_null($data_inicial))
-            $data_inicial = Carbon::now()->sub(90, 'day');
-
-        if(is_null($matricula))
-            $matricula = Auth::user()->matricula;
-
-        $sql_join_usuario = "JOIN [unidades_responsavel] unid_resp ON unid_resp.unidade_id = relbase_in.unidade_id AND unid_resp.matricula = '". $matricula ."'";
-
-        switch($perfil){
-            case "coordenador":
-                $sql_join_usuario = "JOIN [unidades_responsavel] unid_resp ON unid_resp.unidade_id = relbase_in.unidade_id AND unid_resp.coordenador = '". $matricula ."'";
-            break;
-
-            case "supervisor":
-                $sql_join_usuario = "JOIN [unidades_responsavel] unid_resp ON unid_resp.unidade_id = relbase_in.unidade_id AND unid_resp.supervisor = '". $matricula ."'";
-            break;
-
-            case "matriz":
-                $sql_join_usuario = "";
-            break;
-
-            default:
-                $sql_join_usuario = "JOIN [unidades_responsavel] unid_resp ON unid_resp.unidade_id = relbase_in.unidade_id AND unid_resp.matricula = '". $matricula ."'";
+        if (is_null($data_inicial) || $data_inicial->lessThan(Carbon::now())) {
+            $data_inicial = DateHelper::getInicioTrimestre(Carbon::now());
         }
-        
-        $sql = "
-                SELECT 
+
+        if (is_null($data_final) || $data_final->greaterThan(Carbon::now())) {
+            $data_final = Carbon::now();
+        }
+
+        if (is_null($matricula)) {
+            $usuario = Auth::user();
+        } else {
+            $usuario = User::findOrFail('matricula', $matricula);
+        }
+
+        $sql_filtro_usuario = '';
+        if (!($usuario->is_matriz)) {
+            $sql_filtro_usuario = " AND (responsavel = '" . $usuario->matricula . "' OR supervisor = '" . $usuario->matricula . "' OR coordenador = '" . $usuario->matricula . "')";
+        }
+
+        $sql = "SELECT
                 ck_item.id
                 , ck_item.nome
-                , COALESCE(SUM([inconforme]),0.00) as total_inconforme
-                , COALESCE(SUM([respondido]),0.00) as total_respondido
-                , COALESCE(SUM([pendente]),0.00) as total_pendente
-                , percentual_inconforme = CAST(COALESCE(SUM([inconforme]),0.00) * 100 / COALESCE(NULLIF(inconforme_geral.total,0),1) as decimal(12,2)) 
-                FROM [checklist_items]ck_item
-                LEFT JOIN (SELECT relbase_in.* FROM [relatorio_base_respostas] relbase_in 
-                ". $sql_join_usuario ."
-                WHERE (relbase_in.[agendamento_inicio] BETWEEN '". $data_inicial->format('Y-m-d') ."' AND '". $data_final->format('Y-m-d') ."' OR relbase_in.[agendamento_final] BETWEEN '". $data_inicial->format('Y-m-d') ."' AND '". $data_final->format('Y-m-d') ."')
-                      AND relbase_in.pai_id <> relbase_in.id
-                ) relbase ON relbase.id = ck_item.id 
-                CROSS APPLY (
-                    SELECT COALESCE(SUM([inconforme]),0.00) as total 
-                    FROM [relatorio_base_respostas] relbase_in 
-                    ". $sql_join_usuario ."
-                    WHERE (relbase_in.[agendamento_inicio] BETWEEN '". $data_inicial->format('Y-m-d') ."' AND '". $data_final->format('Y-m-d') ."' OR relbase_in.[agendamento_final] BETWEEN '". $data_inicial->format('Y-m-d') ."' AND '". $data_final->format('Y-m-d') ."') 
-                          AND relbase_in.pai_id <> relbase_in.id
-                    ) inconforme_geral
-                WHERE item_pai_id IS NOT NULL AND ck_item.situacao = 1
-                GROUP BY ck_item.id
-                , ck_item.nome
-                , inconforme_geral.total
+                , ck_item_pai.cor
+                , total_inconforme_item
+                , SUM(total_inconforme_item) OVER () as total_inconforme
+                , percentual_inconforme = CAST(COALESCE(total_inconforme_item,0.00) * 100 / COALESCE(NULLIF(SUM(total_inconforme_item) OVER (),0),1) as decimal(12,2))
+                FROM
+                [checklist_items] ck_item
+                JOIN [checklist_items] ck_item_pai ON ck_item.item_pai_id = ck_item_pai.id
+                LEFT JOIN (
+                    SELECT
+                    relbase_in.id
+                    ,SUM(inconforme) as total_inconforme_item
+                    FROM [relatorio_base_respostas] relbase_in
+                    JOIN unidades_responsavel und_resp ON und_resp.unidade_id = relbase_in.unidade_id
+                    LEFT JOIN users supervisor ON supervisor.matricula = und_resp.supervisor
+                    LEFT JOIN users coordenador ON coordenador.matricula = und_resp.coordenador
+                    WHERE (relbase_in.[agendamento_inicio] BETWEEN '" . $data_inicial->format('Y-m-d') . "' AND '" . $data_final->format('Y-m-d') . "' OR relbase_in.[agendamento_final] BETWEEN '" . $data_inicial->format('Y-m-d') . "' AND '" . $data_final->format('Y-m-d') . "')
+                    " . $sql_filtro_usuario . "
+                    GROUP BY
+                        relbase_in.id
+                ) relbase ON relbase.id = ck_item.id
+                WHERE ck_item.item_pai_id IS NOT NULL AND ck_item.situacao = 1
+                ORDER BY CAST(COALESCE(total_inconforme_item,0.00) * 100 / COALESCE(NULLIF(SUM(total_inconforme_item) OVER (),0),1) as decimal(12,2)) DESC, ck_item.id ASC
+        ";
 
-                ";
-
-        //dump($sql);
-
-        $dados = collect(DB::select($sql));
-        $dados = $dados->sortByDesc('percentual_inconforme');
-
-        $itens = $dados->mapWithKeys(function ($item) {
-            return [$item->id => $item->nome];
-        });
-
-        $dados_grafico = $dados->mapWithKeys(function ($item) use ($itens) {
-            return [$itens[$item->id] => (float) $item->percentual_inconforme];
-        });
-
-        return $dados_grafico;
+        $dados = DB::select($sql);
+        return collect($dados);
     }
 
-    public static function InconformidadePorMacroitem($data_inicial = null, $data_final = null, $perfil = null, $matricula = null)
+    public static function InconformidadePorMacroitem($data_inicial = null, $data_final = null, $matricula = null)
     {
-        if(is_null($data_final) || $data_final->greaterThan(Carbon::now()))
-            $data_final = Carbon::now();
-
-        if(is_null($data_inicial))
-            $data_inicial = Carbon::now()->sub(90, 'day');
-
-        if(is_null($matricula))
-            $matricula = Auth::user()->matricula;
-
-        $sql_join_usuario = "JOIN [unidades_responsavel] unid_resp ON unid_resp.unidade_id = relbase_in.unidade_id AND unid_resp.matricula = '". $matricula ."'";
-
-        switch($perfil){
-            case "coordenador":
-                $sql_join_usuario = "JOIN [unidades_responsavel] unid_resp ON unid_resp.unidade_id = relbase_in.unidade_id AND unid_resp.coordenador = '". $matricula ."'";
-            break;
-
-            case "supervisor":
-                $sql_join_usuario = "JOIN [unidades_responsavel] unid_resp ON unid_resp.unidade_id = relbase_in.unidade_id AND unid_resp.supervisor = '". $matricula ."'";
-            break;
-
-            case "matriz":
-                $sql_join_usuario = "";
-            break;
-
-            default:
-                $sql_join_usuario = "JOIN [unidades_responsavel] unid_resp ON unid_resp.unidade_id = relbase_in.unidade_id AND unid_resp.matricula = '". $matricula ."'";
+        if (is_null($data_inicial) || $data_inicial->lessThan(Carbon::now())) {
+            $data_inicial = DateHelper::getInicioTrimestre(Carbon::now());
         }
-        
-        $sql = "
-                SELECT 
+
+        if (is_null($data_final) || $data_final->greaterThan(Carbon::now())) {
+            $data_final = Carbon::now();
+        }
+
+        if (is_null($matricula)) {
+            $usuario = Auth::user();
+        } else {
+            $usuario = User::findOrFail('matricula', $matricula);
+        }
+
+        $sql_filtro_usuario = '';
+        if (!($usuario->is_matriz)) {
+            $sql_filtro_usuario = " AND (responsavel = '" . $usuario->matricula . "' OR supervisor = '" . $usuario->matricula . "' OR coordenador = '" . $usuario->matricula . "')";
+        }
+
+        $sql = "SELECT
                 ck_item.id
                 , ck_item.nome
-                , COALESCE(SUM([inconforme]),0.00) as total_inconforme
-                , COALESCE(SUM([respondido]),0.00) as total_respondido
-                , COALESCE(SUM([pendente]),0.00) as total_pendente
-                , percentual_inconforme = CAST(COALESCE(SUM([inconforme]),0.00) * 100 / COALESCE(NULLIF(inconforme_geral.total,0),1) as decimal(12,2)) 
-                FROM [checklist_items]ck_item
-                LEFT JOIN (SELECT relbase_in.* FROM [relatorio_base_respostas] relbase_in 
-                ". $sql_join_usuario ."
-                WHERE (relbase_in.[agendamento_inicio] BETWEEN '". $data_inicial->format('Y-m-d') ."' AND '". $data_final->format('Y-m-d') ."' OR relbase_in.[agendamento_final] BETWEEN '". $data_inicial->format('Y-m-d') ."' AND '". $data_final->format('Y-m-d') ."')
-                      AND relbase_in.pai_id <> relbase_in.id
-                ) relbase ON relbase.pai_id = ck_item.id 
-                CROSS APPLY (
-                    SELECT COALESCE(SUM([inconforme]),0.00) as total 
-                    FROM [relatorio_base_respostas] relbase_in 
-                    ". $sql_join_usuario ."
-                    WHERE (relbase_in.[agendamento_inicio] BETWEEN '". $data_inicial->format('Y-m-d') ."' AND '". $data_final->format('Y-m-d') ."' OR relbase_in.[agendamento_final] BETWEEN '". $data_inicial->format('Y-m-d') ."' AND '". $data_final->format('Y-m-d') ."') 
-                          AND relbase_in.pai_id <> relbase_in.id
-                    ) inconforme_geral
-                WHERE item_pai_id IS NULL AND ck_item.situacao = 1
-                GROUP BY ck_item.id
-                , ck_item.nome
-                , inconforme_geral.total
+                , ck_item.cor
+                , total_inconforme_item
+                , SUM(total_inconforme_item) OVER () as total_inconforme
+                , percentual_inconforme = CAST(COALESCE(total_inconforme_item,0.00) * 100 / COALESCE(NULLIF(SUM(total_inconforme_item) OVER (),0),1) as decimal(12,2))
+                FROM
+                [checklist_items]ck_item
+                LEFT JOIN (
+                    SELECT
+                    pai_id
+                    ,SUM(inconforme) as total_inconforme_item
+                    FROM [relatorio_base_respostas] relbase_in
+                    JOIN unidades_responsavel und_resp ON und_resp.unidade_id = relbase_in.unidade_id
+                    LEFT JOIN users supervisor ON supervisor.matricula = und_resp.supervisor
+                    LEFT JOIN users coordenador ON coordenador.matricula = und_resp.coordenador
+                    WHERE (relbase_in.[agendamento_inicio] BETWEEN '" . $data_inicial->format('Y-m-d') . "' AND '" . $data_final->format('Y-m-d') . "' OR relbase_in.[agendamento_final] BETWEEN '" . $data_inicial->format('Y-m-d') . "' AND '" . $data_final->format('Y-m-d') . "')
+                    " . $sql_filtro_usuario . "
+                    GROUP BY
+                        relbase_in.pai_id
+                ) relbase ON relbase.pai_id = ck_item.id
+                WHERE ck_item.item_pai_id IS NULL AND ck_item.situacao = 1
+                ORDER BY CAST(COALESCE(total_inconforme_item,0.00) * 100 / COALESCE(NULLIF(SUM(total_inconforme_item) OVER (),0),1) as decimal(12,2)) DESC, ck_item.id ASC
+        ";
 
-                ";
-
-        //dump($sql);
-
-        $dados = collect(DB::select($sql));
-        $dados = $dados->sortByDesc('percentual_inconforme');
-
-        $itens = $dados->mapWithKeys(function ($item) {
-            return [$item->id => $item->nome];
-        });
-
-        $dados_grafico = $dados->mapWithKeys(function ($item) use ($itens) {
-            return [$itens[$item->id] => (float) $item->percentual_inconforme];
-        });
-
-        return $dados_grafico;
+        $dados = DB::select($sql);
+        return collect($dados);
     }
 
     // public static function VisitaPorPeriodo($data_inicial = null, $data_final = null)
@@ -175,7 +130,6 @@ class RelatoriosService
 
     //     if(is_null($data_inicial))
     //         $data_inicial = Carbon::now()->sub(90, 'day');
-
 
     //     $sql = "
     //         SELECT
@@ -316,13 +270,16 @@ class RelatoriosService
     //     return $dados;
     // }
 
-    public static function VisitaPorTipo($data_inicial = null, $data_final = null){
+    public static function VisitaPorTipo($data_inicial = null, $data_final = null)
+    {
 
-        if(is_null($data_final) || $data_final->greaterThan(Carbon::now()))
+        if (is_null($data_final) || $data_final->greaterThan(Carbon::now())) {
             $data_final = Carbon::now();
+        }
 
-        if(is_null($data_inicial))
+        if (is_null($data_inicial)) {
             $data_inicial = Carbon::now()->sub(90, 'day');
+        }
 
         $sql = "SELECT
                 DISTINCT
@@ -341,8 +298,8 @@ class RelatoriosService
                     [dbo].[usuario_unidades] uu
                     LEFT JOIN [dbo].[agendamentos] age
                         ON uu.unidade_id = age.unidade_id
-                        AND (([inicio] BETWEEN '". $data_inicial->format('Y-m-d') ."' AND '". $data_final->format('Y-m-d') ."' OR [final] BETWEEN '". $data_inicial->format('Y-m-d') ."' AND '". $data_final->format('Y-m-d') ."') OR [inicio] IS NULL)
-                    WHERE uu.matricula = '". Auth::user()->matricula ."' AND agendamento_tipos_id IS NOT NULL
+                        AND (([inicio] BETWEEN '" . $data_inicial->format('Y-m-d') . "' AND '" . $data_final->format('Y-m-d') . "' OR [final] BETWEEN '" . $data_inicial->format('Y-m-d') . "' AND '" . $data_final->format('Y-m-d') . "') OR [inicio] IS NULL)
+                    WHERE uu.matricula = '" . Auth::user()->matricula . "' AND agendamento_tipos_id IS NOT NULL
                 ) visitado";
 
         $dados = collect(DB::select($sql));
@@ -405,7 +362,7 @@ class RelatoriosService
     //         AND [final] < GETDATE()
     //     GROUP BY equipe_nome, supervisor;
     //     ";
-        
+
     //     $dados = collect(DB::select($sql));
     //     return $dados;
     // }
