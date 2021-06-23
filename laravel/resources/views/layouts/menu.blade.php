@@ -4,7 +4,7 @@
         <x-header.menuitem nome='Agenda' nomerota='agenda' icone='calendar-alt' badge=''/>
         <x-header.menuitem nome='Checklists' nomerota='checklist.index' icone='clipboard-check' badge=''/>
         <x-header.menuitem nome='Guias' nomerota='guias.index' icone='book' badge=''/>
-        @if (Auth::check() && Auth::user()->perfil->is_admin)
+        @if (Auth::check() && Auth::user()->is_admin)
             <x-header.menuitem nome='Administração' nomerota='index' icone='cogs' badge=''>
                 <x-header.menusubitem nome='Tipos de Agendamento' descricao='Inclusão e alteração dos tipos de atendimentos' nomerota="adm.tipodeagendamento"  icone='calendar-day' badge=''/>
                 <x-header.menusubitem nome='Itens do Checklist' descricao='Inclusão e alteração dos itens do checklist' nomerota='adm.checklist.index' icone='list-alt' badge=''/>
