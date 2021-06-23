@@ -38,7 +38,7 @@ class RelatoriosService
 
         $sql_filtro_usuario = '';
         if (!($usuario->is_matriz)) {
-            $sql_filtro_usuario = " AND (responsavel = '" . $usuario->matricula . "' OR supervisor = '" . $usuario->matricula . "' OR coordenador = '" . $usuario->matricula . "')";
+            $sql_filtro_usuario = " AND (und_resp.matricula = '" . $usuario->matricula . "' OR supervisor = '" . $usuario->matricula . "' OR coordenador = '" . $usuario->matricula . "')";
         }
 
         $sql = "SELECT
@@ -90,7 +90,7 @@ class RelatoriosService
 
         $sql_filtro_usuario = '';
         if (!($usuario->is_matriz)) {
-            $sql_filtro_usuario = " AND (responsavel = '" . $usuario->matricula . "' OR supervisor = '" . $usuario->matricula . "' OR coordenador = '" . $usuario->matricula . "')";
+            $sql_filtro_usuario = " AND (und_resp.matricula = '" . $usuario->matricula . "' OR supervisor = '" . $usuario->matricula . "' OR coordenador = '" . $usuario->matricula . "')";
         }
 
         $sql = "SELECT

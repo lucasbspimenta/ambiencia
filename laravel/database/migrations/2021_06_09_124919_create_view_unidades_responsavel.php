@@ -36,9 +36,9 @@ class CreateViewUnidadesResponsavel extends Migration
             FROM [RH_UNIDADES].[dbo].[EMPREGADOS_SEV] RH_EMP_SEV
             INNER JOIN [unidades] ATO_UNID ON RH_EMP_SEV.CO_UNIDADE = ATO_UNID.codigoSev
 			INNER JOIN [equipe_unidades] EQP_UNID ON ATO_UNID.id = EQP_UNID.unidade_id
-            LEFT JOIN usuario_dados ud ON ud.matricula = UPPER(RH_EMP_SEV.CO_MATRICULA)
-			LEFT JOIN usuario_dados coord ON coord.matricula = UPPER(RTRIM(COALESCE(NULLIF(RH_EMP_SEV.CO_COORDENADOR,''),EQP_UNID.coordenador)))
-			LEFT JOIN usuario_dados supv ON supv.matricula = COALESCE(UPPER(RTRIM(NULLIF(RH_EMP_SEV.CO_SUPERVISOR,''))), UPPER(RTRIM(COALESCE(NULLIF(RH_EMP_SEV.CO_COORDENADOR,''),EQP_UNID.coordenador))))
+            INNER JOIN usuario_dados ud ON ud.matricula = UPPER(RH_EMP_SEV.CO_MATRICULA)
+			INNER JOIN usuario_dados coord ON coord.matricula = UPPER(RTRIM(COALESCE(NULLIF(RH_EMP_SEV.CO_COORDENADOR,''),EQP_UNID.coordenador)))
+			INNER JOIN usuario_dados supv ON supv.matricula = COALESCE(UPPER(RTRIM(NULLIF(RH_EMP_SEV.CO_SUPERVISOR,''))), UPPER(RTRIM(COALESCE(NULLIF(RH_EMP_SEV.CO_COORDENADOR,''),EQP_UNID.coordenador))))
         ");
     }
 
