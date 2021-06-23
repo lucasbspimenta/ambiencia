@@ -47,7 +47,7 @@ class RelatoriosVisitasService
                     und.id
                     ,visitado = CASE WHEN COUNT(age.[id]) > 0 THEN 1 ELSE 0 END
                     ,und_resp.matricula as responsavel
-                    ,COALESCE(und_resp.nome,und_resp.matricula) as responsavel_nome
+                    ,COALESCE(und_resp.nome_responsavel,und_resp.matricula) as responsavel_nome
                     ,COALESCE(supervisor.matricula, und_resp.supervisor) as supervisor
                     ,COALESCE(supervisor.name,supervisor.matricula, und_resp.supervisor) as supervisor_nome
                     ,COALESCE(coordenador.matricula, und_resp.coordenador) as coordenador
@@ -62,7 +62,7 @@ class RelatoriosVisitasService
                 LEFT JOIN agendamento_tipos age_tipo ON age_tipo.id = age.agendamento_tipos_id
                 GROUP BY und.id
                         ,und_resp.matricula
-                        ,und_resp.nome
+                        ,und_resp.nome_responsavel
                         ,COALESCE(supervisor.matricula, und_resp.supervisor)
                         ,COALESCE(supervisor.name,supervisor.matricula, und_resp.supervisor)
                         ,COALESCE(coordenador.matricula, und_resp.coordenador)
@@ -125,7 +125,7 @@ class RelatoriosVisitasService
                                 ,age_tipo.cor as tipo_cor
                                 ,age_tipo.nome as tipo_nome
                                 ,und_resp.matricula as responsavel
-                                ,COALESCE(und_resp.nome,und_resp.matricula) as responsavel_nome
+                                ,COALESCE(und_resp.nome_responsavel,und_resp.matricula) as responsavel_nome
                                 ,COALESCE(supervisor.matricula, und_resp.supervisor) as supervisor
                                 ,COALESCE(supervisor.name,supervisor.matricula, und_resp.supervisor) as supervisor_nome
                                 ,COALESCE(coordenador.matricula, und_resp.coordenador) as coordenador

@@ -35,7 +35,7 @@ class RelatoriosChecklistsService
                     ,age.final
                     ,und.tipoPv + ' ' + und.nome as unidade_nome_completo
                     ,und_resp.matricula as responsavel
-                    ,COALESCE(und_resp.nome,und_resp.matricula) as responsavel_nome
+                    ,COALESCE(und_resp.nome_responsavel,und_resp.matricula) as responsavel_nome
                     ,COALESCE(supervisor.matricula, und_resp.supervisor) as supervisor
                     ,COALESCE(supervisor.name,supervisor.matricula, und_resp.supervisor) as supervisor_nome
                     ,COALESCE(coordenador.matricula, und_resp.coordenador) as coordenador

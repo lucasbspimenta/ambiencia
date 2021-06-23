@@ -8,17 +8,16 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 
-
 class Agendamento extends Model
 {
-    protected $with = ['unidade'];
+    //protected $with = ['unidade'];
 
     public const VALIDATION_RULES = [
-        'unidade_id' => ['required','integer','exists:unidades,id'],
-        'inicio' => ['required','date_format:d/m/Y'],
-        'final' => ['after_or_equal:inicio','date_format:d/m/Y','nullable'],
-        'agendamento_tipos_id' => ['required','integer','exists:agendamento_tipos,id'],
-        'descricao' => ['string','nullable']
+        'unidade_id' => ['required', 'integer', 'exists:unidades,id'],
+        'inicio' => ['required', 'date_format:d/m/Y'],
+        'final' => ['after_or_equal:inicio', 'date_format:d/m/Y', 'nullable'],
+        'agendamento_tipos_id' => ['required', 'integer', 'exists:agendamento_tipos,id'],
+        'descricao' => ['string', 'nullable'],
     ];
 
     public const VALIDATION_MESSAGES = [
@@ -41,7 +40,7 @@ class Agendamento extends Model
         , 'inicio'
         , 'final'
         , 'unidade_id'
-        , 'agendamento_tipos_id'
+        , 'agendamento_tipos_id',
     ];
 
     public function tipo(): BelongsTo
@@ -106,8 +105,10 @@ class Agendamento extends Model
         });
 
         static::created(function ($model) {
-            if($model->tipo->com_checklist)
+            if ($model->tipo->com_checklist) {
                 Checklist::create(['agendamento_id' => $model->id]);
+            }
+
         });
 
         static::updating(function ($model) {

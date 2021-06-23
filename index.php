@@ -14,10 +14,10 @@ define('LARAVEL_START', microtime(true));
 | we will load this file so that any pre-rendered content can be shown
 | instead of starting the framework, which could cause an exception.
 |
-*/
+ */
 
-if (file_exists(__DIR__.'/laravel/storage/framework/maintenance.php')) {
-    require __DIR__.'/laravel/storage/framework/maintenance.php';
+if (file_exists(__DIR__ . '/laravel/storage/framework/maintenance.php')) {
+    require __DIR__ . '/laravel/storage/framework/maintenance.php';
 }
 
 /*
@@ -29,9 +29,9 @@ if (file_exists(__DIR__.'/laravel/storage/framework/maintenance.php')) {
 | this application. We just need to utilize it! We'll simply require it
 | into the script here so we don't need to manually load our classes.
 |
-*/
+ */
 
-require __DIR__.'/laravel/vendor/autoload.php';
+require __DIR__ . '/laravel/vendor/autoload.php';
 
 /*
 |--------------------------------------------------------------------------
@@ -42,9 +42,9 @@ require __DIR__.'/laravel/vendor/autoload.php';
 | the application's HTTP kernel. Then, we will send the response back
 | to this client's browser, allowing them to enjoy our application.
 |
-*/
+ */
 
-$app = require_once __DIR__.'/laravel/bootstrap/app.php';
+$app = require_once __DIR__ . '/laravel/bootstrap/app.php';
 
 $kernel = $app->make(Kernel::class);
 
@@ -53,4 +53,3 @@ $response = tap($kernel->handle(
 ))->send();
 
 $kernel->terminate($request, $response);
-

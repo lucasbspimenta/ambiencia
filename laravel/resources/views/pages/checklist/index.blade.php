@@ -6,15 +6,16 @@
         <div class="row">
             <div class="col col-md-auto d-flex align-items-center">
                 <h4 class="text-caixaAzul text-futurabold">
-                    <span class="mr-1" style="clip-path: polygon(100% 0, 0 100%, 100% 100%); background-color: #fd7e14; width: 18px; height: 18px; display: inline-block;"></span>
+                    <span class="mr-1"
+                        style="clip-path: polygon(100% 0, 0 100%, 100% 100%); background-color: #fd7e14; width: 18px; height: 18px; display: inline-block;"></span>
                     Checklists
                 </h4>
             </div>
             <div class="col d-flex justify-content-end">
-                <livewire:checklist.botao-novo :agendamentos_sem_checklist="$agendamentos_sem_checklist" />
+                @livewire('checklist.botao-novo', ['agendamentos_sem_checklist' => $agendamentos_sem_checklist->count()])
             </div>
         </div>
-        <hr class="mt-2 mb-3"/>
+        <hr class="mt-2 mb-3" />
         <div class="row">
             <div class="col-12">
                 <div class="card">
@@ -22,14 +23,14 @@
                         <div class="table-responsive">
                             <table id="tabela_checklists" class="table table-striped table-hover table-sm ">
                                 <thead>
-                                <tr>
-                                    <th scope="col">#Cód</th>
-                                    <th scope="col">Unidade</th>
-                                    <th scope="col">Agendamento</th>
-                                    <th scope="col">% Preenchimento</th>
-                                    <th scope="col">% Demandas</th>
-                                    <th scope="col">Opções</th>
-                                </tr>
+                                    <tr>
+                                        <th scope="col">#Cód</th>
+                                        <th scope="col">Unidade</th>
+                                        <th scope="col">Agendamento</th>
+                                        <th scope="col">% Preenchimento</th>
+                                        <th scope="col">% Demandas</th>
+                                        <th scope="col">Opções</th>
+                                    </tr>
                                 </thead>
                                 <tbody>
                                 </tbody>
@@ -40,10 +41,11 @@
             </div>
         </div>
     </div>
-    <div class="modal fade" id="modal_checklist" tabindex="-1" role="dialog" aria-labelledby="modal_checklist" aria-hidden="true">
+    <div class="modal fade" id="modal_checklist" tabindex="-1" role="dialog" aria-labelledby="modal_checklist"
+        aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-md" role="document">
             <div class="modal-content">
-                <livewire:checklist.agendamento :agendamentos="$agendamentos_sem_checklist" />
+                @livewire('checklist.agendamento', ['agendamentos' => $agendamentos_sem_checklist])
             </div>
         </div>
     </div>
@@ -70,42 +72,53 @@
 
             let renderBotoesEditarExluir = (data, type, row, meta) => {
                 let saida = '';
-                if (row.concluido == 1)
-                {
+                if (row.concluido == 1) {
                     saida = `<div class="d-flex justify-content-around">
-                        <a href="{{route('checklist.index')}}/${row.id}" role="button" class="btn btn-xs btn-primary m-0"><i class="fa fa-eye" aria-hidden="true"></i></a>
+                        <a href="{{ route('checklist.index') }}/${row.id}" role="button" class="btn btn-xs btn-primary m-0"><i class="fa fa-eye" aria-hidden="true"></i></a>
                     </div>`;
-                }
-                else
-                {
+                } else {
                     saida = `<div class="d-flex justify-content-around">
                         <button onclick="redirecionaChecklist(${row.id})" type="button" class="btn btn-xs btn-primary m-0"><i class="fa fa-edit" aria-hidden="true"></i></button>
                         <button onclick="excluirChecklist(${row.id})" type="button" class="btn btn-xs btn-danger m-0"><i class="fa fa-trash" aria-hidden="true"></i></button>
                     </div>`;
                 }
 
-                return  saida;
+                return saida;
             }
 
-            DATATABLE = $(NOME_DATATABLE).DataTable( {
+            DATATABLE = $(NOME_DATATABLE).DataTable({
                 dom: 'ti',
                 paging: false,
-                "ajax": "{{ route("api.checklists.index") }}",
-                "columns": [
-                    { "data": "id" },
-                    { "data": "unidade" },
-                    { "data": "agendamento.inicio" },
-                    { "data": "preenchimento", "render": DATATABLES_PROGRESSO_AZUL },
-                    { "data": "agendamento_id", "render": DATATABLES_PROGRESSO_AZUL },
-                    { "data": "agendamento_id", "render": renderBotoesEditarExluir },
+                "ajax": "{{ route('api.checklists.index') }}",
+                "columns": [{
+                        "data": "id"
+                    },
+                    {
+                        "data": "unidade"
+                    },
+                    {
+                        "data": "agendamento.inicio"
+                    },
+                    {
+                        "data": "preenchimento",
+                        "render": DATATABLES_PROGRESSO_AZUL
+                    },
+                    {
+                        "data": "agendamento_id",
+                        "render": DATATABLES_PROGRESSO_AZUL
+                    },
+                    {
+                        "data": "agendamento_id",
+                        "render": renderBotoesEditarExluir
+                    },
                 ]
-            } );
+            });
 
         });
 
 
 
-        function abrirModalChecklist(guiaID){
+        function abrirModalChecklist(guiaID) {
             $(NOME_MODAL).off('show.bs.modal');
             $(NOME_MODAL).off('shown.bs.modal');
             $(NOME_MODAL).modal('show');
@@ -127,13 +140,12 @@
         });
 
         window.addEventListener('triggerError', (event) => {
-            toastr.error('Erro ao gravar checklist: '+ event.detail);
+            toastr.error('Erro ao gravar checklist: ' + event.detail);
             DATATABLE.ajax.reload();
             Livewire.emit('atualizarBotaoIncluir');
         });
 
-        function redirecionaChecklist(id)
-        {
+        function redirecionaChecklist(id) {
             let timerInterval
             Swal.fire({
                 title: 'Abrindo o checklist...',
@@ -142,9 +154,9 @@
                 //timerProgressBar: true,
                 didOpen: () => {
                     //Swal.showLoading();
-                    let url = '{{ route('checklist.edit', ['null'])  }}';
+                    let url = '{{ route('checklist.edit', ['null']) }}';
                     var re = /null/gi;
-                    window.location = url.replace(re, id); ;
+                    window.location = url.replace(re, id);;
                 }
             }).then((result) => {
 

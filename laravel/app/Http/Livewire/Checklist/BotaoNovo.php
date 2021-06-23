@@ -16,15 +16,9 @@ class BotaoNovo extends Component
         return view('livewire.checklist.botao-novo');
     }
 
-    public function mount()
-    {
-        $agendamentoService = new AgendamentoService();
-        $this->agendamentos_sem_checklist = $agendamentoService->agendamentosSemChecklist();
-    }
-
     public function atualizarBotaoIncluir()
     {
         $agendamentoService = new AgendamentoService();
-        $this->agendamentos_sem_checklist = $agendamentoService->agendamentosSemChecklist();
+        $this->agendamentos_sem_checklist = $agendamentoService->agendamentosSemChecklist()->count();
     }
 }

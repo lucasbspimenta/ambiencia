@@ -15,11 +15,13 @@ class Agendamento extends Component
 
     protected $listeners = ['limpar' => 'limpar', 'excluirChecklist' => 'excluirChecklist'];
 
-    public function rules() {
+    public function rules()
+    {
         return Checklist::VALIDATION_RULES();
     }
 
-    public function messages() {
+    public function messages()
+    {
         return Checklist::VALIDATION_MESSAGES;
     }
 
@@ -31,10 +33,11 @@ class Agendamento extends Component
     public function mount()
     {
         $agendamentoService = new AgendamentoService();
-        $this->agendamentos = $agendamentoService->agendamentosSemChecklist();
+        //dd($this->agendamentos);
     }
 
-    public function limpar() {
+    public function limpar()
+    {
         $this->resetValidation();
         $this->resetErrorBag();
         $this->reset();
@@ -54,8 +57,8 @@ class Agendamento extends Component
 
             $this->limpar();
 
-        }catch (Exception $e){
-            $this->dispatchBrowserEvent('triggerError',$e->getMessage());
+        } catch (Exception $e) {
+            $this->dispatchBrowserEvent('triggerError', $e->getMessage());
         }
     }
 

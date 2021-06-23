@@ -22,11 +22,11 @@ class CreateViewUnidadesResponsavel extends Migration
                 ATO_UNID.codigo as unidade_codigo,
                 ATO_UNID.id as unidade_id,
                 RH_EMP_SEV.CO_UNIDADE as sev_codigo,
-                COALESCE(ud.nome, UPPER(RH_EMP_SEV.CO_MATRICULA)) as nome
+                COALESCE(ud.nome, UPPER(RH_EMP_SEV.CO_MATRICULA)) as nome_responsavel
                 ,ud.[cargo]
                 ,ud.[funcao]
                 ,ud.[fisica]
-                ,ud.[unidade]
+                ,ud.[unidade] as administrativa
 				,UPPER(RTRIM(COALESCE(NULLIF(RH_EMP_SEV.CO_COORDENADOR,''),EQP_UNID.coordenador))) as coordenador
 				,COALESCE(coord.nome,UPPER(RTRIM(COALESCE(NULLIF(RH_EMP_SEV.CO_COORDENADOR,''),EQP_UNID.coordenador)))) as coordenador_nome
 				,COALESCE(UPPER(RTRIM(NULLIF(RH_EMP_SEV.CO_SUPERVISOR,''))), UPPER(RTRIM(COALESCE(NULLIF(RH_EMP_SEV.CO_COORDENADOR,''),EQP_UNID.coordenador)))) as supervisor

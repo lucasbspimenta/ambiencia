@@ -12,17 +12,17 @@ class PainelController extends Controller
     {
         $user = Auth::user();
         if (!$user->is_admin) {
-            $responsaveis = UnidadeResponsavel::selectRaw('matricula,nome,coordenador,coordenador_nome,supervisor,supervisor_nome,equipe_id,equipe_nome')
+            $responsaveis = UnidadeResponsavel::selectRaw('matricula,nome_responsavel,coordenador,coordenador_nome,supervisor,supervisor_nome,equipe_id,equipe_nome')
                 ->where('matricula', $user->matricula)
                 ->orWhere('coordenador', $user->matricula)
                 ->orWhere('supervisor', $user->matricula)
                 ->distinct()
                 ->get();
         } else {
-            $responsaveis = UnidadeResponsavel::selectRaw('matricula,nome,coordenador,coordenador_nome,supervisor,supervisor_nome,equipe_id,equipe_nome')->distinct()->get();
+            $responsaveis = UnidadeResponsavel::selectRaw('matricula,nome_responsavel,coordenador,coordenador_nome,supervisor,supervisor_nome,equipe_id,equipe_nome')->distinct()->get();
         }
 
-        $niveis = ['coordenador_nome', 'equipe_nome', 'supervisor_nome', 'nome'];
+        $niveis = ['coordenador_nome', 'equipe_nome', 'supervisor_nome', 'nome_responsavel'];
         $dados_nivel = null;
         $nivel_encontrado = 0;
 
