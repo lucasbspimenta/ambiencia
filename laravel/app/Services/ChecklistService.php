@@ -46,6 +46,7 @@ class ChecklistService
         return Checklist::join('relatorio_checklist_preenchimento', 'relatorio_checklist_preenchimento.checklist_id', '=', 'checklists.id')
             ->join('agendamentos', 'checklists.agendamento_id', '=', 'agendamentos.id')
             ->join('unidades', 'unidades.id', '=', 'agendamentos.unidade_id')
+            ->leftJoin('checklist_demandas_andamento', 'checklists.id', '=', 'checklist_demandas_andamento.checklist_id')
             ->select(
                 'checklists.id'
                 , 'checklists.concluido'
@@ -55,6 +56,7 @@ class ChecklistService
                 , DB::raw('agendamentos.final as agendamento_final')
                 , DB::raw('unidades.nome as unidade_nome')
                 , DB::raw('unidades.tipoPv as unidade_tipoPv')
+                , DB::raw('CAST(COALESCE(((checklist_demandas_andamento.total_finalizada * 100.00)/checklist_demandas_andamento.total_demandas),0.00) as decimal(8,2)) as percentual_demandas')
             )
             ->distinct()
             ->get();

@@ -104,7 +104,7 @@
                         "render": DATATABLES_PROGRESSO_AZUL
                     },
                     {
-                        "data": "agendamento_id",
+                        "data": "percentual_demandas",
                         "render": DATATABLES_PROGRESSO_AZUL
                     },
                     {

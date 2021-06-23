@@ -21,6 +21,7 @@ class ChecklistResource extends JsonResource
             'agendamento' => array('inicio' => $this->agendamento_inicio, 'final' => $this->agendamento_final),
             'unidade' => $this->unidade_tipoPv . ' ' . $this->unidade_nome,
             'preenchimento' => $this->percentual_preenchimento_sql ?? $this->percentual_preenchimento,
+            'percentual_demandas' => (float) $this->percentual_demandas ?? 0.00,
             //'respostas' => PadraoResource::collection($this->respostas),
         ];
     }
