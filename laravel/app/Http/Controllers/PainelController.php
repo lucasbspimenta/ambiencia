@@ -35,7 +35,6 @@ class PainelController extends Controller
             }
         }
         $hierarquia = HieraquiaHelper::Agrupador($dados_nivel, $niveis, $nivel_encontrado);
-        //dd($hierarquia);
         return view('index', compact('hierarquia'));
     }
 }
