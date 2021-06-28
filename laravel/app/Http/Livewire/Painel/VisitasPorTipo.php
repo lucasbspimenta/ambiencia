@@ -55,36 +55,75 @@ class VisitasPorTipo extends Component
         $conta_unicos_equipe = $this->visitas->unique('equipe_id')->count();
         $conta_unicos_coordenador = $this->visitas->unique('coordenador')->count();
 
-        $this->visitas = $this->visitas->groupBy('coordenador_nome');
-        $this->visitas->each(function ($item, $key) {
-            $this->contador_visitas_nivel['1|' . $key] = $item->groupBy('tipo_id')->map(function ($row) {
-                return $row->sum('total_tipo');
-            });
-            $this->visitas[$key] = $item->groupBy('equipe_nome');
-            $this->visitas[$key]->each(function ($item2, $key2) use ($key) {
-                $this->contador_visitas_nivel['2|' . $key2] = $item2->groupBy('tipo_id')->map(function ($row) {
+        if ($conta_unicos_coordenador > 1) {
+            $this->visitas = $this->visitas->groupBy('coordenador_nome');
+            $this->visitas->each(function ($item, $key) {
+                $this->contador_visitas_nivel['1|' . $key] = $item->groupBy('tipo_id')->map(function ($row) {
                     return $row->sum('total_tipo');
                 });
-                //$this->contador_visitas_nivel['2|'.$key2] = $item2->sum('total_visitado');
-                $this->visitas[$key][$key2] = $item2->groupBy('supervisor_nome');
-                $this->visitas[$key][$key2]->each(function ($item3, $key3) use ($key, $key2) {
-                    $this->contador_visitas_nivel['3|' . $key3] = $item3->groupBy('tipo_id')->map(function ($row) {
+                $this->visitas[$key] = $item->groupBy('equipe_nome');
+                $this->visitas[$key]->each(function ($item2, $key2) use ($key) {
+                    $this->contador_visitas_nivel['2|' . $key2] = $item2->groupBy('tipo_id')->map(function ($row) {
                         return $row->sum('total_tipo');
                     });
-                    //$this->contador_unidades_nivel['3|'.$key3] = $item3->sum('total_unidades');
-                    //$this->contador_visitas_nivel['3|'.$key3] = $item3->sum('total_visitado');
-
-                    $this->visitas[$key][$key2][$key3] = $item3->groupBy('responsavel_nome');
-                    $this->visitas[$key][$key2][$key3]->each(function ($item4, $key4) {
+                    $this->visitas[$key][$key2] = $item2->groupBy('supervisor_nome');
+                    $this->visitas[$key][$key2]->each(function ($item3, $key3) use ($key, $key2) {
+                        $this->contador_visitas_nivel['3|' . $key3] = $item3->groupBy('tipo_id')->map(function ($row) {
+                            return $row->sum('total_tipo');
+                        });
+                        $this->visitas[$key][$key2][$key3] = $item3->groupBy('responsavel_nome');
+                        $this->visitas[$key][$key2][$key3]->each(function ($item4, $key4) {
+                            $this->contador_visitas_nivel['4|' . $key4] = $item4->groupBy('tipo_id')->map(function ($row) {
+                                return $row->sum('total_tipo');
+                            });
+                        });
+                    });
+                });
+            });
+        } else {
+            if ($conta_unicos_equipe > 1) {
+                $this->visitas = $this->visitas->groupBy('equipe_nome');
+                $this->visitas->each(function ($item2, $key2) use ($key) {
+                    $this->contador_visitas_nivel['2|' . $key2] = $item2->groupBy('tipo_id')->map(function ($row) {
+                        return $row->sum('total_tipo');
+                    });
+                    $this->visitas[$key2] = $item2->groupBy('supervisor_nome');
+                    $this->visitas[$key2]->each(function ($item3, $key3) use ($key, $key2) {
+                        $this->contador_visitas_nivel['3|' . $key3] = $item3->groupBy('tipo_id')->map(function ($row) {
+                            return $row->sum('total_tipo');
+                        });
+                        $this->visitas[$key2][$key3] = $item3->groupBy('responsavel_nome');
+                        $this->visitas[$key2][$key3]->each(function ($item4, $key4) {
+                            $this->contador_visitas_nivel['4|' . $key4] = $item4->groupBy('tipo_id')->map(function ($row) {
+                                return $row->sum('total_tipo');
+                            });
+                        });
+                    });
+                });
+            } else {
+                if ($conta_unicos_supervisor > 1) {
+                    $this->visitas = $this->visitas->groupBy('supervisor_nome');
+                    $this->visitas->each(function ($item3, $key3) use ($key, $key2) {
+                        $this->contador_visitas_nivel['3|' . $key3] = $item3->groupBy('tipo_id')->map(function ($row) {
+                            return $row->sum('total_tipo');
+                        });
+                        $this->visitas[$key3] = $item3->groupBy('responsavel_nome');
+                        $this->visitas[$key3]->each(function ($item4, $key4) {
+                            $this->contador_visitas_nivel['4|' . $key4] = $item4->groupBy('tipo_id')->map(function ($row) {
+                                return $row->sum('total_tipo');
+                            });
+                        });
+                    });
+                } else {
+                    $this->visitas = $this->visitas->groupBy('responsavel_nome');
+                    $this->visitas->each(function ($item4, $key4) {
                         $this->contador_visitas_nivel['4|' . $key4] = $item4->groupBy('tipo_id')->map(function ($row) {
                             return $row->sum('total_tipo');
                         });
                     });
-
-                });
-            });
-        });
-
+                }
+            }
+        }
         //dd($this->contador_visitas_nivel);
 
         //dd($this->visitas);

@@ -5,9 +5,11 @@ use App\Http\Controllers\AgendamentoTipoController;
 use App\Http\Controllers\API\AgendamentoAPIController;
 use App\Http\Controllers\API\AgendamentoTipoAPIController;
 use App\Http\Controllers\API\ChecklistAPIController;
+use App\Http\Controllers\API\DemandaAPIController;
 use App\Http\Controllers\API\GuiaAPIController;
 use App\Http\Controllers\ChecklistController;
 use App\Http\Controllers\ChecklistItemController;
+use App\Http\Controllers\DemandaController;
 use App\Http\Controllers\GuiaController;
 use App\Http\Controllers\ImagemController;
 use App\Http\Controllers\IntegracaoController;
@@ -34,6 +36,7 @@ Route::middleware(['web', 'auth.caixa'])->group(function () {
     Route::resource('/agenda', AgendamentoController::class)->names(['index' => 'agenda']);
     Route::resource('/guias', GuiaController::class);
     Route::resource('/checklist', ChecklistController::class);
+    Route::resource('/demandas', DemandaController::class);
     Route::resource('/imagem', ImagemController::class);
 
     Route::prefix('api')->name('api.')->middleware(['web', 'auth.caixa'])->group(function () {
@@ -48,8 +51,9 @@ Route::middleware(['web', 'auth.caixa'])->group(function () {
 
         Route::apiResource('agendamentos', AgendamentoAPIController::class);
         Route::get('agendamentos/tipo/{tipo}', [AgendamentoAPIController::class, 'indexPorTipo'])->name('agendamentostipo');
-
         Route::post('/agendamento/atualizar', [AgendamentoController::class, 'update'])->name('agendamento_update');
+
+        Route::get('demandas/{finalizados?}', [DemandaAPIController::class, 'index'])->name('demandasapi');
     });
 
     Route::prefix('administracao')->name('adm.')->middleware(['admin'])->group(function () {

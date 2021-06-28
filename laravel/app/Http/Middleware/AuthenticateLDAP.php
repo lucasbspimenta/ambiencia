@@ -38,14 +38,15 @@ class AuthenticateLDAP
                 break;
         }
 
-        if (!is_null($usuario->simulando) && User::where('matricula', '=', $usuario->simulando)->exists()) {
-            $usuario_simulador = $usuario;
-            $usuario = User::where('matricula', '=', $usuario->simulando)->first();
-            $usuario->is_simulado = true;
-            $usuario->usuario_simulador = $usuario_simulador->matricula;
-        }
-
         if ($usuario) {
+
+            if (!is_null($usuario->simulando) && User::where('matricula', '=', $usuario->simulando)->exists()) {
+                $usuario_simulador = $usuario;
+                $usuario = User::where('matricula', '=', $usuario->simulando)->first();
+                $usuario->is_simulado = true;
+                $usuario->usuario_simulador = $usuario_simulador->matricula;
+            }
+
             Auth::login($usuario);
             return $next($request);
         }

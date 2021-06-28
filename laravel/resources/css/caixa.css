@@ -1,10 +1,9 @@
-
 @font-face {
     font-family: Futura-lt-book;
     src: url(../fonts/futura_lt_book.eot);
     src: url(../fonts/futura_lt_book.eot?#iefix) format("embedded-opentype"),
-    url(../fonts/futura_lt_book.woff) format("woff"),
-    url(../fonts/futura_lt_book.ttf) format("truetype");
+        url(../fonts/futura_lt_book.woff) format("woff"),
+        url(../fonts/futura_lt_book.ttf) format("truetype");
     font-weight: 500;
     font-style: normal;
 }
@@ -12,8 +11,8 @@
     font-family: Futura-lt-bold;
     src: url(../fonts/FuturaLT-Bold.eot);
     src: url(../fonts/FuturaLT-Bold.eot?#iefix) format("embedded-opentype"),
-    url(../fonts/FuturaLT-Bold.woff) format("woff"),
-    url(../fonts/FuturaLT-Bold.ttf) format("truetype");
+        url(../fonts/FuturaLT-Bold.woff) format("woff"),
+        url(../fonts/FuturaLT-Bold.ttf) format("truetype");
     font-weight: 700;
     font-style: normal;
 }
@@ -21,22 +20,21 @@
     font-family: helveticaregularregular;
     src: url(../fonts/helveticaregular-webfont.eot);
     src: url(../fonts/helveticaregular-webfont.eot?#iefix)
-    format("embedded-opentype"),
-    url(../fonts/helveticaregular-webfont.woff) format("woff"),
-    url(../fonts/helveticaregular-webfont.ttf) format("truetype"),
-    url(../fonts/helveticaregular-webfont.svg#helveticaregularregular)
-    format("svg");
+            format("embedded-opentype"),
+        url(../fonts/helveticaregular-webfont.woff) format("woff"),
+        url(../fonts/helveticaregular-webfont.ttf) format("truetype"),
+        url(../fonts/helveticaregular-webfont.svg#helveticaregularregular)
+            format("svg");
     font-weight: 400;
     font-style: normal;
 }
 @font-face {
     font-family: Myriad Pro;
     src: url(../fonts/MyriadPro-Regular.eot);
-    src: url(../fonts/MyriadPro-Regular.eot?#iefix)
-    format("embedded-opentype"),
-    url(../fonts/MyriadPro-Regular.woff) format("woff"),
-    url(../fonts/MyriadPro-Regular.ttf) format("truetype"),
-    url(../fonts/MyriadPro-Regular.svg#MyriadPro-Regular) format("svg");
+    src: url(../fonts/MyriadPro-Regular.eot?#iefix) format("embedded-opentype"),
+        url(../fonts/MyriadPro-Regular.woff) format("woff"),
+        url(../fonts/MyriadPro-Regular.ttf) format("truetype"),
+        url(../fonts/MyriadPro-Regular.svg#MyriadPro-Regular) format("svg");
     font-weight: 400;
     font-style: normal;
 }
@@ -53,7 +51,8 @@
 }
 
 .footer-caixa {
-    background: rgba(0, 0, 0, 0) linear-gradient(to right, #005ca9 1%, #54bbab 100%) repeat scroll 0 0 !important;
+    background: rgba(0, 0, 0, 0)
+        linear-gradient(to right, #005ca9 1%, #54bbab 100%) repeat scroll 0 0 !important;
     color: #fff;
     border-top: 3px solid #f39a00 !important;
     border-width: 1px 0 0;
@@ -65,11 +64,11 @@
 }
 
 .text-caixaAzul {
-    color:rgba(0, 92, 169, 1);
+    color: rgba(0, 92, 169, 1);
 }
 
 .text-futurabold {
-    font-family:Futura-lt-bold;
+    font-family: Futura-lt-bold;
 }
 
 .text-futura {
@@ -77,20 +76,18 @@
 }
 
 .tabs-filter > .nav-item {
-
 }
-
 
 .tabs-filter > .nav-item > .nav-link {
     font-size: inherit;
     color: #212529;
     padding: 0.2rem 0.2rem;
-    border: 1px solid #EAEAEA;
+    border: 1px solid #eaeaea;
 }
 
 .tabs-filter > .nav-item > .nav-link.active {
-    color: #005DA8;
-    border: 1px solid #005DA8;
+    color: #005da8;
+    border: 1px solid #005da8;
 }
 
 .h-teladisponivel-fullcalendar {
@@ -104,7 +101,8 @@
     margin-top: 30px;
 }
 
-.btn.btn-xs, .btn-group-xs > .btn {
+.btn.btn-xs,
+.btn-group-xs > .btn {
     padding: 0.3rem 0.3rem;
     font-size: 0.55rem;
     padding-left: 0.7rem !important;
@@ -124,11 +122,11 @@
     background-color: white;
     padding: 8px 20px;
     border-radius: 8px;
-    font-size: .8rem;
+    font-size: 0.8rem;
     cursor: pointer;
 }
 
-.upload-btn-wrapper input[type=file] {
+.upload-btn-wrapper input[type="file"] {
     position: absolute;
     left: 0;
     top: 0;
@@ -141,7 +139,7 @@
 .accordion_one .panel-group {
     margin-bottom: 0;
     border: 1px solid #f1f1f1;
-    margin-left: 1px
+    margin-left: 1px;
 }
 
 .accordion_one .panel {
@@ -149,101 +147,102 @@
     box-shadow: none;
     border-bottom: 0px solid transparent;
     border-radius: 0;
-    margin: 0
+    margin: 0;
 }
 
 .accordion_one .panel-default {
-    border: 0
+    border: 0;
 }
 
-.accordion_one .panel-default>.panel-heading {
-    border-radius: 0px
+.accordion_one .panel-default > .panel-heading {
+    border-radius: 0px;
 }
 
 .panel-title {
     margin-top: 0;
     margin-bottom: 0;
     font-size: 16px;
-    color: inherit
+    color: inherit;
 }
 
 h4 {
     font-size: 18px;
-    line-height: 24px
+    line-height: 24px;
 }
 
 .accordion_one .panel .panel-heading a.collapsed {
     color: #999999;
     display: block;
     padding: 5px 30px;
-    border-top: 0px
+    border-top: 0px;
 }
 
-.accordion_one .panel .panel-heading a, .accordion_one .panel .panel-heading p {
+.accordion_one .panel .panel-heading a,
+.accordion_one .panel .panel-heading p {
     display: block;
     padding: 5px 30px;
     background: #fff;
     color: #313131;
-    border-bottom: 1px solid #f1f1f1
+    border-bottom: 1px solid #f1f1f1;
 }
 
 .accordion-wrap .panel .panel-heading a {
-    font-size: 14px
+    font-size: 14px;
 }
 
-.accordion_one .panel-group .panel-heading+.panel-collapse>.panel-body {
+.accordion_one .panel-group .panel-heading + .panel-collapse > .panel-body {
     border-top: 0;
     padding-top: 0;
     padding: 25px 30px 30px 35px;
     background: #fff;
-    color: #999999
+    color: #999999;
 }
 
 .img-accordion {
     width: 81px;
     float: left;
     margin-right: 15px;
-    display: block
+    display: block;
 }
 
 .accordion_one .panel .panel-heading a:after {
-    content: "\f059"
+    content: "\f059";
 }
 
 .accordion_one .panel .panel-heading.afirmativa p:after {
-    content: "\f06a"
+    content: "\f06a";
 }
 
 .accordion_one .panel .panel-heading.afirmativa p:after,
 .accordion_one .panel .panel-heading a:after,
 .accordion_one .panel .panel-heading a.collapsed:after {
-    font-family: 'Font Awesome 5 Free';
+    font-family: "Font Awesome 5 Free";
     font-size: 15px;
     width: 36px;
     height: 48px;
     line-height: 48px;
     text-align: center;
-    background: #F1F1F1;
+    background: #f1f1f1;
     float: left;
     margin-left: -31px;
     margin-top: -12px;
-    margin-right: 15px
+    margin-right: 15px;
 }
 
 .accordion_one .card-header:after {
-    font-family: 'FontAwesome';
+    font-family: "FontAwesome";
     content: "\f068";
     float: right;
 }
 
-.form-check-input:not(:checked), .form-check-input:checked {
+.form-check-input:not(:checked),
+.form-check-input:checked {
     position: absolute;
     pointer-events: none;
     opacity: 0;
 }
 
-.btn-group-checklist-disabled
-{
+.btn-group-checklist-disabled {
     background-color: #7f7373 !important;
 }
 
@@ -261,7 +260,7 @@ h4 {
     position: relative;
     display: block;
     width: 100%;
-    height: .25rem;
+    height: 0.25rem;
     margin-bottom: 1rem;
     overflow: hidden;
     background-color: #eee;
@@ -270,69 +269,84 @@ h4 {
 }
 
 .md-progress .progress-bar {
-    height: .25rem;
+    height: 0.25rem;
     background-color: #0d47a1;
     border-radius: 0;
     -webkit-box-shadow: none;
     box-shadow: none;
 }
 
-.fc-toolbar-chunk > .btn, .fc-toolbar-chunk > .btn-group > .btn
-{
+.fc-toolbar-chunk > .btn,
+.fc-toolbar-chunk > .btn-group > .btn {
     padding: 0.5rem 1.6rem;
     font-size: 0.64rem;
     padding-left: 0.7rem !important;
     padding-right: 0.7rem !important;
 }
 
-.fc-toolbar-title
-{
-    font-family:Futura-lt-bold;
-    color:rgba(0, 92, 169, 1);
+.fc-toolbar-title {
+    font-family: Futura-lt-bold;
+    color: rgba(0, 92, 169, 1);
     text-transform: capitalize;
 }
 
 .scrollbar-indigo::-webkit-scrollbar-track {
     -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.1);
-    background-color: #F5F5F5;
-    border-radius: 10px; }
+    background-color: #f5f5f5;
+    border-radius: 10px;
+}
 
 .scrollbar-indigo::-webkit-scrollbar {
     width: 12px;
-    background-color: #F5F5F5; }
+    background-color: #f5f5f5;
+}
 
 .scrollbar-indigo::-webkit-scrollbar-thumb {
     border-radius: 10px;
     -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.1);
-    background-color: #ccc; }
+    background-color: #ccc;
+}
 
 .scrollbar-indigo {
-    scrollbar-color: #ccc #F5F5F5;
+    scrollbar-color: #ccc #f5f5f5;
 }
 
 .bordered-indigo::-webkit-scrollbar-track {
     -webkit-box-shadow: none;
-    border: 1px solid #ccc; }
+    border: 1px solid #ccc;
+}
 
 .thin::-webkit-scrollbar {
-    width: 4px; }
+    width: 4px;
+}
 
-
-.treeview-animated .treeview-animated-list .treeview-animated-items .closed:hover {
-    background-color: #EAEAEA;
+.treeview-animated
+    .treeview-animated-list
+    .treeview-animated-items
+    .closed:hover {
+    background-color: #eaeaea;
 }
 
 .treeview-animated .treeview-animated-list .treeview-animated-items .open {
-    background-color: #EAEAEA;
+    background-color: #eaeaea;
     transition: all 0.1s linear;
 }
 
-.treeview-animated .treeview-animated-list .treeview-animated-items .open span, 
-.treeview-animated .treeview-animated-list .treeview-animated-items .open:hover span {
+.treeview-animated .treeview-animated-list .treeview-animated-items .open span,
+.treeview-animated
+    .treeview-animated-list
+    .treeview-animated-items
+    .open:hover
+    span {
     color: rgba(0, 0, 0, 0.5) !important;
 }
 
 .treeview-animated .treeview-animated-list .treeview-animated-element:hover {
-    background-color: #EAEAEA;
+    background-color: #eaeaea;
     cursor: inherit;
+}
+
+table td {
+    font-size: 0.82rem;
+    font-weight: 300;
 }

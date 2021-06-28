@@ -9,10 +9,12 @@ use Livewire\Component;
 
 class InconformidadePorItem extends Component
 {
-    public $dados = [];
-    public $cores = [];
-    public $data_inicio;
-    public $data_final;
+    public $dados_values = [];
+    public $dados_keys = [];
+    public $cores_values = [];
+    public $cores_keys = [];
+    protected $data_inicio;
+    protected $data_final;
     public $hierarquia;
 
     protected $listeners = ['atualizarData' => 'atualizarData'];
@@ -26,7 +28,9 @@ class InconformidadePorItem extends Component
     {
         $this->data_inicio = DateHelper::getInicioTrimestre(Carbon::parse('now'));
         $this->data_final = DateHelper::getFinalTrimestre(Carbon::parse('now'));
-
+        $this->dados_keys = [];
+        $this->dados_values = [];
+        $this->cores_values = [];
         $this->carregaDados();
     }
 
@@ -38,7 +42,7 @@ class InconformidadePorItem extends Component
             return [$item->id => $item->nome];
         });
 
-        $this->cores = $dados->mapWithKeys(function ($item) {
+        $cores = $dados->mapWithKeys(function ($item) {
             return [$item->id => $item->cor];
         });
         //dd($itens);
@@ -47,15 +51,20 @@ class InconformidadePorItem extends Component
             return [$itens[$item->id] => (float) $item->percentual_inconforme];
         });
 
-        $this->dados = $dados_grafico;
+        $this->dados_keys = json_encode($dados_grafico->keys());
+        $this->dados_values = json_encode($dados_grafico->values());
+        $this->cores_values = json_encode($cores->values());
 
-        $this->dispatchBrowserEvent('atualizarGraficoItem', ['label' => json_encode($this->dados->keys()), 'cores' => json_encode($this->cores->values()), 'dados' => json_encode($this->dados->values())]);
+        $this->dispatchBrowserEvent('atualizarGraficoItem', ['label' => $this->dados_keys, 'cores' => $this->cores_values, 'dados' => $this->dados_values]);
     }
 
     public function atualizarData($data_inicio, $data_final)
     {
         $this->data_inicio = Carbon::createFromFormat('Y-m-d', $data_inicio);
         $this->data_final = Carbon::createFromFormat('Y-m-d', $data_final);
+        $this->dados_keys = [];
+        $this->dados_values = [];
+        $this->cores_values = [];
         $this->carregaDados();
     }
 }

@@ -1,5 +1,5 @@
 <div class="card w-100">
-    <div class="card-body pb-1">
+    <div class="pb-1 card-body">
         <div class="d-flex justify-content-between">
             <h5 class="font-weight-bold text-caixaAzul text-futurabold">Inconformidade por macroitem</br>
                 <small class="text-black-50">Percentual de itens sinalizados como inconformes em relação ao total
@@ -15,11 +15,11 @@
         var grafico_inconformes_por_macroitem;
 
         const data_inconformes_por_macroitem = {
-            labels: {!! json_encode($dados->keys()) !!}, //["Ag. Divinópolis", "Ag. Itaúna", "Ag. Extrema", "Ag. Garapari", "Ag. Cabo Frio"],
+            labels: {!! $dados_keys !!},
             datasets: [{
                 label: "%",
-                backgroundColor: {!! json_encode($cores->values()) !!},
-                data: {!! json_encode($dados->values()) !!}
+                backgroundColor: {!! $cores_values !!},
+                data: {!! $dados_values !!}
             }]
         };
         const config_inconformes_por_macroitem = {

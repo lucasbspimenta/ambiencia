@@ -1,5 +1,5 @@
 <div class="card w-100">
-    <div class="card-body pb-1">
+    <div class="pb-1 card-body">
         <div class="d-flex justify-content-between">
             <h5 class="font-weight-bold text-caixaAzul text-futurabold">Inconformidade por Item</br>
                 <small class="text-black-50">% de itens sinalizados como inconformes em relação ao total
@@ -17,11 +17,11 @@
 
         document.addEventListener('DOMContentLoaded', function() {
             const data_inconformes_por_item = {
-                labels: {!! json_encode($dados->keys()) !!},
+                labels: {!! $dados_keys !!},
                 datasets: [{
                     label: "%",
-                    backgroundColor: {!! json_encode($cores->values()) !!},
-                    data: {!! json_encode($dados->values()) !!}
+                    backgroundColor: {!! $cores_values !!},
+                    data: {!! $dados_values !!}
                 }]
             };
             const config_inconformes_por_item = {

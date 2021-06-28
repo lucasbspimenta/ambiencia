@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Demanda;
+use App\Models\DemandaSistema;
 use Illuminate\Http\Request;
 
 class DemandaController extends Controller
@@ -14,7 +15,9 @@ class DemandaController extends Controller
      */
     public function index()
     {
-        //
+        $demandas = Demanda::all();
+        $demandas_sistemas = DemandaSistema::all();
+        return view('pages.demandas', compact('demandas', 'demandas_sistemas'));
     }
 
     /**

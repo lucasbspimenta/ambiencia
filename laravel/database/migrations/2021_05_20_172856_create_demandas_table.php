@@ -16,7 +16,7 @@ class CreateDemandasTable extends Migration
         Schema::create('demandas', function (Blueprint $table) {
             $table->id();
 
-            $table->char('migracao',1)->default('A'); // a = Aguardando finalizacao , p = Pendente, C = Concluída
+            $table->char('migracao', 1)->default('A'); // a = Aguardando finalizacao , p = Pendente, C = Concluída
 
             $table->unsignedBigInteger('sistema_id');
             $table->foreign('sistema_id')->references('id')->on('demanda_sistemas');
@@ -26,6 +26,9 @@ class CreateDemandasTable extends Migration
             $table->integer('demanda_id')->nullable();
             $table->string('demanda_url')->nullable();
             $table->string('demanda_situacao')->nullable();
+            $table->date('demanda_prazo')->nullable();
+            $table->date('demanda_prazo_inicial')->nullable();
+            $table->date('demanda_conclusao')->nullable();
 
             $table->longText('descricao')->nullable();
 

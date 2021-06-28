@@ -5,9 +5,9 @@ namespace App\Http\Livewire\Demanda;
 use App\Models\ChecklistResposta;
 use App\Models\Demanda;
 use App\Models\DemandaSistema;
+use App\Models\Unidade;
 use App\Services\DemandaService;
 use Exception;
-use Illuminate\Database\Eloquent\Model;
 use Livewire\Component;
 
 class Cadastro extends Component
@@ -19,6 +19,7 @@ class Cadastro extends Component
     public $subcategorias = [];
     public $itens = [];
     public $demandaExistentes = [];
+    public $unidades = [];
 
     public $sistema;
     public $resposta;
@@ -32,15 +33,17 @@ class Cadastro extends Component
     public $checklist_resposta_id;
     public $demanda_antiga;
 
-    protected $listeners = ['limpar' => 'limpar', 'defineResposta' => 'defineResposta','defineDemanda' => 'defineDemanda'];
+    protected $listeners = ['limpar' => 'limpar', 'defineResposta' => 'defineResposta', 'defineDemanda' => 'defineDemanda'];
 
-    public function rules() {
+    public function rules()
+    {
 
-        return Demanda::VALIDATION_RULES + ['checklist_resposta_id' => ['required']];
+        return ($this->resposta && $this->resposta->id) ? Demanda::VALIDATION_RULES + ['checklist_resposta_id' => ['required']] : Demanda::VALIDATION_RULES;
     }
 
-    public function messages() {
-        return Demanda::VALIDATION_MESSAGES + ['checklist_resposta_id.required' => 'Demanda deve estar vinculada ao item'];
+    public function messages()
+    {
+        return ($this->resposta && $this->resposta->id) ? Demanda::VALIDATION_MESSAGES + ['checklist_resposta_id.required' => 'Demanda deve estar vinculada ao item'] : Demanda::VALIDATION_MESSAGES;
     }
 
     public function render()
@@ -52,13 +55,14 @@ class Cadastro extends Component
     {
         $this->sistema = new DemandaSistema();
         $this->sistemas = DemandaSistema::all() ?? [];
+        $this->unidades = Unidade::all() ?? [];
 
         $this->sistema_id = null;
         $this->categoriaSelecionado = null;
         $this->subcategoriaSelecionado = null;
         $this->sistema_item_id = null;
-        $this->unidade_id = NULL;
-        $this->demanda_antiga = NULL;
+        $this->unidade_id = null;
+        $this->demanda_antiga = null;
     }
 
     public function updatedSistemaSelecionado()
@@ -66,7 +70,8 @@ class Cadastro extends Component
         $this->sistema = DemandaSistema::find($this->sistema_id);
     }
 
-    public function defineResposta($id) {
+    public function defineResposta($id)
+    {
         $this->checklist_resposta_id = $id;
         $this->resposta = ChecklistResposta::find($id);
         $this->unidade_id = $this->resposta->checklist->agendamento->unidade->id;
@@ -82,11 +87,10 @@ class Cadastro extends Component
 
     public function salvar()
     {
-        if($this->demanda_antiga)
-        {
+        if ($this->demanda_antiga) {
             $this->resposta->demandas()->attach($this->demanda_antiga);
             $this->emit('atualizar')->to('demanda.vinculadas');
-            $this->dispatchBrowserEvent('triggerSucesso',$this->resposta->item->nome);
+            $this->dispatchBrowserEvent('triggerSucesso', $this->resposta->item->nome);
             $this->limpar();
             $this->dispatchBrowserEvent('atualizarResposta', ['resposta_id' => $this->checklist_resposta_id]);
             return true;
@@ -97,20 +101,25 @@ class Cadastro extends Component
 
         try {
 
-            if($this->demanda_id && $demandaService->existsById($this->demanda_id))
+            if ($this->demanda_id && $demandaService->existsById($this->demanda_id)) {
                 $demanda = $demandaService->atualizar($data, $this->demanda_id);
-            else
+            } else {
                 $demanda = $demandaService->criar($data);
+            }
 
-            $this->resposta->demandas()->attach($demanda->id);
+            if ($this->resposta && $this->resposta->id) {
+                $this->resposta->demandas()->attach($demanda->id);
+                $this->emit('atualizar')->to('demanda.vinculadas');
+                $this->dispatchBrowserEvent('triggerSucesso', $this->resposta->item->nome);
+                $this->limpar();
+                $this->dispatchBrowserEvent('atualizarResposta', ['resposta_id' => $this->checklist_resposta_id]);
+            } else {
+                $this->dispatchBrowserEvent('triggerSucesso', '');
+                $this->limpar();
+            }
 
-            $this->emit('atualizar')->to('demanda.vinculadas');
-            $this->dispatchBrowserEvent('triggerSucesso',$this->resposta->item->nome);
-            $this->limpar();
-            $this->dispatchBrowserEvent('atualizarResposta', ['resposta_id' => $this->checklist_resposta_id]);
-
-        }catch (Exception $e){
-            $this->dispatchBrowserEvent('triggerError',$e->getMessage());
+        } catch (Exception $e) {
+            $this->dispatchBrowserEvent('triggerError', $e->getMessage());
         }
     }
 
@@ -130,5 +139,6 @@ class Cadastro extends Component
         $this->subcategoriaSelecionado = null;
         $this->sistema_item_id = null;
         $this->checklist_resposta_id = null;
+        $this->unidade_id = null;
     }
 }
