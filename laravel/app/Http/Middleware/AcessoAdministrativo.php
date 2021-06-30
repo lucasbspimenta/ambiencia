@@ -17,7 +17,7 @@ class AcessoAdministrativo
      */
     public function handle(Request $request, Closure $next)
     {
-        if(!Auth::user()->perfil->is_admin) {
+        if (!Auth::user()->is_admin) {
             return redirect()->route('index');
         }
         return $next($request);
