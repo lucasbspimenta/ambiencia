@@ -16,7 +16,7 @@ class CreateDemandaSistemasTable extends Migration
         Schema::create('demanda_sistemas', function (Blueprint $table) {
             $table->id();
             $table->string('nome');
-            $table->string('conexao')->unique(); // NOME REGISTRADO NO config/database.php
+            $table->string('conexao'); // NOME REGISTRADO NO config/database.php
             $table->string('categorias_table')->nullable()->default(null);
             $table->string('categorias_campo_id')->nullable()->default(null);
             $table->string('categorias_campo_texto')->nullable()->default(null);

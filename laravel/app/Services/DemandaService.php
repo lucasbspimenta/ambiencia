@@ -53,7 +53,7 @@ class DemandaService
 
         $sql = "SELECT
                     *
-                FROM [laravel].[dbo].[demandas_base]
+                FROM [demandas_base]
                 WHERE 1=1
         ";
 
