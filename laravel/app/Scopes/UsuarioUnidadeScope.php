@@ -13,8 +13,7 @@ class UsuarioUnidadeScope implements Scope
 {
     public function apply(Builder $builder, Model $model)
     {
-        Auth::check();
-        if (Auth::hasUser()) {
+        if (Auth::check() && Auth::hasUser()) {
             switch ($model) {
 
                 case $model instanceof Agendamento:

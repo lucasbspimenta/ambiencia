@@ -7,6 +7,7 @@
     "require": {
         "php": "^7.3|^8.0",
         "ext-ldap": "*",
+        "barryvdh/laravel-dompdf": "^0.9.0",
         "bfinlay/laravel-excel-seeder": "^2.3",
         "fakerphp/faker": "^1.14",
         "fideloper/proxy": "^4.4",

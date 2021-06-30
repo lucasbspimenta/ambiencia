@@ -12,6 +12,9 @@
                 </h4>
             </div>
             <div class="col d-flex justify-content-end">
+                <a id="botao_adicionar_topo" href="{{ route('checklist-imprimir') }}" class="btn btn-sm btn-default">
+                    Modelo para impressão
+                </a>
                 @livewire('checklist.botao-novo', ['agendamentos_sem_checklist' => $agendamentos_sem_checklist->count()])
             </div>
         </div>
@@ -74,12 +77,12 @@
                 let saida = '';
                 if (row.concluido == 1) {
                     saida = `<div class="d-flex justify-content-around">
-                        <a href="{{ route('checklist.index') }}/${row.id}" role="button" class="btn btn-xs btn-primary m-0"><i class="fa fa-eye" aria-hidden="true"></i></a>
+                        <a href="{{ route('checklist.index') }}/${row.id}" role="button" class="m-0 btn btn-xs btn-primary"><i class="fa fa-eye" aria-hidden="true"></i></a>
                     </div>`;
                 } else {
                     saida = `<div class="d-flex justify-content-around">
-                        <button onclick="redirecionaChecklist(${row.id})" type="button" class="btn btn-xs btn-primary m-0"><i class="fa fa-edit" aria-hidden="true"></i></button>
-                        <button onclick="excluirChecklist(${row.id})" type="button" class="btn btn-xs btn-danger m-0"><i class="fa fa-trash" aria-hidden="true"></i></button>
+                        <button onclick="redirecionaChecklist(${row.id})" type="button" class="m-0 btn btn-xs btn-primary"><i class="fa fa-edit" aria-hidden="true"></i></button>
+                        <button onclick="excluirChecklist(${row.id})" type="button" class="m-0 btn btn-xs btn-danger"><i class="fa fa-trash" aria-hidden="true"></i></button>
                     </div>`;
                 }
 
@@ -88,7 +91,10 @@
 
             DATATABLE = $(NOME_DATATABLE).DataTable({
                 dom: 'ti',
+                scrollY: 'calc(100vh - (350px))',
                 paging: false,
+                responsive: true,
+                scrollCollapse: true,
                 "ajax": "{{ route('api.checklists.index') }}",
                 "columns": [{
                         "data": "id"
@@ -97,7 +103,8 @@
                         "data": "unidade"
                     },
                     {
-                        "data": "agendamento.inicio"
+                        "data": "agendamento.inicio",
+                        "render": DATATABLES_DATA_BR
                     },
                     {
                         "data": "preenchimento",

@@ -5,12 +5,14 @@ namespace App\Models;
 use App\Scopes\UsuarioUnidadeScope;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 
 class Agendamento extends Model
 {
     //protected $with = ['unidade'];
+    use SoftDeletes;
 
     public const VALIDATION_RULES = [
         'unidade_id' => ['required', 'integer', 'exists:unidades,id'],

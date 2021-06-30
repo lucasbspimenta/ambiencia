@@ -33,6 +33,7 @@ class CreateAgendamentosTable extends Migration
             //$table->unique(['inicio', 'final', 'unidade_id', 'agendamento_tipos_id']);
 
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

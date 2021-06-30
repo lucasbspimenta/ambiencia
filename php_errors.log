@@ -247,3 +247,4 @@ Stack trace:
 #2 C:\inetpub\wwwroot\ambiencia\laravel\vendor\laravel\framework\src\Illuminate\Database\Connectors\Connector.php(46): Illuminate\Database\Connectors\Connector->createPdoConnection('sqlsrv:Server=1...', 's553101', 'FoA9C5Sqrc', Array)
 #3 C:\inetpub\wwwroot\ambiencia\laravel\vendor\laravel\framework\src\Illuminate\Database\Connectors\SqlServerConnector.php(32): Illuminate\D in C:\inetpub\wwwroot\ambiencia\laravel\vendor\doctrine\dbal\lib\Doctrine\DBAL\Driver\PDOConnection.php on line 39
 [25-Jun-2021 17:18:47 America/Sao_Paulo] PHP Fatal error:  Maximum execution time of 30 seconds exceeded in C:\inetpub\wwwroot\ambiencia\laravel\vendor\doctrine\dbal\lib\Doctrine\DBAL\Driver\PDOConnection.php on line 42
+[29-Jun-2021 15:31:10 America/Sao_Paulo] PHP Fatal error:  Trait 'App\Models\SoftDeletes' not found in C:\inetpub\wwwroot\ambiencia\laravel\app\Models\Agendamento.php on line 14

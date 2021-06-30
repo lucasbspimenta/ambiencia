@@ -3,20 +3,22 @@
 namespace App\Http\Livewire\Agendamento;
 
 use App\Models\Agendamento;
+use App\Models\Unidade;
 use App\Services\AgendamentoService;
 use Exception;
-use Illuminate\Support\Carbon;
 use Livewire\Component;
 
 class Cadastro extends Component
 {
-    public $agendamento_id='';
+    public $agendamento_id = '';
 
-    public $unidade_id='';
-    public $inicio='';
-    public $final='';
-    public $agendamento_tipos_id='';
-    public $descricao='';
+    public $unidade_id = '';
+    public $inicio = '';
+    public $final = '';
+    public $agendamento_tipos_id = '';
+    public $descricao = '';
+    public $agendamento_tem_checklist = false;
+    public $unidades = [];
 
     public $tiposagendamentos;
 
@@ -26,21 +28,28 @@ class Cadastro extends Component
 
     protected $casts = [
         'inicio' => 'date:d/m/Y',
-        'final' => 'date:d/m/Y'
+        'final' => 'date:d/m/Y',
     ];
 
-    public function rules() {
+    public function rules()
+    {
         return Agendamento::VALIDATION_RULES;
     }
 
-    public function messages() {
+    public function messages()
+    {
         return Agendamento::VALIDATION_MESSAGES;
     }
 
-    public function definirDatas($inicio, $final) {
+    public function definirDatas($inicio, $final)
+    {
         $this->limpar();
         $this->inicio = $inicio;
         $this->final = $final;
+    }
+    public function mount()
+    {
+        $this->unidades = Unidade::select('id', 'codigo', 'tipoPv', 'unidades.nome')->orderBy('unidades.nome', 'ASC')->get();
     }
 
     public function render()
@@ -58,7 +67,8 @@ class Cadastro extends Component
             'inicio',
             'final',
             'unidade_id',
-            'agendamento_tipos_id'
+            'agendamento_tipos_id',
+            'agendamento_tem_checklist',
         ]);
 
         //dd($this);
@@ -71,14 +81,15 @@ class Cadastro extends Component
 
         try {
 
-            if($this->agendamento_id && $this->agendamentoService->existsById($this->agendamento_id))
+            if ($this->agendamento_id && $this->agendamentoService->existsById($this->agendamento_id)) {
                 $this->agendamentoService->atualizar($data, $this->agendamento_id);
-            else
+            } else {
                 $this->agendamentoService->criar($data);
+            }
 
-            $this->dispatchBrowserEvent('triggerAgendaGravadaSucesso',$this->inicio);
-        }catch (Exception $e){
-            $this->dispatchBrowserEvent('triggerError',$e->getMessage());
+            $this->dispatchBrowserEvent('triggerAgendaGravadaSucesso', $this->inicio);
+        } catch (Exception $e) {
+            $this->dispatchBrowserEvent('triggerError', $e->getMessage());
         }
 
     }
@@ -89,12 +100,13 @@ class Cadastro extends Component
 
         $agendamento = $this->agendamentoService->findById($agendamento_id);
 
-        $this->agendamento_id  = $agendamento->id;
-        $this->descricao  = $agendamento->descricao;
-        $this->inicio  = $agendamento->inicio;
-        $this->final  = $agendamento->final;
-        $this->unidade_id  = $agendamento->unidade_id;
-        $this->agendamento_tipos_id  = $agendamento->agendamento_tipos_id;
+        $this->agendamento_id = $agendamento->id;
+        $this->descricao = $agendamento->descricao;
+        $this->inicio = $agendamento->inicio;
+        $this->final = $agendamento->final;
+        $this->unidade_id = $agendamento->unidade_id;
+        $this->agendamento_tipos_id = $agendamento->agendamento_tipos_id;
+        $this->agendamento_tem_checklist = $agendamento->checklist()->exists();
 
     }
 

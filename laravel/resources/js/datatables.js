@@ -49,6 +49,11 @@ window.DATATABLES_PROGRESSO_AZUL = (data, type, row, meta) => {
     return  saida;
 }
 
+window.DATATABLES_DATA_BR = (data, type, row, meta) => {
+    $dt = moment(data, "YYYY-MM-DD");
+    return  $dt.format('DD/MM/YYYY');
+}
+
 window.DATATABLES_IDIOMA = {
     "emptyTable": "Nenhum registro encontrado",
     "info": "Mostrando de _START_ até _END_ de _TOTAL_ registros",

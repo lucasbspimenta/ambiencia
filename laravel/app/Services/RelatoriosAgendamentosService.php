@@ -67,6 +67,7 @@ class RelatoriosAgendamentosService
             JOIN unidades_responsavel und_resp ON und_resp.unidade_id = und.id
             LEFT JOIN users supervisor ON supervisor.matricula = und_resp.supervisor
             LEFT JOIN users coordenador ON coordenador.matricula = und_resp.coordenador
+            WHERE age.[deleted_at] is null
             ) dados
             WHERE ([inicio] BETWEEN '" . $data_inicial->format('Y-m-d') . "' AND '" . $data_final->format('Y-m-d') . "' OR [final] BETWEEN '" . $data_inicial->format('Y-m-d') . "' AND '" . $data_final->format('Y-m-d') . "')
         ";

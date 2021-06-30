@@ -17,23 +17,22 @@ class Unidade extends Model
 
     public function demandas()
     {
-        return $this->hasMany(Demanda::class,'unidade_id','id');
+        return $this->hasMany(Demanda::class, 'unidade_id', 'id');
     }
 
     public function demandasEmAndamento()
     {
-        return $this->hasMany(Demanda::class,'unidade_id','id')->whereNull('demanda_situacao');
+        return $this->hasMany(Demanda::class, 'unidade_id', 'id')->whereNull('demanda_situacao');
     }
 
     public function responsavel()
     {
-        return $this->hasOne(UnidadeResponsavel::class,'unidade_id','id');
+        return $this->hasOne(UnidadeResponsavel::class, 'unidade_id', 'id');
     }
 
-    protected static function boot()
+    protected static function booted()
     {
-        parent::boot();
-
+        parent::booted();
         static::addGlobalScope(new UsuarioUnidadeScope);
     }
 }

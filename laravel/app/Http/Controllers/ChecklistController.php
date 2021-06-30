@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Checklist;
 use App\Services\AgendamentoService;
+use App\Services\ChecklistItemService;
 use App\Services\ChecklistService;
+//use Barryvdh\DomPDF\PDF;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -68,8 +70,9 @@ class ChecklistController extends Controller
     {
         app('debugbar')->disable();
 
-        if((boolean)$checklist->concluido || $checklist->agendamento->unidade->responsavel->matricula != Auth::user()->matricula)
-            return redirect()->route('checklist.show',['checklist' => $checklist->id]);
+        if ((boolean) $checklist->concluido || $checklist->agendamento->unidade->responsavel->matricula != Auth::user()->matricula) {
+            return redirect()->route('checklist.show', ['checklist' => $checklist->id]);
+        }
 
         return view('pages.checklist.preenchimento', compact('checklist'));
     }
@@ -86,6 +89,14 @@ class ChecklistController extends Controller
         //
     }
 
+    public function imprimir(Request $request)
+    {
+        $itens = ChecklistItemService::todosAtivos();
+        $pdf = \PDF::loadView('pages.checklist.imprimir', compact('itens'))->setPaper('a4', 'portrait');
+        return $pdf->download('checklist-imprimir.pdf');
+        return view('pages.checklist.imprimir', compact('itens'));
+    }
+
     /**
      * Remove the specified resource from storage.
      *
@@ -94,7 +105,6 @@ class ChecklistController extends Controller
      */
     public function destroy($id)
     {
-        //
+
     }
 }
-

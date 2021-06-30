@@ -6,61 +6,72 @@
         <div class="row">
             <div class="col col-md-auto d-flex align-items-center">
                 <h4 class="text-caixaAzul text-futurabold">
-                    <span class="mr-1" style="clip-path: polygon(100% 0, 0 100%, 100% 100%); background-color: #fd7e14; width: 18px; height: 18px; display: inline-block;"></span>
+                    <span class="mr-1"
+                        style="clip-path: polygon(100% 0, 0 100%, 100% 100%); background-color: #fd7e14; width: 18px; height: 18px; display: inline-block;"></span>
                     Checklist - {{ $checklist->agendamento->unidade->nome_completo }}
                 </h4>
             </div>
             <div class="col d-flex justify-content-end">
-                <a href="{{ route('checklist.index') }}" id="botao_voltar" class="btn btn-sm btn-secondary " >
+                <a href="{{ route('checklist.index') }}" id="botao_voltar" class="btn btn-sm btn-secondary ">
                     <i class="fas fa-chevron-left"></i> Voltar
                 </a>
             </div>
         </div>
-        <hr class="mt-2 mb-3"/>
+        <hr class="mt-2 mb-3" />
         <div class="row">
             <div class="col">
-                @foreach($checklist->macroitens as $key => $macroitem)
+                @foreach ($checklist->macroitens as $key => $macroitem)
                     <div class="card mb-3">
-                        <div class="card-header bg-transparent pl-3" style="border-left: 5px {{$macroitem->cor}} solid;" data-toggle="collapse" href="#macroitem-{{$macroitem->id}}" aria-expanded="true" aria-controls="macroitem-{{$macroitem->id}}" role="button" >
-                            <a class="w-100 h-100" >
+                        <div class="card-header bg-transparent pl-3" style="border-left: 5px {{ $macroitem->cor }} solid;"
+                            data-toggle="collapse" href="#macroitem-{{ $macroitem->id }}" aria-expanded="true"
+                            aria-controls="macroitem-{{ $macroitem->id }}" role="button">
+                            <a class="w-100 h-100">
                                 <span class="text-caixaAzul font-weight-bold" style="font-size:14px; font-weight: bold;">
-                                    {{$macroitem->nome}}
-                                    @if($macroitem->load('guia')->guia)
-                                        <a href="#" onclick="exibirGuia({{$macroitem->guia->id}})"><i class="fas fa-question-circle fa-xs ml-1 text-black-50"></i></a>
+                                    {{ $macroitem->nome }}
+                                    @if ($macroitem->load('guia')->guia)
+                                        <a href="#" onclick="exibirGuia({{ $macroitem->guia->id }})"><i
+                                                class="fas fa-question-circle fa-xs ml-1 text-black-50"></i></a>
                                     @endif
                                 </span>
 
-                                    @if($macroitem->foto == 'S')
-                                        <i class="fas fa-lg fa-camera ml-2 text-black-50"></i>
-                                    @else
-                                        <i class="fas fa-lg fa-camera ml-2 text-black-50"></i>
-                                    @endif
+                                @if ($macroitem->foto == 'S')
+                                    <i class="fas fa-lg fa-camera ml-2 text-black-50"></i>
+                                @else
+                                    <i class="fas fa-lg fa-camera ml-2 text-black-50"></i>
+                                @endif
 
                             </a>
                         </div>
-                        <div class="card-body collapse p-2 show" id="macroitem-{{$macroitem->id}}">
+                        <div class="card-body collapse p-2 show" id="macroitem-{{ $macroitem->id }}">
 
-                            @foreach($checklist->respostasMacroitem($macroitem->id)->with('item')->get() as $chave => $resposta)
-                                <div class="col-12 border-bottom" style="background-color: @if($chave % 2) #F7F7F7 @endif">
-                                    <div class="row" id="resposta-{{$resposta->id}}">
+                            @foreach ($checklist->respostasMacroitem($macroitem->id)->with('item')->get()
+        as $chave => $resposta)
+                                <div class="col-12 border-bottom" style="background-color: @if ($chave
+                                    % 2) #F7F7F7 @endif">
+                                    <div class="row" id="resposta-{{ $resposta->id }}">
                                         <div class="col" style="line-height: 43px;">
                                             <span class="text-caixaAzul">{{ $resposta->item->nome }}</span>
-                                            @if($resposta->item->load('guia')->guia)
-                                                <a href="#" onclick="exibirGuia({{$resposta->item->guia->id}})"><i class="fas fa-question-circle fa-xs ml-1 text-black-50"></i></a>
+                                            @if ($resposta->item->load('guia')->guia)
+                                                <a href="#" onclick="exibirGuia({{ $resposta->item->guia->id }})"><i
+                                                        class="fas fa-question-circle fa-xs ml-1 text-black-50"></i></a>
                                             @endif
-                                            @if($resposta->item->foto == 'S')
+                                            @if ($resposta->item->foto == 'S')
                                                 <i class="fas fa-lg fa-camera ml-2 text-black-50"></i>
                                             @endif
                                         </div>
                                         <div class="col-5">
-                                            @if($resposta->resposta == 0)
-                                                <label class="btn btn-light-blue btn-sm">N/A</label>
-                                            @endif
-                                            @if($resposta->resposta == 1)
+                                            @if (is_null($resposta->resposta))
+                                                <label class="btn btn-info btn-sm">Não respondido</label>
+                                            @else
+                                                @if ($resposta->resposta == 0)
+                                                    <label class="btn btn-light-blue btn-sm">N/A</label>
+                                                @endif
+                                                @if ($resposta->resposta == 1)
                                                     <label class="btn btn-green btn-sm">Conforme</label>
-                                            @endif
-                                            @if($resposta->resposta == -1)
+                                                @endif
+                                                @if ($resposta->resposta == -1)
                                                     <label class="btn btn-red btn-sm">Inconforme</label>
+                                                @endif
                                             @endif
                                         </div>
                                         <div style="width: 130px;">
@@ -76,19 +87,24 @@
                 @endforeach
             </div>
             <div class="col-4">
-                @if($checklist->fotosObrigatorias)
+                @if ($checklist->fotosObrigatorias)
                     <div class="card mb-3">
-                        <div class="card-header bg-transparent text-caixaAzul font-weight-bold" style="font-size:14px" data-toggle="collapse" href="#fotos" aria-expanded="true" aria-controls="fotos" role="button">
+                        <div class="card-header bg-transparent text-caixaAzul font-weight-bold" style="font-size:14px"
+                            data-toggle="collapse" href="#fotos" aria-expanded="true" aria-controls="fotos" role="button">
                             Fotos Obrigatórias
                         </div>
                         <div class="card-body collapse p-3 show" id="fotos">
                             <div class="d-flex justify-content-start flex-wrap">
-                                @foreach($checklist->fotosObrigatorias as $key => $resposta)
+                                @foreach ($checklist->fotosObrigatorias as $key => $resposta)
                                     <div class="col col-auto pl-0">
                                         <figure class="figure">
-                                            <div style="width: 100px;"><small class="text-truncate text-caixaAzul d-block">{{$resposta->item->nome}}</small></div>
+                                            <div style="width: 100px;"><small
+                                                    class="text-truncate text-caixaAzul d-block">{{ $resposta->item->nome }}</small>
+                                            </div>
                                             <div style="height: 100px; width: 100px;">
-                                                <img class="img-thumbnail rounded" style="width: inherit; height: inherit; object-fit: cover;" src="{{ $resposta->foto }}">
+                                                <img class="img-thumbnail rounded"
+                                                    style="width: inherit; height: inherit; object-fit: cover;"
+                                                    src="{{ $resposta->foto }}">
                                             </div>
                                         </figure>
                                     </div>
@@ -98,7 +114,8 @@
                     </div>
                 @endif
                 <div class="card">
-                    <div class="card-header bg-transparent text-caixaAzul font-weight-bold" style="font-size:14px" data-toggle="collapse" href="#demandas" aria-expanded="true" aria-controls="demandas" role="button">
+                    <div class="card-header bg-transparent text-caixaAzul font-weight-bold" style="font-size:14px"
+                        data-toggle="collapse" href="#demandas" aria-expanded="true" aria-controls="demandas" role="button">
                         Demandas vinculadas
                     </div>
                     <div class="card-body collapse p-1 show" id="demandas">
@@ -107,27 +124,30 @@
                                 <a href="#!" class="list-group-item list-group-item-action flex-column align-items-start">
                                     <div class="d-flex w-100 justify-content-between">
                                         <div class="w-100">
-                                            <small class="d-block mb-1 text-caixaAzul">{{$demanda->sistema->nome}}</small>
-                                            <small class="d-block text-black-50">{{$demanda->sistema_item->nome}}</small>
+                                            <small
+                                                class="d-block mb-1 text-caixaAzul">{{ $demanda->sistema->nome }}</small>
+                                            <small class="d-block text-black-50">{{ $demanda->sistema_item->nome }}</small>
                                         </div>
                                         <div class="flex-shrink-1">
-                                            @if(trim($demanda->migracao) == 'P')
-                                                <span class="badge badge-info z-depth-0" style="font-size:85%">A processar</span>
+                                            @if (trim($demanda->migracao) == 'P')
+                                                <span class="badge badge-info z-depth-0" style="font-size:85%">A
+                                                    processar</span>
                                             @endif
-                                            @if(trim($demanda->migracao) == 'C')
-                                                <span class="badge badge-default z-depth-0" style="font-size:85%">Processado</span>
+                                            @if (trim($demanda->migracao) == 'C')
+                                                <span class="badge badge-default z-depth-0"
+                                                    style="font-size:85%">Processado</span>
                                             @endif
                                         </div>
                                     </div>
                                     <div class="d-flex w-100 justify-content-between">
-                                        <p class="mb-2 mt-2 w-100 text-truncate d-block">{{$demanda->descricao}}</p>
+                                        <p class="mb-2 mt-2 w-100 text-truncate d-block">{{ $demanda->descricao }}</p>
                                     </div>
                                     <div class="d-flex w-100 justify-content-start">
-                                        @foreach($demanda->load('respostas')->respostas->where('checklist_id', $checklist->id) as $key_resp => $resposta)
+                                        @foreach ($demanda->load('respostas')->respostas->where('checklist_id', $checklist->id) as $key_resp => $resposta)
 
                                             <div>
                                                 <span class="badge badge-primary z-depth-1 p-2 font-weight-normal mr-2">
-                                                {{$resposta->item->nome}}
+                                                    {{ $resposta->item->nome }}
                                                 </span>
                                             </div>
 
@@ -157,10 +177,10 @@
     <script>
         const NOME_MODAL_GUIA = '#modal_guia';
 
-        function exibirGuia(guiaID){
+        function exibirGuia(guiaID) {
             $(NOME_MODAL_GUIA).off('show.bs.modal');
             $(NOME_MODAL_GUIA).off('shown.bs.modal');
-            $(NOME_MODAL_GUIA).on('show.bs.modal', (e) => Livewire.emit('carregaGuia',guiaID));
+            $(NOME_MODAL_GUIA).on('show.bs.modal', (e) => Livewire.emit('carregaGuia', guiaID));
             $(NOME_MODAL_GUIA).modal('show');
         }
     </script>

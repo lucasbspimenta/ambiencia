@@ -36,6 +36,7 @@ Route::middleware(['web', 'auth.caixa'])->group(function () {
     Route::resource('/agenda', AgendamentoController::class)->names(['index' => 'agenda']);
     Route::resource('/guias', GuiaController::class);
     Route::resource('/checklist', ChecklistController::class);
+    Route::get('/checklist-imprimir', [ChecklistController::class, 'imprimir'])->name('checklist-imprimir');
     Route::resource('/demandas', DemandaController::class);
     Route::resource('/imagem', ImagemController::class);
 
