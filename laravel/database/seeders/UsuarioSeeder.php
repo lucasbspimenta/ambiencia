@@ -27,20 +27,20 @@ class UsuarioSeeder extends Seeder
                 ,[unidade]
             )
             SELECT
-                [no_empregado] as [name]
-                ,[co_matricula] as [matricula]
+                RTRIM([no_empregado]) as [name]
+                ,RTRIM([nu_matricula]) as [matricula]
                 ,NULL as [email]
-                ,[co_cargo] as [cargo]
-                ,[no_funcao] as [funcao]
-                ,[co_lot_fisica] as [fisica]
-                ,[co_lot_adm] as [unidade]
+                ,RTRIM([co_cargo]) as [cargo]
+                ,RTRIM([no_funcao]) as [funcao]
+                ,RTRIM([co_lot_fisica]) as [fisica]
+                ,RTRIM([co_lot_adm]) as [unidade]
             FROM [ATENDIMENTO].[dbo].[RH_EMPREGADOS]
-            WHERE [co_matricula] IN(
-                SELECT DISTINCT [CO_MATRICULA] FROM [RH_UNIDADES].[dbo].[EMPREGADOS_SEV]
+            WHERE [nu_matricula] IN(
+                SELECT DISTINCT RTRIM([CO_MATRICULA]) FROM [RH_UNIDADES].[dbo].[EMPREGADOS_SEV]
                 UNION
-                SELECT DISTINCT [CO_COORDENADOR] FROM [RH_UNIDADES].[dbo].[EMPREGADOS_SEV]
+                SELECT DISTINCT RTRIM([CO_COORDENADOR]) FROM [RH_UNIDADES].[dbo].[EMPREGADOS_SEV]
                 UNION
-                SELECT DISTINCT [CO_SUPERVISOR] FROM [RH_UNIDADES].[dbo].[EMPREGADOS_SEV])
+                SELECT DISTINCT RTRIM([CO_SUPERVISOR]) FROM [RH_UNIDADES].[dbo].[EMPREGADOS_SEV])
             ;");
         } else {
             $usuario = [
