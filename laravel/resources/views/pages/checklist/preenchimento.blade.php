@@ -6,50 +6,56 @@
         <div class="row">
             <div class="col col-md-auto d-flex align-items-center">
                 <h4 class="text-caixaAzul text-futurabold">
-                    <span class="mr-1" style="clip-path: polygon(100% 0, 0 100%, 100% 100%); background-color: #fd7e14; width: 18px; height: 18px; display: inline-block;"></span>
+                    <span class="mr-1"
+                        style="clip-path: polygon(100% 0, 0 100%, 100% 100%); background-color: #fd7e14; width: 18px; height: 18px; display: inline-block;"></span>
                     Checklist - {{ $checklist->agendamento->unidade->nome_completo }}
                 </h4>
             </div>
             <div class="col d-flex justify-content-end">
-                <a href="{{ session('redirect_to') ?? url()->previous() }}" id="botao_voltar" class="btn btn-sm btn-secondary " >
+                <a href="{{ session('redirect_to') ?? url()->previous() }}" id="botao_voltar"
+                    class="btn btn-sm btn-secondary ">
                     <i class="fas fa-chevron-left"></i> Voltar
                 </a>
                 <livewire:checklist.botao-finalizar :checklist=$checklist />
             </div>
         </div>
-        <hr class="mt-2 mb-3"/>
+        <hr class="mt-2 mb-3" />
         <div class="row">
             <div class="col">
-                @foreach($checklist->macroitens as $key => $macroitem)
+                @foreach ($checklist->macroitens as $key => $macroitem)
                     <div>
-                        <livewire:checklist.macroitem :checklist=$checklist :macroitem="$macroitem" :wire:key="'macroitem-'.$macroitem->id" />
+                        <livewire:checklist.macroitem :checklist=$checklist :macroitem="$macroitem"
+                            :wire:key="'macroitem-'.$macroitem->id" />
                     </div>
                 @endforeach
             </div>
             <div class="col-4">
-                @if($checklist->fotosObrigatorias)
-                <div class="card mb-3">
-                    <div class="card-header bg-transparent text-caixaAzul font-weight-bold" style="font-size:14px" data-toggle="collapse" href="#fotos" aria-expanded="true" aria-controls="fotos" role="button">
-                        Fotos Obrigatórias
-                    </div>
-                    <div class="card-body collapse p-3 show" id="fotos">
-                        <div class="d-flex justify-content-start flex-wrap">
-                            @foreach($checklist->fotosObrigatorias as $key => $resposta)
-                                <livewire:checklist.foto :resposta=$resposta :wire:key="'foto-'.$resposta->id" />
-                            @endforeach
+                @if ($checklist->fotosObrigatorias)
+                    <div class="card mb-3">
+                        <div class="card-header bg-transparent text-caixaAzul font-weight-bold" style="font-size:14px"
+                            data-toggle="collapse" href="#fotos" aria-expanded="true" aria-controls="fotos" role="button">
+                            Fotos Obrigatórias ({{ App\Http\Helpers\UploadHelper::getMaximumFileUploadSize() }})
+                        </div>
+                        <div class="card-body collapse p-3 show" id="fotos">
+                            <div class="d-flex justify-content-start flex-wrap">
+                                @foreach ($checklist->fotosObrigatorias as $key => $resposta)
+                                    <livewire:checklist.foto :resposta=$resposta :wire:key="'foto-'.$resposta->id" />
+                                @endforeach
+                            </div>
                         </div>
                     </div>
-                </div>
                 @endif
                 <div class="card">
-                    <div class="card-header bg-transparent text-caixaAzul font-weight-bold" style="font-size:14px" data-toggle="collapse" href="#demandas" aria-expanded="true" aria-controls="demandas" role="button">
+                    <div class="card-header bg-transparent text-caixaAzul font-weight-bold" style="font-size:14px"
+                        data-toggle="collapse" href="#demandas" aria-expanded="true" aria-controls="demandas" role="button">
                         Demandas vinculadas
                     </div>
                     <div class="card-body collapse p-1 show" id="demandas">
                         <livewire:demanda.vinculadas :checklist=$checklist />
                     </div>
                 </div>
-                <div class="modal fade" id="modal_demanda" tabindex="-1" role="dialog" aria-labelledby="modal_demanda" aria-hidden="true">
+                <div class="modal fade" id="modal_demanda" tabindex="-1" role="dialog" aria-labelledby="modal_demanda"
+                    aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
                         <div class="modal-content">
                             <livewire:demanda.cadastro />
@@ -98,7 +104,7 @@
         });
 
         window.addEventListener('triggerSucesso', (event) => {
-            toastr.success('Demanda para '+ event.detail +' gravada com sucesso!');
+            toastr.success('Demanda para ' + event.detail + ' gravada com sucesso!');
             $(NOME_MODAL).modal('hide');
         });
 
@@ -108,7 +114,7 @@
         });
 
         window.addEventListener('triggerError', (event) => {
-            toastr.error('Erro ao gravar demanda: '+ event.detail);
+            toastr.error('Erro ao gravar demanda: ' + event.detail);
         });
 
         window.addEventListener('atualizarResposta', (event) => {
@@ -122,10 +128,10 @@
 
         function abrirDemanda(demanda_id, resposta_id, componente) {
 
-            if(resposta_id)
+            if (resposta_id)
                 Livewire.emit('defineResposta', resposta_id);
 
-            if(demanda_id)
+            if (demanda_id)
                 Livewire.emit('defineDemanda', demanda_id);
 
             $(NOME_MODAL).off('show.bs.modal');
@@ -135,10 +141,10 @@
             $(NOME_MODAL).modal('show');
         }
 
-        function exibirGuia(guiaID){
+        function exibirGuia(guiaID) {
             $(NOME_MODAL_GUIA).off('show.bs.modal');
             $(NOME_MODAL_GUIA).off('shown.bs.modal');
-            $(NOME_MODAL_GUIA).on('show.bs.modal', (e) => Livewire.emit('carregaGuia',guiaID));
+            $(NOME_MODAL_GUIA).on('show.bs.modal', (e) => Livewire.emit('carregaGuia', guiaID));
             $(NOME_MODAL_GUIA).modal('show');
         }
 
@@ -182,9 +188,8 @@
             });
         }
 
-        function atualizaRespostaPorId(id)
-        {
-            if(id) {
+        function atualizaRespostaPorId(id) {
+            if (id) {
                 if (typeof id === "object") {
 
                     id.forEach((id_unico) => {
@@ -233,7 +238,5 @@
 
         })
         */
-
-
     </script>
 @endpush

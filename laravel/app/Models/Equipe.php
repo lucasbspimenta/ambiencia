@@ -13,7 +13,7 @@ class Equipe extends Model
 
     public function usuarios()
     {
-        return $this->hasMany(User::class,'matricula','matricula');
+        return $this->hasMany(User::class, 'matricula', 'matricula');
     }
 
     public function unidades()

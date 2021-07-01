@@ -103,7 +103,8 @@
     <div class="modal fade" id="modal_agenda" tabindex="-1" role="dialog" aria-labelledby="modal_agenda" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
             <div class="modal-content">
-                <livewire:agendamento.cadastro :tiposagendamentos="$lista_tipos_de_agendamento" />
+                <livewire:agendamento.cadastro :tiposagendamentos="$lista_tipos_de_agendamento"
+                    :unidades="$unidades_vinculadas" />
             </div>
         </div>
     </div>

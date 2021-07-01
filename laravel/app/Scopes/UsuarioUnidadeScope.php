@@ -48,13 +48,16 @@ class UsuarioUnidadeScope implements Scope
         $builder
             ->join('unidades_responsavel', function ($join) use ($campo_model, $campo_tabela) {
                 $usuario = Auth::user();
+
                 if ($usuario->is_admin || $usuario->is_matriz) {
                     $join->on($campo_model, '=', $campo_tabela);
                 } else {
                     $join->on($campo_model, '=', $campo_tabela)
-                        ->where('unidades_responsavel.matricula', '=', Auth::user()->matricula)
-                        ->orWhere('unidades_responsavel.coordenador', '=', Auth::user()->matricula)
-                        ->orWhere('unidades_responsavel.supervisor', '=', Auth::user()->matricula);
+                        ->where(function ($query) use ($usuario) {
+                            $query->where('unidades_responsavel.matricula', '=', $usuario->matricula)
+                                ->orWhere('unidades_responsavel.coordenador', '=', $usuario->matricula)
+                                ->orWhere('unidades_responsavel.supervisor', '=', $usuario->matricula);
+                        });
                 }
             });
     }

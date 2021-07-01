@@ -68,7 +68,7 @@ class ChecklistController extends Controller
      */
     public function edit(Checklist $checklist)
     {
-        app('debugbar')->disable();
+        //app('debugbar')->disable();
 
         if ((boolean) $checklist->concluido || $checklist->agendamento->unidade->responsavel->matricula != Auth::user()->matricula) {
             return redirect()->route('checklist.show', ['checklist' => $checklist->id]);

@@ -11,8 +11,8 @@ class User extends Authenticatable
 {
     use HasFactory, Notifiable;
 
-    protected $with = ['perfil','equipe'];
-    protected $appends = ['is_admin','is_gestor','is_relog'];
+    protected $with = ['perfil', 'equipe'];
+    protected $appends = ['is_admin', 'is_gestor', 'is_relog'];
 
     public $simulado = false;
     public $usuario_simulador = null;
@@ -24,27 +24,27 @@ class User extends Authenticatable
         'fisica',
         'unidade',
         'funcao',
-        'cargo'
+        'cargo',
     ];
 
     public function perfil()
     {
-        return $this->hasOne(Perfil::class,'matricula','matricula');
+        return $this->hasOne(Perfil::class, 'matricula', 'matricula');
     }
 
     public function equipe()
     {
-        return $this->hasOne(Equipe::class,'matricula','matricula');
+        return $this->hasOne(Equipe::class, 'matricula', 'matricula');
     }
 
     public function unidades()
     {
-        if($this->perfil() && $this->perfil->is_admin) {
+        if ($this->perfil() && $this->perfil->is_admin) {
 
             $todas_unidades = DB::table('unidades')
-                ->select([DB::raw('unidades.*'),DB::raw('usuario_unidades.matricula as laravel_through_key')])
-                ->join('usuario_unidades','unidade_codigo','=','codigo')
-                ->where('id','!=',null);
+                ->select([DB::raw('unidades.*'), DB::raw('usuario_unidades.matricula as laravel_through_key')])
+                ->join('usuario_unidades', 'unidade_codigo', '=', 'codigo')
+                ->where('id', '!=', null);
 
             return $this->hasManyThrough(
                 Unidade::class,
@@ -56,7 +56,7 @@ class User extends Authenticatable
             )->withoutGlobalScopes()->union($todas_unidades);
         }
 
-        if($this->perfil() && $this->perfil->is_gestor) {
+        if ($this->perfil() && $this->perfil->is_gestor) {
             if (isset($this->equipe)) {
                 return $this->equipe->unidades();
             }
@@ -72,51 +72,59 @@ class User extends Authenticatable
         )->withoutGlobalScopes();
     }
 
-    public function getIsAdminAttribute() {
+    public function getIsAdminAttribute()
+    {
 
-        if(strtoupper(optional($this->equipe)->nome) == 'SISTEMAS')
+        if (strtoupper(optional($this->equipe)->nome) == 'SISTEMAS') {
             return true;
+        }
 
         return (boolean) optional($this->perfil)->is_admin;
     }
 
-    public function getIsGestorAttribute() {
+    public function getIsGestorAttribute()
+    {
 
-        if(strtoupper(optional($this->equipe)->nome) == 'SISTEMAS')
+        if (strtoupper(optional($this->equipe)->nome) == 'SISTEMAS') {
             return true;
+        }
 
         return (boolean) optional($this->perfil)->is_gestor;
     }
 
-    public function getIsGestorEquipeAttribute() {
+    public function getIsGestorEquipeAttribute()
+    {
 
         return (boolean) optional($this->perfil)->is_gestorequipe;
     }
 
-    public function getIsRelogAttribute() {
+    public function getIsRelogAttribute()
+    {
 
-        if(strtoupper(optional($this->equipe)->nome) == 'SISTEMAS')
+        if (strtoupper(optional($this->equipe)->nome) == 'SISTEMAS') {
             return true;
+        }
 
         return (boolean) optional($this->perfil)->is_relog;
     }
 
-    public function getIsMatrizAttribute() {
+    public function getIsMatrizAttribute()
+    {
 
-        if(strtoupper(optional($this->equipe)->nome) == 'SISTEMAS')
+        if (strtoupper(optional($this->equipe)->nome) == 'SISTEMAS') {
             return true;
+        }
 
         return (boolean) optional($this->perfil)->is_matriz;
     }
 
-    public function  getIsSimuladoAttribute()
+    public function getIsSimuladoAttribute()
     {
         return (boolean) $this->simulado;
     }
 
-    public function  setIsSimuladoAttribute($value)
+    public function setIsSimuladoAttribute($value)
     {
         return $this->simulado = (boolean) $value;
     }
 }
-

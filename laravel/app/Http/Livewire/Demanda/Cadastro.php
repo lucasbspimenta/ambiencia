@@ -19,7 +19,6 @@ class Cadastro extends Component
     public $subcategorias = [];
     public $itens = [];
     public $demandaExistentes = [];
-    public $unidades = [];
 
     public $sistema;
     public $resposta;
@@ -51,12 +50,10 @@ class Cadastro extends Component
         return view('livewire.demanda.cadastro');
     }
 
-    public function mount()
+    public function mount($unidades = null)
     {
         $this->sistema = new DemandaSistema();
         $this->sistemas = DemandaSistema::all() ?? [];
-        $this->unidades = Unidade::all() ?? [];
-
         $this->sistema_id = null;
         $this->categoriaSelecionado = null;
         $this->subcategoriaSelecionado = null;
@@ -127,7 +124,7 @@ class Cadastro extends Component
     {
         $this->resetValidation();
         $this->resetErrorBag();
-        $this->reset();
+        //$this->reset();
 
         $this->sistema = new DemandaSistema();
         $this->resposta = new ChecklistResposta();

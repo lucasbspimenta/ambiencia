@@ -119,7 +119,7 @@
         aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
             <div class="modal-content">
-                <livewire:demanda.cadastro />
+                <livewire:demanda.cadastro :unidades="$unidades_vinculadas" />
             </div>
         </div>
     </div>

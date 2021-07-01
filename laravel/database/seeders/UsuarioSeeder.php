@@ -116,7 +116,15 @@ class UsuarioSeeder extends Seeder
                     'fisica' => '7767',
                     'unidade' => '7001',
                 ],
-
+                [
+                    'name' => 'Raimundo Everton de Aquino Moreira',
+                    'matricula' => 'C082807',
+                    'email' => 'lucas.pimenta@caixa.gov.br',
+                    'cargo' => 'TBN',
+                    'funcao' => 'Assistente Sênior',
+                    'fisica' => '7767',
+                    'unidade' => '7001',
+                ],
             ];
 
             User::insert($usuario);

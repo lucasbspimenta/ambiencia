@@ -1,9 +1,9 @@
 <?php
 
 namespace App\Http\Livewire\Agendamento;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 use App\Models\Agendamento;
-use App\Models\Unidade;
 use App\Services\AgendamentoService;
 use Exception;
 use Livewire\Component;
@@ -18,7 +18,6 @@ class Cadastro extends Component
     public $agendamento_tipos_id = '';
     public $descricao = '';
     public $agendamento_tem_checklist = false;
-    public $unidades = [];
 
     public $tiposagendamentos;
 
@@ -46,10 +45,6 @@ class Cadastro extends Component
         $this->limpar();
         $this->inicio = $inicio;
         $this->final = $final;
-    }
-    public function mount()
-    {
-        $this->unidades = Unidade::select('id', 'codigo', 'tipoPv', 'unidades.nome')->orderBy('unidades.nome', 'ASC')->get();
     }
 
     public function render()

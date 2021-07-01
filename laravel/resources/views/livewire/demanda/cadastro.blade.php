@@ -29,9 +29,9 @@
                         <div class="mb-3 col-md-12 ">
                             <label class="active">Unidade</label>
                             <select class="browser-default custom-select @error('unidade_id') is-invalid @enderror"
-                                wire:model="unidade_id" wire:loading.attr="disabled" required>
+                                wire:model="unidade_id" wire:loading.attr="disabled" wire:ignore.self required>
                                 <option value="" selected>Selecione a unidade</option>
-                                @forelse($unidades as $unidade)
+                                @forelse(App\Models\Unidade::select('id', 'codigo', 'tipoPv', 'unidades.nome')->orderBy('unidades.nome', 'ASC')->get() as $unidade)
                                     <option value="{{ $unidade->id }}">{{ $unidade->nome_completo }}</option>
                                 @empty
                                     <option value="">Nenhuma unidade localizada</option>

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Demanda;
 use App\Models\DemandaSistema;
+use App\Models\Unidade;
 use Illuminate\Http\Request;
 
 class DemandaController extends Controller
@@ -17,7 +18,8 @@ class DemandaController extends Controller
     {
         $demandas = Demanda::all();
         $demandas_sistemas = DemandaSistema::all();
-        return view('pages.demandas', compact('demandas', 'demandas_sistemas'));
+        $unidades_vinculadas = Unidade::select('id', 'codigo', 'tipoPv', 'unidades.nome')->orderBy('unidades.nome', 'ASC')->get();
+        return view('pages.demandas', compact('demandas', 'demandas_sistemas', 'unidades_vinculadas'));
     }
 
     /**

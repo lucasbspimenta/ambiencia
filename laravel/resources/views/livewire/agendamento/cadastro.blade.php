@@ -58,7 +58,7 @@
                         <select class="browser-default custom-select @error('unidade_id') is-invalid @enderror"
                             wire:model.debounce.defer="unidade_id" wire:loading.attr="disabled" required>
                             <option value="" selected>Selecione a unidade</option>
-                            @forelse($unidades as $unidade)
+                            @forelse(App\Models\Unidade::select('id', 'codigo', 'tipoPv', 'unidades.nome')->orderBy('unidades.nome', 'ASC')->get() as $unidade)
                                 <option value="{{ $unidade->id }}">
                                     {{ Str::padLeft($unidade->codigo, 4, '0') ?? '' }}
                                     - {{ $unidade->tipoPv ?? '' }}&nbsp;{{ $unidade->nome }}</option>
