@@ -37,7 +37,7 @@ class DemandaService
 
     public static function processa(Demanda $demanda)
     {
-        echo $demanda->sistema->service_class_name . PHP_EOL;
+        //echo $demanda->sistema->service_class_name . PHP_EOL;
         if ($demanda->sistema->service_class_name && class_exists('App\\Services\\' . $demanda->sistema->service_class_name)) {
             $class = new \ReflectionClass('App\\Services\\' . $demanda->sistema->service_class_name);
             $instance = $class->newInstanceArgs([$demanda]);

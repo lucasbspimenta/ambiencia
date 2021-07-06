@@ -21,9 +21,15 @@ class CreateViewDemandasBase extends Migration
             dem.demanda_situacao,
             dem.descricao AS demanda_descricao,
 			dem.demanda_prazo,
-			dem.demanda_prazo_inicial,
 			dem.demanda_conclusao,
+			dem.demanda_retorno,
             dem.updated_at as demanda_atualizacao,
+			demanda_checklist = (
+				SELECT TOP 1 [checklist_respostas].checklist_id
+				FROM [demanda_checklist_resposta]
+				JOIN [checklist_respostas] ON [demanda_checklist_resposta].checklist_resposta_id = [checklist_respostas].id
+				WHERE demanda_id = dem.id
+				),
             dem_sis.id AS sistema_id,
             dem_sis.nome AS sistema_nome,
             RTRIM(unid.tipoPv) + ' ' + RTRIM(unid.nome) AS unidade_nome,

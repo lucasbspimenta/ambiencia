@@ -63,6 +63,7 @@
                                                         <th scope="col">Situação</th>
                                                         <th scope="col">Unidade</th>
                                                         <th scope="col">Responsavel</th>
+                                                        <th scope="col">Opções</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -100,6 +101,7 @@
                                                         <th scope="col">Situação</th>
                                                         <th scope="col">Unidade</th>
                                                         <th scope="col">Responsavel</th>
+                                                        <th scope="col">Opções</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -123,13 +125,39 @@
             </div>
         </div>
     </div>
+    <div class="modal fade" id="modal_tratar_demanda" tabindex="-1" role="dialog" aria-labelledby="modal_tratar_demanda"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content">
+                <livewire:demanda.tratar />
+            </div>
+        </div>
+    </div>
 @endsection
 @push('styles')
 
 @endpush
 @push('scripts')
     <script>
+        const renderAcaosDemandas = (data, type, row, meta) => {
+            let saida = ``;
+
+            if (data) {
+                saida +=
+                    `<a class="btn btn-xs btn-primary" href="{{ route('checklist.index') }}/${data}/alterar">Checklist</a>`;
+            } else {
+                if (row['demanda_migracao'] != 'C') {
+                    saida +=
+                        `<button onclick="excluirDemanda(${row['demanda_id']})" type="button"
+                            class="btn btn-xs btn-danger m-0 flex-shrink-1"><i class="fa fa-trash"
+                                aria-hidden="true"></i></button>`;
+                }
+            }
+
+            return saida;
+        }
         const NOME_MODAL = '#modal_demanda';
+        const NOME_MODEL_TRATAR_DEMANDA = '#modal_tratar_demanda';
         const CONFIG_COLUNAS = [{
                 "data": "demanda_id"
             },
@@ -145,7 +173,7 @@
             },
             {
                 "data": "demanda_situacao",
-                //'render': formataPeriodo
+                'render': DATATABLES_RENDER_SITUACAO_DEMANDA
             },
             {
                 "data": "unidade_nome",
@@ -155,13 +183,18 @@
                 "data": "responsavel_nome",
                 //'render': renderBotoesEditarExluir
             },
+            {
+                "data": "demanda_checklist",
+                'render': renderAcaosDemandas
+            },
         ];
 
-        const montaFiltrosAoIniciar = function() {
-            this.api().columns().every(function() {
+        const montaFiltrosAoIniciar = function(API) {
+            //console.log('Montando filtros', API.table().node().id);
+            $('#base_filtros_' + API.table().node().id).html('');
+            API.columns().every(function() {
                 var destino = $('#base_filtros_' + this.table().node().id);
                 var title = $(this.table().column(this.index()).header()).html();
-                console.log(title);
                 var column = this;
                 var section = $(
                     '<section class="mb-4"><h6 class="mb-2 font-weight-bold">' +
@@ -201,6 +234,14 @@
             $(NOME_MODAL).modal(options);
             $(NOME_MODAL).on('hidden.bs.modal', (e) => Livewire.emit('limpar'));
 
+            var options_tratar = {
+                backdrop: 'static',
+                keyboard: true,
+                show: true,
+                focus: true
+            };
+            $(NOME_MODEL_TRATAR_DEMANDA).modal(options_tratar);
+
             DATATABLE = $('#tabela_andamento').DataTable({
                 dom: 'ti',
                 scrollY: 'calc(100vh - (370px))',
@@ -212,7 +253,10 @@
                     dataSrc: ''
                 },
                 columns: CONFIG_COLUNAS,
-                initComplete: montaFiltrosAoIniciar
+                initComplete: function() {
+                    var api = this.api();
+                    montaFiltrosAoIniciar(api);
+                }
             });
 
             DATATABLE_FINALIZADOS = $('#tabela_finalizados').DataTable({
@@ -226,18 +270,22 @@
                     dataSrc: ''
                 },
                 columns: CONFIG_COLUNAS,
-                initComplete: montaFiltrosAoIniciar
+                initComplete: function() {
+                    var api = this.api();
+                    montaFiltrosAoIniciar(api);
+                }
             });
 
             $('a[data-toggle="tab"]').on('shown.bs.tab', function(e, ) {
                 switch (e.target.id) {
                     case 'andamento-tab':
-                        DATATABLE.ajax.reload();
+                        DATATABLE.ajax.reload(montaFiltrosAoIniciar(DATATABLE));
                         DATATABLE.columns.adjust().responsive.recalc();
+
                         break;
 
                     case 'finalizados-tab':
-                        DATATABLE_FINALIZADOS.ajax.reload();
+                        DATATABLE_FINALIZADOS.ajax.reload(montaFiltrosAoIniciar(DATATABLE_FINALIZADOS));
                         DATATABLE_FINALIZADOS.columns.adjust().responsive.recalc();
                         break;
                 }
@@ -261,8 +309,33 @@
             $(NOME_MODAL).off('show.bs.modal');
             $(NOME_MODAL).off('shown.bs.modal');
             $(NOME_MODAL).off('hide.bs.modal');
-            $(NOME_MODAL).on('hide.bs.modal', (e) => DATATABLE.ajax.reload());
+            $(NOME_MODAL).on('hide.bs.modal', (e) => DATATABLE.ajax.reload((json) => montaFiltrosAoIniciar(DATATABLE)));
             $(NOME_MODAL).modal('show');
         }
+
+        function excluirDemanda(demandaId) {
+
+            Swal.fire({
+                title: 'Você tem certeza?',
+                text: "A demanda será excluída",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Sim, tenho certeza!',
+                cancelButtonText: 'Não'
+            }).then((result) => {
+                if (result.value) {
+                    Livewire.emit('excluirExterno', demandaId)
+                } else {
+                    console.log("Canceled");
+                }
+            });
+        }
+
+        window.addEventListener('triggerSucessoExclusao', (event) => {
+            toastr.success('Demanda excluída com sucesso!');
+            DATATABLE.ajax.reload((json) => montaFiltrosAoIniciar(DATATABLE));
+        });
     </script>
 @endpush

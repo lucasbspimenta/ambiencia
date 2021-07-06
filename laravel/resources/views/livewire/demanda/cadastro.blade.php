@@ -43,26 +43,30 @@
                         </div>
                     </div>
                 @endif
-                @if (sizeof($demandaExistentes) > 0)
-                    <hr class="mt-0">
-                    <div class="form-row">
-                        <div class="mb-3 col-md-12 ">
-                            <label class="active">Vincular a uma demanda já cadastrada:</label>
-                            <select class="browser-default custom-select @error('demanda_antiga') is-invalid @enderror"
-                                wire:model="demanda_antiga" wire:loading.attr="disabled" required>
-                                <option value="" selected>Selecione a demanda / Não vincular</option>
-                                @forelse($demandaExistentes as $demanda)
-                                    <option value="{{ $demanda->id }}">{{ $demanda->dados_completos }}</option>
-                                @empty
-                                    <option value="">Nenhuma demanda localizada</option>
-                                @endforelse
-                            </select>
+                @if ($resposta && $resposta->id)
+                    @if (sizeof($demandaExistentes) > 0)
+                        <hr class="mt-0">
+                        <div class="form-row">
+                            <div class="mb-3 col-md-12 ">
+                                <label class="active">Vincular a uma demanda já cadastrada:</label>
+                                <select
+                                    class="browser-default custom-select @error('demanda_antiga') is-invalid @enderror"
+                                    wire:model="demanda_antiga" wire:loading.attr="disabled" required>
+                                    <option value="" selected>Selecione a demanda / Não vincular</option>
+                                    @forelse($demandaExistentes as $demanda)
+                                        <option value="{{ $demanda->id }}">{{ $demanda->dados_completos }}</option>
+                                    @empty
+                                        <option value="">Nenhuma demanda localizada</option>
+                                    @endforelse
+                                </select>
 
-                            @error('demanda_antiga') <div class="invalid-feedback is-invalid">{{ $message }}</div>
-                            @enderror
+                                @error('demanda_antiga') <div class="invalid-feedback is-invalid">{{ $message }}
+                                    </div>
+                                @enderror
+                            </div>
                         </div>
-                    </div>
-                    <hr>
+                        <hr>
+                    @endif
                 @endif
                 <div class="form-row">
                     <div class="mb-3 col-md-12 ">
@@ -70,8 +74,9 @@
                         <select class="browser-default custom-select @error('sistema_id') is-invalid @enderror"
                             wire:model="sistema_id" wire:loading.attr="disabled" @if ($demanda_antiga) disabled @endif required>
                             <option value="" selected>Selecione o destino da demanda</option>
-                            @forelse($sistemas as $sistema)
-                                <option value="{{ $sistema->id }}">{{ $sistema->nome }}</option>
+                            @forelse($sistemas as $sistema_disponivel)
+                                <option value="{{ $sistema_disponivel->id }}">{{ $sistema_disponivel->nome }}
+                                </option>
                             @empty
                                 <option value="" disabled>Nenhum destino encontrado.</option>
                             @endforelse
@@ -81,7 +86,7 @@
                         @enderror
                     </div>
                 </div>
-                @if ($this->sistema_id && $sistema->categorias_table && $sistema->categorias && $sistema->categorias->count() > 0)
+                @if ($sistema_id && $sistema->categorias_table && $sistema->categorias && $sistema->categorias->count() > 0)
                     <div class="form-row">
                         <div class="mb-3 col-md-12 ">
                             <label class="active">Categoria</label>
@@ -101,7 +106,7 @@
                         </div>
                     </div>
                 @endif
-                @if ($this->sistema_id && $sistema->subcategorias_table && $sistema->subcategorias && $sistema->subcategorias->count() > 0)
+                @if ($sistema_id && $sistema->subcategorias_table && $sistema->subcategorias && $sistema->subcategorias->count() > 0)
                     <div class="form-row">
                         <div class="mb-3 col-md-12 ">
                             <label class="active">Subcategoria</label>
@@ -121,7 +126,7 @@
                         </div>
                     </div>
                 @endif
-                @if ($this->sistema_id && $sistema->itens_table && $sistema->itens && $sistema->itens->count() > 0)
+                @if ($sistema_id && $sistema->itens_table && $sistema->itens && $sistema->itens->count() > 0)
                     <div class="form-row">
                         <div class="mb-3 col-md-12 ">
                             <label class="active">Item</label>

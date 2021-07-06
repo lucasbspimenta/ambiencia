@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Services\DemandaService;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 
@@ -12,17 +12,17 @@ class Demanda extends Model
 
     protected $fillable = [
         'sistema_id'
-        ,'sistema_item_id'
+        , 'sistema_item_id'
         , 'descricao'
         , 'unidade_id'
-        , 'migracao'
+        , 'migracao',
     ];
 
     public const VALIDATION_RULES = [
         'sistema_id' => ['required'],
         'sistema_item_id' => ['required'],
-        'descricao' => ['required','string'],
-        'unidade_id' => ['required','integer','exists:unidades,id'],
+        'descricao' => ['required', 'string'],
+        'unidade_id' => ['required', 'integer', 'exists:unidades,id'],
 
     ];
 
@@ -37,28 +37,28 @@ class Demanda extends Model
 
     public function respostas()
     {
-        return $this->belongsToMany(ChecklistResposta::class,'demanda_checklist_resposta','demanda_id','checklist_resposta_id');
+        return $this->belongsToMany(ChecklistResposta::class, 'demanda_checklist_resposta', 'demanda_id', 'checklist_resposta_id');
     }
 
     public function respostasDoChecklist($checklist_id)
     {
-        return $this->belongsToMany(ChecklistResposta::class,'demanda_checklist_resposta','demanda_id','checklist_resposta_id')->where('checklist_id',$checklist_id)->get();
+        return $this->belongsToMany(ChecklistResposta::class, 'demanda_checklist_resposta', 'demanda_id', 'checklist_resposta_id')->where('checklist_id', $checklist_id)->get();
     }
 
     public function itens()
     {
         return $this->hasManyDeep(
             'App\Models\ChecklistItem',
-            ['demanda_checklist_resposta','App\Models\ChecklistResposta'],
+            ['demanda_checklist_resposta', 'App\Models\ChecklistResposta'],
             [
                 'demanda_id',
                 'id',
-                'id'
+                'id',
             ],
             [
                 'id',
                 'checklist_resposta_id',
-                'checklist_item_id'
+                'checklist_item_id',
             ]
         );
     }
@@ -70,19 +70,21 @@ class Demanda extends Model
 
     public function sistema()
     {
-        return $this->belongsTo(DemandaSistema::class,'sistema_id','id');
+        return $this->belongsTo(DemandaSistema::class, 'sistema_id', 'id');
     }
 
     public function unidade()
     {
-        return $this->belongsTo(Unidade::class,'unidade_id','id');
+        return $this->belongsTo(Unidade::class, 'unidade_id', 'id');
     }
 
-    public function getSistemaItemAttribute() {
+    public function getSistemaItemAttribute()
+    {
         return $this->sistema->getItemById($this->sistema_item_id);
     }
 
-    public function getResponsavelAttribute() {
+    public function getResponsavelAttribute()
+    {
         return User::find($this->updated_by);
     }
 
@@ -100,6 +102,13 @@ class Demanda extends Model
         });
         static::updating(function ($model) {
             $model->updated_by = Auth::id();
+        });
+
+        static::created(function ($model) {
+            if (env('MIGRAR_DEMANDAS') && env('MIGRAR_DEMANDAS') == 1 && $model->migracao == 'P') {
+                $demandaService = new DemandaService();
+                $demandaService->processa(self::find($model->id));
+            }
         });
 
     }

@@ -30,6 +30,26 @@ window.DATATABLES_RENDER_SITUACAO = (data, type, row, meta) => {
     return  saida;
 }
 
+window.DATATABLES_RENDER_SITUACAO_DEMANDA = (data, type, row, meta) => {
+
+    switch(data)
+    {
+        case 'A':
+            return `<span class="badge badge-light">Aguardando finalização checklist vinculado</span>`;
+            break;
+
+        case 'P':
+            return `<span class="badge badge-light">Aguardando integração</span>`;
+            break;
+
+        case 'C':
+            return `<span class="badge badge-info">Integração iniciada</span>`;
+            break;
+    }
+
+    return  data;
+}
+
 window.DATATABLES_TIPO_AGENDAMENTO = (data, type, row, meta) => {
 
     if(typeof data == "object")

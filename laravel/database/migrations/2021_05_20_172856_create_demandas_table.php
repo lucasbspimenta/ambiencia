@@ -27,7 +27,7 @@ class CreateDemandasTable extends Migration
             $table->string('demanda_url')->nullable();
             $table->string('demanda_situacao')->nullable();
             $table->date('demanda_prazo')->nullable();
-            $table->date('demanda_prazo_inicial')->nullable();
+            $table->longText('demanda_retorno')->nullable();
             $table->date('demanda_conclusao')->nullable();
 
             $table->longText('descricao')->nullable();
@@ -41,6 +41,16 @@ class CreateDemandasTable extends Migration
 
             $table->timestamps();
         });
+
+        DB::unprepared("
+            ALTER TABLE [dbo].[demandas] ADD
+            [TimeStart] DATETIME2(0)  GENERATED ALWAYS AS ROW START NOT NULL CONSTRAINT DFT_demandas_TimeStart DEFAULT ('19000101'),
+            [TimeEnd] DATETIME2(0) GENERATED ALWAYS AS ROW END NOT NULL CONSTRAINT DFT_demandas_TimeEnd DEFAULT ('99991231 23:59:59'),
+            PERIOD FOR SYSTEM_TIME ([TimeStart], [TimeEnd]);
+
+            ALTER TABLE [dbo].[demandas] DROP CONSTRAINT DFT_demandas_TimeStart, DFT_demandas_TimeEnd;
+            ALTER TABLE [dbo].[demandas]  SET ( SYSTEM_VERSIONING = ON ( HISTORY_TABLE = [dbo].[demandas_history] ) );
+        ");
     }
 
     /**
@@ -50,6 +60,7 @@ class CreateDemandasTable extends Migration
      */
     public function down()
     {
+        DB::unprepared("ALTER TABLE [dbo].[demandas] SET ( SYSTEM_VERSIONING = OFF );");
         Schema::dropIfExists('demandas');
     }
 }

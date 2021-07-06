@@ -32,7 +32,7 @@ class Cadastro extends Component
     public $checklist_resposta_id;
     public $demanda_antiga;
 
-    protected $listeners = ['limpar' => 'limpar', 'defineResposta' => 'defineResposta', 'defineDemanda' => 'defineDemanda'];
+    protected $listeners = ['limpar' => 'limpar', 'defineResposta' => 'defineResposta', 'defineDemanda' => 'defineDemanda', 'excluirExterno' => 'excluirExterno'];
 
     public function rules()
     {
@@ -52,7 +52,6 @@ class Cadastro extends Component
 
     public function mount($unidades = null)
     {
-        $this->sistema = new DemandaSistema();
         $this->sistemas = DemandaSistema::all() ?? [];
         $this->sistema_id = null;
         $this->categoriaSelecionado = null;
@@ -62,9 +61,11 @@ class Cadastro extends Component
         $this->demanda_antiga = null;
     }
 
-    public function updatedSistemaSelecionado()
+    public function updatedSistemaId($value)
     {
-        $this->sistema = DemandaSistema::find($this->sistema_id);
+        $this->sistema_id = $value;
+        $this->sistema = DemandaSistema::find($value);
+        //dd($value, $this->sistema);
     }
 
     public function defineResposta($id)
@@ -95,6 +96,10 @@ class Cadastro extends Component
 
         $data = $this->validate();
         $demandaService = new DemandaService();
+
+        if (!$this->resposta) {
+            $data['migracao'] = 'P';
+        }
 
         try {
 
@@ -137,5 +142,13 @@ class Cadastro extends Component
         $this->sistema_item_id = null;
         $this->checklist_resposta_id = null;
         $this->unidade_id = null;
+        $this->descricao = '';
+    }
+
+    public function excluirExterno($demanda_id)
+    {
+        $demandaService = new DemandaService();
+        $demandaService->excluir($demanda_id);
+        $this->dispatchBrowserEvent('triggerSucessoExclusao');
     }
 }
