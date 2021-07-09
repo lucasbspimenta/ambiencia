@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Unidade;
 use App\Services\AgendamentoService;
 use App\Services\AgendamentoTipoService;
 use Illuminate\Http\Request;
@@ -20,7 +19,7 @@ class AgendamentoController extends Controller
 
     public function index()
     {
-        $unidades_vinculadas = Unidade::select('id', 'codigo', 'tipoPv', 'unidades.nome')->orderBy('unidades.nome', 'ASC')->get();
+        $unidades_vinculadas = []; // Unidade::select('id', 'codigo', 'tipoPv', 'unidades.nome')->orderBy('unidades.nome', 'ASC')->get();
         $lista_tipos_de_agendamento = $this->agendamentoTipoService->todosAtivos();
         return view('pages.agenda', compact('lista_tipos_de_agendamento', 'unidades_vinculadas'));
     }

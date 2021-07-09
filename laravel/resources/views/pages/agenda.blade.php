@@ -104,7 +104,7 @@
         <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
             <div class="modal-content">
                 <livewire:agendamento.cadastro :tiposagendamentos="$lista_tipos_de_agendamento"
-                    :unidades="$unidades_vinculadas" />
+                    />
             </div>
         </div>
     </div>
