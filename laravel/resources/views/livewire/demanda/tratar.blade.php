@@ -1,7 +1,7 @@
 <div>
     <div class="modal-header">
         <h4 class="modal-title w-100 text-caixaAzul text-futurabold" id="modal_tratar_demanda">
-            Atender Demanda
+            @if($demanda && !$demanda->resposta)Atender @else Visualizar @endif Demanda
         </h4>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
@@ -18,24 +18,44 @@
             <form>
                 <input type="hidden" wire:model.defer="demanda_id" name="demanda_id" />
                 <div class="form-row">
-                    <div class="mb-3 col-md-12 ">
+                    <div class="mb-3 col-md-4 ">
                         <label class="active">Demanda:</label>
-                        <span class="text-caixaAzul d-block"></span>
+                        <span class="text-caixaAzul d-block">{{ optional($demanda->sistema)->nome }}</span>
+                    </div>
+                    <div class="mb-3 col-md-4 ">
+                        <label class="active">Unidade:</label>
+                        <span class="text-caixaAzul d-block">{{ optional($demanda->unidade)->nome_completo }}</span>
+                    </div>
+                    <div class="mb-3 col-md-4 ">
+                        <label class="active">Responsável:</label>
+                        <span class="text-caixaAzul d-block">{{ optional($demanda->responsavel)->name }}</span>
                     </div>
                 </div>
                 <div class="form-row">
                     <div class="mb-3 col-md-12 ">
                         <label class="active">Questionamento:</label>
-                        <span class="text-caixaAzul d-block"></span>
+                        <b>
+                            <span class="text-caixaAzul d-block font-weight-bold">
+                                {{ $demanda->solicitacao }}
+                            </span>
+                        </b>
                     </div>
                 </div>
                 <div class="form-row">
                     <div class="mb-3 col-md-12 ">
-                        <label class="active">Descrição</label>
-                        <textarea wire:model.debounce.defer="descricao" wire:loading.attr="disabled"
-                            class="form-control @error('descricao') is-invalid @enderror"
-                            id="exampleFormControlTextarea5" rows="3"></textarea>
-                        @error('descricao') <div class="invalid-feedback is-invalid">{{ $message }}</div>@enderror
+                        <label class="active">Resposta</label>
+                        @if($demanda && !$demanda->resposta)
+                        <textarea wire:model.debounce.defer="demanda.resposta" wire:loading.attr="disabled"
+                            class="form-control @error('demanda.resposta') is-invalid @enderror" rows="3"></textarea>
+                        @error('demanda.resposta') <div class="invalid-feedback is-invalid">{{ $message }}</div>
+                        @enderror
+                        @else
+                        <b>
+                            <span class="text-caixaAzul d-block font-weight-bold">
+                                {{ $demanda->resposta }}
+                            </span>
+                        </b>
+                        @endif
                     </div>
                 </div>
             </form>
@@ -45,8 +65,10 @@
         <div class="d-inline-block">
             <button wire:loading.attr="disabled" type="button" class="btn btn-secondary btn-sm"
                 data-dismiss="modal">Fechar</button>
+                @if(!$demanda->resposta)
             <button wire:click.prevent="salvar" wire:loading.attr="disabled" type="button"
                 class="btn btn-primary btn-sm">Gravar</button>
+                @endif
         </div>
     </div>
 </div>

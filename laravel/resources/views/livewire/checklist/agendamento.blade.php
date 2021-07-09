@@ -22,8 +22,11 @@
                             wire:model.debounce.defer="agendamento_id" wire:loading.attr="disabled" required>
                             <option value="" selected>Selecione o agendamento</option>
                             @forelse($agendamentos as $agendamento)
-                                <option value="{{ $agendamento->id }}">{{ $agendamento->data_completa }} -
-                                    {{ $agendamento->unidade->nome_completo }}</option>
+                                <option value="{{ $agendamento->id }}">
+                                    {{ $agendamento->final != $agendamento->inicio ? $agendamento->inicio . ' a ' . $agendamento->final : $agendamento->inicio }}
+                                    -
+                                    {{ $agendamento->tipoPv ? $agendamento->tipoPv . ' ' . $agendamento->nome : $agendamento->tipo . ' ' . $agendamento->nome }}
+                                </option>
                             @empty
                                 <option value="" disabled>Nenhum agendamento encontrado.</option>
                             @endforelse

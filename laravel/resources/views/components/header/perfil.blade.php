@@ -17,7 +17,7 @@
     <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle hidden-arrow d-flex align-items-center" href="#" id="navbarDropdownMenuLink"
             role="button" data-toggle="dropdown" aria-expanded="false" aria-haspopup="true" aria-expanded="false">
-            <img @if (Auth::user()->is_simulado) src="{{ asset('images/semfoto_red.png') }}" @else src="http://tedx.caixa/lib/asp/foto.asp?matricula={{ Auth::user()->matricula }}" alt="{{ Str::title(Auth::user()->name) }}" onerror="this.onerror=null; this.src='{{ asset('images/semfoto.png') }}'" @endif class="rounded-circle  @if (Auth::user()->is_admin)
+            <img @if (Auth::user()->is_simulado) src="{{ asset('images/semfoto_red.png') }}" @else src="http://tedx.caixa/lib/asp/foto.asp?matricula={{ Auth::user()->matricula }}" alt="{{ Str::title(Auth::user()->name) }}" onerror="this.onerror=null; this.src='{{ asset('images/semfoto.png') }}'" @endif class="rounded-circle      @if (Auth::user()->is_admin)
             border border-warning @endif @if (Auth::user()->is_simulado) border
                 border-danger @endif"
                 height="20"
@@ -65,18 +65,18 @@
         </div>
     </li>
     <!--
-    <ul class="navbar-nav ml-auto nav-flex-icons">
-        <li class="nav-item avatar dropdown">
-          <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink-55" data-toggle="dropdown"
-            aria-haspopup="true" aria-expanded="false">
-            <img src="http://tedx.caixa/lib/asp/foto.asp?matricula={{ Auth::user()->matricula }}" alt="{{ Str::title(Auth::user()->name) }}" onerror="this.onerror=null; this.src='{{ asset('images/semfoto.png') }}'" class="rounded-circle z-depth-0"
-              alt="avatar image">
-          </a>
-          <div class="dropdown-menu dropdown-menu-lg-right dropdown-secondary"
-            aria-labelledby="navbarDropdownMenuLink-55">
+                    <ul class="navbar-nav ml-auto nav-flex-icons">
+                        <li class="nav-item avatar dropdown">
+                          <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink-55" data-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="false">
+                            <img src="http://tedx.caixa/lib/asp/foto.asp?matricula={{ Auth::user()->matricula }}" alt="{{ Str::title(Auth::user()->name) }}" onerror="this.onerror=null; this.src='{{ asset('images/semfoto.png') }}'" class="rounded-circle z-depth-0"
+                              alt="avatar image">
+                          </a>
+                          <div class="dropdown-menu dropdown-menu-lg-right dropdown-secondary"
+                            aria-labelledby="navbarDropdownMenuLink-55">
 
-          </div>
-        </li>
-    </ul>
-    ->
+                          </div>
+                        </li>
+                    </ul>
+                    ->
 @endauth

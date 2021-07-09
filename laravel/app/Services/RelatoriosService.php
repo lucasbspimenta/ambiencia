@@ -37,7 +37,7 @@ class RelatoriosService
         }
 
         $sql_filtro_usuario = '';
-        if (!($usuario->is_matriz)) {
+        if (!($usuario->is_gestor)) {
             $sql_filtro_usuario = " AND (und_resp.matricula = '" . $usuario->matricula . "' OR supervisor = '" . $usuario->matricula . "' OR coordenador = '" . $usuario->matricula . "')";
         }
 
@@ -67,7 +67,7 @@ class RelatoriosService
                 WHERE ck_item.item_pai_id IS NOT NULL AND ck_item.situacao = 1
                 ORDER BY CAST(COALESCE(total_inconforme_item,0.00) * 100 / COALESCE(NULLIF(SUM(total_inconforme_item) OVER (),0),1) as decimal(12,2)) DESC, ck_item.id ASC
         ";
-
+        //dd($sql);
         $dados = DB::select($sql);
         return collect($dados);
     }
@@ -89,7 +89,7 @@ class RelatoriosService
         }
 
         $sql_filtro_usuario = '';
-        if (!($usuario->is_matriz)) {
+        if (!($usuario->is_gestor)) {
             $sql_filtro_usuario = " AND (und_resp.matricula = '" . $usuario->matricula . "' OR supervisor = '" . $usuario->matricula . "' OR coordenador = '" . $usuario->matricula . "')";
         }
 

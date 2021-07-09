@@ -1,9 +1,7 @@
 <?php
 
 use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Schema;
 
 class CreateViewRelatorioChecklistPreenchimento extends Migration
 {
@@ -25,9 +23,9 @@ class CreateViewRelatorioChecklistPreenchimento extends Migration
         , COUNT(relbase.id)  as total
         ,percentual_respondido = (CAST(SUM(respondido) * 100.00 / COUNT(relbase.id) as decimal(16,2)) - CASE WHEN relbase.concluido = 0 AND SUM(respondido) > 0 THEN 0.01 ELSE 0 END)
         FROM [relatorio_base_respostas] relbase
-        JOIN [unidades_responsavel] uu ON uu.unidade_id = relbase.unidade_id
-        JOIN [agendamentos] age ON age.id = relbase.agendamento_id
-        GROUP BY 
+        --JOIN [unidades_responsavel] uu ON uu.unidade_id = relbase.unidade_id
+        --JOIN [agendamentos] age ON age.id = relbase.agendamento_id
+        GROUP BY
         [checklist_id]
         ,relbase.concluido
               ");

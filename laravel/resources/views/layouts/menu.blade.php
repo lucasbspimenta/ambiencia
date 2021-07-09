@@ -2,13 +2,13 @@
     <ul class="navbar-nav mr-auto">
         <x-header.menuitem nome='Painel' nomerota='index' icone='chalkboard' badge='' />
         <x-header.menuitem nome='Agenda' nomerota='agenda' icone='calendar-alt' badge='' />
+        <x-header.menuitem nome='Checklists' nomerota='checklist.index' icone='clipboard-check' badge='' />
         <li class="nav-item {{ request()->routeIs('demandas.index') ? 'active' : '' }}">
             <a class="nav-link " href="{{ route('demandas.index') }}">
                 Demandas
-                <span class="badge badge-danger">0</span>
+                <livewire:demanda.badge-tratar/>
             </a>
         </li>
-        <x-header.menuitem nome='Checklists' nomerota='checklist.index' icone='clipboard-check' badge='' />
         <x-header.menuitem nome='Guias' nomerota='guias.index' icone='book' badge='' />
         @if (Auth::check() && Auth::user()->is_admin)
             <x-header.menuitem nome='Administração' nomerota='index' icone='cogs' badge=''>

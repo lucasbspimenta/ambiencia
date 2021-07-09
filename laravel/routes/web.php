@@ -54,7 +54,9 @@ Route::middleware(['web', 'auth.caixa'])->group(function () {
         Route::get('agendamentos/tipo/{tipo}', [AgendamentoAPIController::class, 'indexPorTipo'])->name('agendamentostipo');
         Route::post('/agendamento/atualizar', [AgendamentoController::class, 'update'])->name('agendamento_update');
 
+        Route::get('demandas/tratar', [DemandaAPIController::class, 'tratar'])->name('demandastratar');
         Route::get('demandas/{finalizados?}', [DemandaAPIController::class, 'index'])->name('demandasapi');
+
     });
 
     Route::prefix('administracao')->name('adm.')->middleware(['admin'])->group(function () {

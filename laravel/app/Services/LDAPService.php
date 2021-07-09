@@ -24,32 +24,34 @@ class LDAPService
 
             $searchHandle = ldap_search($ldapHandle, $searchBase, $searchFilter);
 
-            if(!$searchHandle)
+            if (!$searchHandle) {
                 return null;
-                //throw new Exception("Servidor de Autenticação Indisponível (LDAP: erro na consulta)");
+            }
+
+            //throw new Exception("Servidor de Autenticação Indisponível (LDAP: erro na consulta)");
 
             $resultados = ldap_get_entries($ldapHandle, $searchHandle);
 
-            if($resultados['count'] != 1)
+            if ($resultados['count'] != 1) {
                 return null;
-                //throw new Exception("Usuário não localizado. Verifique a matrícula informada.");
+            }
+
+            //throw new Exception("Usuário não localizado. Verifique a matrícula informada.");
 
             $usuario = $resultados[0];
 
             $object = new stdClass();
 
             $object->name = trim(strtoupper($usuario['no-usuario'][0]));
-            $object->matricula   = trim(strtoupper($usuario['co-usuario'][0]));
+            $object->matricula = trim(strtoupper($usuario['co-usuario'][0]));
             $object->fisica = intval($usuario['nu-lotacaofisica'][0]);
             $object->unidade = intval($usuario['co-unidade'][0]);
-            $object->funcao = trim(strtoupper($usuario['no-funcao'][0]));
+            $object->funcao = trim(strtoupper($usuario['no-funcao'][0] ?? ''));
             $object->cargo = trim(strtoupper($usuario['no-cargo'][0]));
             $object->email = trim(strtoupper($usuario['mail'][0]));
 
             return $object;
-        }
-        catch (Exception $e)
-        {
+        } catch (Exception $e) {
             Log::info($e->getMessage());
             return null;
             //throw new Exception("Erro no acesso ao LDAP");

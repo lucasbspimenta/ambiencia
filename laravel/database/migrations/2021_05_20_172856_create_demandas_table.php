@@ -50,6 +50,17 @@ class CreateDemandasTable extends Migration
 
             ALTER TABLE [dbo].[demandas] DROP CONSTRAINT DFT_demandas_TimeStart, DFT_demandas_TimeEnd;
             ALTER TABLE [dbo].[demandas]  SET ( SYSTEM_VERSIONING = ON ( HISTORY_TABLE = [dbo].[demandas_history] ) );
+
+            CREATE NONCLUSTERED INDEX [IX_demandas_TStart_TEnd] ON [dbo].[demandas]
+            (
+                [TimeStart] ASC,
+                [TimeEnd] ASC
+            );
+
+            CREATE NONCLUSTERED INDEX [IX_demandas_unidade] ON [dbo].[demandas]
+            (
+                [unidade_id] ASC
+            );
         ");
     }
 

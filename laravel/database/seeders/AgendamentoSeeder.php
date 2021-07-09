@@ -19,7 +19,8 @@ class AgendamentoSeeder extends Seeder
         foreach ($agentes as $agente) {
             echo 'Agentes: ' . $agente->name . PHP_EOL;
 
-            $unidades = $agente->unidades()->take(50)->get()->toArray();
+            //$unidades = $agente->unidades()->take(1)->get()->toArray();
+            $unidades = $agente->unidades()->get()->toArray();
 
             echo 'Unidades: ' . sizeof($unidades) . PHP_EOL;
 
@@ -27,7 +28,8 @@ class AgendamentoSeeder extends Seeder
                 //$unidades_selecionadas = array_rand($unidades, 20);
 
                 foreach ($unidades as $idx => $unidade) {
-                    $data = $faker->dateTimeBetween($startDate = '-90 days', $endDate = '+90 days', $timezone = null)->format('Y-m-d');
+                    //$data = $faker->dateTimeBetween($startDate = '-90 days', $endDate = '+90 days', $timezone = null)->format('Y-m-d');
+                    $data = $faker->dateTimeBetween($startDate = '-6 days', $endDate = 'tomorrow', $timezone = null)->format('Y-m-d');
 
                     $agendamento = [
                         'unidade_id' => $unidade['id'],

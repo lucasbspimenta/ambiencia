@@ -20,28 +20,46 @@
     </div>
     <div class="col-5">
         <div class="btn-group btn-group-sm" data-toggle="buttons">
-
             <span @if ($resposta->demandas->count() > 0) data-tippy-content="Existem demandas vinculadas" @endif>
                 <label
-                    class="btn btn-light-blue btn-sm form-check-label {{ !is_null($resposta->resposta) && $resposta->resposta == 0 ? 'active' : '' }} @if ($resposta->demandas->count() > 0) disabled
-                    btn-group-checklist-disabled @endif" >
+                    @if($resposta->checklist->agendamento->inicio_americano > date('Y-m-d')) disabled @endif
+                    class="btn btn-light-blue btn-sm form-check-label 
+                        {{ !is_null($resposta->resposta) && $resposta->resposta == 0 ? 'active' : '' }} 
+                        @if ($resposta->demandas->count() > 0) disabled btn-group-checklist-disabled @endif
+                        @if($resposta->checklist->agendamento->inicio_americano > date('Y-m-d')) disabled btn-group-checklist-disabled @endif
+                        ">
                     <input wire:model="resposta.resposta" value="0" class="form-check-input" type="radio"
                         name="resposta_{{ $resposta->id }}" id="resposta_{{ $resposta->id }}_opt_1"
-                        {{ !is_null($resposta->resposta) && $resposta->resposta == 0 ? 'checked' : '' }} @if ($resposta->demandas->count() > 0) disabled @endif>
+                        {{ !is_null($resposta->resposta) && $resposta->resposta == 0 ? 'checked' : '' }} 
+                        @if ($resposta->demandas->count() > 0) disabled @endif
+                        @if($resposta->checklist->agendamento->inicio_americano > date('Y-m-d')) disabled @endif
+                        >
                     N/A
                 </label>
             </span>
             <label
-                class="btn btn-light-blue btn-sm form-check-label {{ !is_null($resposta->resposta) && $resposta->resposta == 1 ? 'active' : '' }} @if ($resposta->demandas->count() > 0) disabled btn-group-checklist-disabled @endif" >
+                class="btn btn-light-blue btn-sm form-check-label 
+                    {{ !is_null($resposta->resposta) && $resposta->resposta == 1 ? 'active' : '' }} 
+                    @if ($resposta->demandas->count() > 0) disabled btn-group-checklist-disabled @endif
+                    @if($resposta->checklist->agendamento->inicio_americano > date('Y-m-d')) disabled btn-group-checklist-disabled @endif"
+                     >
                 <input wire:model="resposta.resposta" value="1" class="form-check-input" type="radio"
                     name="resposta_{{ $resposta->id }}" id="resposta_{{ $resposta->id }}_opt_2"
-                    {{ !is_null($resposta->resposta) && $resposta->resposta == 1 ? 'checked' : '' }} @if ($resposta->demandas->count() > 0) disabled @endif> Conforme
+                    {{ !is_null($resposta->resposta) && $resposta->resposta == 1 ? 'checked' : '' }} 
+                    @if ($resposta->demandas->count() > 0) disabled @endif
+                    @if($resposta->checklist->agendamento->inicio_americano > date('Y-m-d')) disabled @endif
+                    > Conforme
             </label>
             <label
-                class="btn btn-light-blue btn-sm form-check-label {{ !is_null($resposta->resposta) && $resposta->resposta == -1 ? 'active' : '' }}">
+                @if($resposta->checklist->agendamento->inicio_americano > date('Y-m-d')) disabled @endif
+                class="btn btn-light-blue btn-sm form-check-label {{ !is_null($resposta->resposta) && $resposta->resposta == -1 ? 'active' : '' }}
+                @if($resposta->checklist->agendamento->inicio_americano > date('Y-m-d')) disabled btn-group-checklist-disabled @endif"
+                >
                 <input wire:model="resposta.resposta" value="-1" class="form-check-input" type="radio"
                     name="resposta_{{ $resposta->id }}" id="resposta_{{ $resposta->id }}_opt_3"
-                    {{ !is_null($resposta->resposta) && $resposta->resposta == -1 ? 'checked' : '' }}> Inconforme
+                    {{ !is_null($resposta->resposta) && $resposta->resposta == -1 ? 'checked' : '' }}
+                    @if($resposta->checklist->agendamento->inicio_americano > date('Y-m-d')) disabled @endif
+                    > Inconforme
             </label>
         </div>
     </div>

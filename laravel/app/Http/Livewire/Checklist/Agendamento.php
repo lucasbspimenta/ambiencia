@@ -43,7 +43,7 @@ class Agendamento extends Component
         $this->reset();
 
         $agendamentoService = new AgendamentoService();
-        $this->agendamentos = $agendamentoService->agendamentosSemChecklist();
+        //$this->agendamentos = $agendamentoService->agendamentosSemChecklist();
     }
 
     public function salvar()

@@ -346,11 +346,11 @@
             $('#modal_agenda').modal('show');
         }
 
-        function excluirAgendamento(agendaId) {
+        function excluirAgendamento(agendaId, temChecklist) {
 
             Swal.fire({
                 title: 'Você tem certeza?',
-                text: "O agendamento será excluído",
+                text: (temChecklist) ? "O agendamento será excluído juntamento com o checklist vinculado a ele" : "O agendamento será excluído",
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#d33',

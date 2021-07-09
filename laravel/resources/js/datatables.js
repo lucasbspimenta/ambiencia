@@ -50,6 +50,32 @@ window.DATATABLES_RENDER_SITUACAO_DEMANDA = (data, type, row, meta) => {
     return  data;
 }
 
+window.DATATABLES_RENDER_SITUACAO_DEMANDA_TRATAR = (data, type, row, meta) => {
+    if(row['respondida'])
+    {
+        switch(data)
+        {
+            case 'A':
+                return `<span class="badge badge-light">Aguardando finalização checklist vinculado</span>`;
+                break;
+
+            case 'P':
+                return `<span class="badge badge-light">Aguardando integração</span>`;
+                break;
+
+            case 'C':
+                return `<span class="badge badge-success">Respondida</span>`;
+                break;
+        }
+    }
+    else
+    {
+        return `<span class="badge badge-light">Aguardando resposta</span>`;
+    }
+
+    return  data;
+}
+
 window.DATATABLES_TIPO_AGENDAMENTO = (data, type, row, meta) => {
 
     if(typeof data == "object")

@@ -16,7 +16,17 @@
                     class="btn btn-sm btn-secondary ">
                     <i class="fas fa-chevron-left"></i> Voltar
                 </a>
-                <livewire:checklist.botao-finalizar :checklist=$checklist />
+                @if($checklist->agendamento->inicio_americano <= date('Y-m-d'))
+                    <livewire:checklist.botao-finalizar :checklist=$checklist />
+                @else
+                <div style="width: 190px" class="ml-3 align-middle">
+                    <div data-tippy-content="Você só pode responder o checklist após a data do agendamento"  >
+                        <button disabled type="button" class="btn btn-default btn-sm" >
+                            Visita não realizada
+                        </button>
+                    </div>
+                </div>
+                @endif
             </div>
         </div>
         <hr class="mt-2 mb-3" />
@@ -38,9 +48,11 @@
                         </div>
                         <div class="card-body collapse p-3 show" id="fotos">
                             <div class="d-flex justify-content-start flex-wrap">
-                                @foreach ($checklist->fotosObrigatorias as $key => $resposta)
-                                    <livewire:checklist.foto :resposta=$resposta :wire:key="'foto-'.$resposta->id" />
-                                @endforeach
+                                @if($checklist->agendamento->inicio_americano <= date('Y-m-d')) 
+                                    @foreach ($checklist->fotosObrigatorias as $key => $resposta)
+                                        <livewire:checklist.foto :resposta=$resposta :wire:key="'foto-'.$resposta->id" />
+                                    @endforeach
+                                @endif
                             </div>
                         </div>
                     </div>
@@ -51,7 +63,9 @@
                         Demandas vinculadas
                     </div>
                     <div class="card-body collapse p-1 show" id="demandas">
-                        <livewire:demanda.vinculadas :checklist=$checklist />
+                        @if($checklist->agendamento->inicio_americano <= date('Y-m-d')) 
+                            <livewire:demanda.vinculadas :checklist=$checklist />
+                        @endif
                     </div>
                 </div>
                 <div class="modal fade" id="modal_demanda" tabindex="-1" role="dialog" aria-labelledby="modal_demanda"

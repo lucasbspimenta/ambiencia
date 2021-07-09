@@ -9,6 +9,8 @@
                     <span class="mr-1"
                         style="clip-path: polygon(100% 0, 0 100%, 100% 100%); background-color: #fd7e14; width: 18px; height: 18px; display: inline-block;"></span>
                     Checklist - {{ $checklist->agendamento->unidade->nome_completo }}
+                    <small style="font-size: 12px;" class="text-black-50 text-small ml-1"> -
+                        {{ $checklist->agendamento->unidade->responsavel->nome_responsavel }}</small>
                 </h4>
             </div>
             <div class="col d-flex justify-content-end">
@@ -126,7 +128,8 @@
                                         <div class="w-100">
                                             <small
                                                 class="d-block mb-1 text-caixaAzul">{{ $demanda->sistema->nome }}</small>
-                                            <small class="d-block text-black-50">{{ $demanda->sistema_item->nome }}</small>
+                                            <small
+                                                class="d-block text-black-50">{{ $demanda->sistema_item->nome }}</small>
                                         </div>
                                         <div class="flex-shrink-1">
                                             @if (trim($demanda->migracao) == 'P')

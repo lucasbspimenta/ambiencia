@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Demanda;
+use App\Models\DemandaTratar;
 use Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
@@ -57,7 +58,7 @@ class DemandaService
                 WHERE 1=1
         ";
 
-        if (!($usuario->is_matriz)) {
+        if (!($usuario->is_gestor)) {
             $sql .= " AND (responsavel = '" . $usuario->matricula . "' OR supervisor = '" . $usuario->matricula . "' OR coordenador = '" . $usuario->matricula . "')";
         }
 
@@ -70,5 +71,53 @@ class DemandaService
         $dados = DB::select($sql);
 
         return collect($dados);
+    }
+
+    public function tratar($contarPendentes = false)
+    {
+        $usuario = Auth::user();
+
+        $sql = "SELECT
+                    *
+                FROM [demandas_a_tratar]
+                WHERE 1=1
+        ";
+
+        if (!($usuario->is_gestor)) {
+            $sql .= " AND (responsavel = '" . $usuario->matricula . "' OR supervisor = '" . $usuario->matricula . "' OR coordenador = '" . $usuario->matricula . "')";
+        }
+
+        if ($contarPendentes) {
+            $sql = str_ireplace('*', 'count(id) as total', $sql);
+            $sql .= ' AND resposta IS NULL';
+        } else {
+            $sql .= " ORDER BY id DESC";
+        }
+
+        $dados = DB::select($sql);
+
+        return collect($dados);
+    }
+
+    public static function processaDemandaTratada(DemandaTratar $demanda)
+    {
+        if (!is_null($demanda->resposta) && is_numeric($demanda->demanda_id) && $demanda->sistema && $demanda->sistema->conexao) {
+            try {
+                DB::connection($demanda->sistema->conexao)->beginTransaction();
+                DB::connection($demanda->sistema->conexao)->select("UPDATE WF_ENG_PAR_PARECERES SET ENG_SUB_ESC_RESPOSTA = '" . trim($demanda->resposta) . "' WHERE FK_DEM_ID = '" . $demanda->demanda_id . "' ");
+                DB::connection($demanda->sistema->conexao)->commit();
+
+                $demanda->migracao = 'C';
+                $demanda->save();
+
+                return true;
+            } catch (\Throwable $th) {
+                DB::connection($demanda->sistema->conexao)->rollBack();
+                throw new \Exception($th->getMessage(), 1);
+                return false;
+            }
+        } else {
+            return false;
+        }
     }
 }

@@ -1,0 +1,1 @@
+<span wire:poll.5000ms="atualizarPendentes" class="badge @if($pendentes > 0) badge-danger @else badge-success @endif">{{ $pendentes }}</span>

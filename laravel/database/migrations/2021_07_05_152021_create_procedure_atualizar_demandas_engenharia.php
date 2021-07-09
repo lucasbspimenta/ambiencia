@@ -27,7 +27,7 @@ class CreateProcedureAtualizarDemandasEngenharia extends Migration
                 SELECT
                     [DEM_LINK]
                     ,[DEM_SIT_NOME]
-                    ,NULL -- DATA PRAZO
+                    ,[ETR_DATA_TERMINO_VIGENTE] -- DATA PRAZO
                     ,NULL -- DATA CONCLUSAO
                     ,[ENG_PARECER]
                 FROM [ATENDIMENTO].[dbo].[WF_VW_ENG_PARECERES]

@@ -45,6 +45,7 @@ class ChecklistService
     {
         return Checklist::join('relatorio_checklist_preenchimento', 'relatorio_checklist_preenchimento.checklist_id', '=', 'checklists.id')
             ->join('agendamentos', 'checklists.agendamento_id', '=', 'agendamentos.id')
+            ->join('agendamento_tipos', 'agendamentos.agendamento_tipos_id', '=', 'agendamento_tipos.id')
             ->join('unidades', 'unidades.id', '=', 'agendamentos.unidade_id')
             ->leftJoin('checklist_demandas_andamento', 'checklists.id', '=', 'checklist_demandas_andamento.checklist_id')
             ->select(
@@ -54,6 +55,7 @@ class ChecklistService
                 , DB::raw('percentual_respondido as percentual_preenchimento_sql')
                 , DB::raw('agendamentos.inicio as agendamento_inicio')
                 , DB::raw('agendamentos.final as agendamento_final')
+                , DB::raw('agendamento_tipos.com_checklist as agendamento_com_checklist')
                 , DB::raw('unidades.nome as unidade_nome')
                 , DB::raw('unidades.tipoPv as unidade_tipoPv')
                 , DB::raw('CAST(COALESCE(((checklist_demandas_andamento.total_finalizada * 100.00)/checklist_demandas_andamento.total_demandas),0.00) as decimal(8,2)) as percentual_demandas')
@@ -79,6 +81,7 @@ class ChecklistService
         }
 
         if (env('MIGRAR_DEMANDAS') && env('MIGRAR_DEMANDAS') == 1) {
+
             self::processaDemandas($checklist);
         }
 
@@ -103,7 +106,11 @@ class ChecklistService
 
     public static function processaDemandas(Checklist $checklist)
     {
-        if ($checklist->concluido && $checklist->demandas && sizeof($checklist->demandas) > 1) {
+        $checklist->refresh();
+        $checklist->loadMissing('demandas');
+        //dd($checklist->concluido, $checklist->demandas, sizeof($checklist->demandas));
+
+        if ($checklist->concluido && $checklist->demandas && sizeof($checklist->demandas) > 0) {
 
             $checklist->demandas->map(function ($demanda) {DemandaService::processa($demanda);});
 

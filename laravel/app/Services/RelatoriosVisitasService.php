@@ -75,7 +75,7 @@ class RelatoriosVisitasService
 
         $where = '';
 
-        if (!($usuario->is_matriz)) {
+        if (!($usuario->is_gestor)) {
             $sql .= " WHERE (responsavel = '" . $usuario->matricula . "' OR supervisor = '" . $usuario->matricula . "' OR coordenador = '" . $usuario->matricula . "')";
         }
 
@@ -143,7 +143,7 @@ class RelatoriosVisitasService
                 ) dados
         ";
 
-        if (!($usuario->is_matriz)) {
+        if (!($usuario->is_gestor)) {
             $sql .= " WHERE (responsavel = '" . $usuario->matricula . "' OR supervisor = '" . $usuario->matricula . "' OR coordenador = '" . $usuario->matricula . "')";
         }
 

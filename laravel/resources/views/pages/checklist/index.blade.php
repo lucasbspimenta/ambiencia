@@ -75,14 +75,18 @@
 
             let renderBotoesEditarExluir = (data, type, row, meta) => {
                 let saida = '';
+                let botao_excluir = '';
                 if (row.concluido == 1) {
                     saida = `<div class="d-flex justify-content-around">
                         <a href="{{ route('checklist.index') }}/${row.id}" role="button" class="m-0 btn btn-xs btn-primary"><i class="fa fa-eye" aria-hidden="true"></i></a>
                     </div>`;
                 } else {
+                    if(row.pode_excluir)
+                        botao_excluir = `<button onclick="excluirChecklist(${row.id})" type="button" class="m-0 btn btn-xs btn-danger"><i class="fa fa-trash" aria-hidden="true"></i></button>`;
+
                     saida = `<div class="d-flex justify-content-around">
                         <button onclick="redirecionaChecklist(${row.id})" type="button" class="m-0 btn btn-xs btn-primary"><i class="fa fa-edit" aria-hidden="true"></i></button>
-                        <button onclick="excluirChecklist(${row.id})" type="button" class="m-0 btn btn-xs btn-danger"><i class="fa fa-trash" aria-hidden="true"></i></button>
+                        ${botao_excluir}
                     </div>`;
                 }
 

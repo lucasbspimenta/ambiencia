@@ -49,7 +49,7 @@ class UsuarioUnidadeScope implements Scope
             ->join('unidades_responsavel', function ($join) use ($campo_model, $campo_tabela) {
                 $usuario = Auth::user();
 
-                if ($usuario->is_admin || $usuario->is_matriz) {
+                if ($usuario->is_admin || $usuario->is_gestor) {
                     $join->on($campo_model, '=', $campo_tabela);
                 } else {
                     $join->on($campo_model, '=', $campo_tabela)

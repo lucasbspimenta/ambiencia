@@ -74,7 +74,7 @@ class RelatoriosAgendamentosService
 
         $where = '';
 
-        if (!($usuario->is_matriz)) {
+        if (!($usuario->is_gestor)) {
             $sql .= " AND (responsavel = '" . $usuario->matricula . "' OR supervisor = '" . $usuario->matricula . "' OR coordenador = '" . $usuario->matricula . "')";
         }
 

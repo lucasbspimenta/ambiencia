@@ -53,16 +53,19 @@ class RelatoriosChecklistsService
                 WHERE chk.deleted_at IS NULL
             ) dados
             WHERE percentual_respondido < 100
-            AND ([inicio] BETWEEN '" . $data_inicial->format('Y-m-d') . "' AND '" . $data_final->format('Y-m-d') . "' OR [final] BETWEEN '" . $data_inicial->format('Y-m-d') . "' AND '" . $data_final->format('Y-m-d') . "')
+            AND inicio <= GETDATE()
+            AND (([inicio] BETWEEN '" . $data_inicial->format('Y-m-d') . "' AND '" . $data_final->format('Y-m-d') . "' OR [final] BETWEEN '" . $data_inicial->format('Y-m-d') . "' AND '" . $data_final->format('Y-m-d') . "'))
         ";
 
         $where = '';
 
-        if (!($usuario->is_matriz)) {
+        if (!($usuario->is_gestor)) {
             $sql .= " AND (responsavel = '" . $usuario->matricula . "' OR supervisor = '" . $usuario->matricula . "' OR coordenador = '" . $usuario->matricula . "')";
         }
 
         $sql .= " ORDER BY inicio ASC";
+
+        //ddd($sql, 'Morre diabo');
 
         $dados = DB::select($sql);
 

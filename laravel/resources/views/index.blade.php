@@ -23,6 +23,7 @@
         <div class="mb-4 row">
             <div class="col-4 ">
                 <livewire:painel.proximos-agendamentos />
+
             </div>
             <div class="col-4">
                 <livewire:painel.checklists-pendentes />

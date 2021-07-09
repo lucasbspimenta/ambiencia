@@ -92,7 +92,16 @@ class AgendamentoService
 
     public function agendamentosSemChecklist()
     {
-        return Agendamento::with('unidade')->doesntHave('checklist')->get();
+        //return Agendamento::with('unidade')->doesntHave('checklist')->get();
+        return Agendamento::select('agendamentos.id', 'agendamentos.inicio', 'agendamentos.final', 'unidades.nome', 'unidades.tipoPv', 'unidades.tipo')
+            ->join('unidades', 'agendamentos.unidade_id', '=', 'unidades.id')
+            ->whereDate('inicio', '<=', date('Y-m-d'))
+            ->doesntHave('checklist')->get();
+    }
+
+    public function agendamentosSemChecklistCount()
+    {
+        return Agendamento::with('unidade')->whereDate('inicio', '<=', date('Y-m-d'))->doesntHave('checklist')->count();
     }
 
     public function todosCalendario($tipo = null)

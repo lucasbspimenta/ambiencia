@@ -19,6 +19,6 @@ class BotaoNovo extends Component
     public function atualizarBotaoIncluir()
     {
         $agendamentoService = new AgendamentoService();
-        $this->agendamentos_sem_checklist = $agendamentoService->agendamentosSemChecklist()->count();
+        $this->agendamentos_sem_checklist = $agendamentoService->agendamentosSemChecklistCount();
     }
 }

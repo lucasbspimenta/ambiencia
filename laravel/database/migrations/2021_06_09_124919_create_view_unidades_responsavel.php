@@ -17,7 +17,6 @@ class CreateViewUnidadesResponsavel extends Migration
             CREATE VIEW [unidades_responsavel]
             AS
             SELECT
-                DISTINCT
                 UPPER(RH_EMP_SEV.CO_MATRICULA) as matricula,
                 ATO_UNID.codigo as unidade_codigo,
                 ATO_UNID.id as unidade_id,

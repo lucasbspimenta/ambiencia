@@ -31,7 +31,8 @@ class CreateProcedureAtualizarDemandas extends Migration
             demanda_situacao = @demanda_situacao,
             demanda_prazo = @demanda_prazo,
             demanda_conclusao = @demanda_conclusao,
-            demanda_retorno = @demanda_retorno
+            demanda_retorno = @demanda_retorno,
+            updated_at = GETDATE()
             WHERE id = @demanda_id;
 
         END

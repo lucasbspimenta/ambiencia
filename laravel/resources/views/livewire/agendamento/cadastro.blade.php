@@ -56,6 +56,7 @@
                     <div class="col-md-12 mb-3 ">
                         <label class="active">Unidade</label>
                         <select class="browser-default custom-select @error('unidade_id') is-invalid @enderror"
+                            @if($agendamento_checklist_finalizado == true) disabled @endif
                             wire:model.debounce.defer="unidade_id" wire:loading.attr="disabled" required>
                             <option value="" selected>Selecione a unidade</option>
                             @forelse(App\Models\Unidade::select('id', 'codigo', 'tipoPv', 'unidades.nome')->orderBy('unidades.nome', 'ASC')->get() as $unidade)
@@ -66,7 +67,9 @@
                                 <option value="" disabled>Nenhuma unidade encontrada.</option>
                             @endforelse
                         </select>
-
+                        @if($agendamento_checklist_finalizado == true)
+                        <div class="invalid-feedback d-block">Unidade não pode ser alterada por ter checklist finalizado para este agendamento.</div>
+                        @endif
                         @error('unidade_id') <div class="invalid-feedback is-invalid">{{ $message }}</div>
                         @enderror
                     </div>
@@ -85,8 +88,8 @@
     </div>
     <div class="modal-footer justify-content-between">
         <div class="d-inline-block">
-            @if ($agendamento_id && !$agendamento_tem_checklist)
-                <button onclick="excluirAgendamento({{ $agendamento_id }})" type="button"
+            @if ($agendamento_id && $agendamento_checklist_finalizado == false)
+                <button onclick="excluirAgendamento({{ $agendamento_id }}, {{ $agendamento_tem_checklist }})" type="button"
                     class="btn btn-danger btn-sm float-left">Excluir agendamento</button>
             @endif
         </div>

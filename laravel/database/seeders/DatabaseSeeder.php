@@ -18,7 +18,7 @@ class DatabaseSeeder extends Seeder
         $this->call(ChecklistItemSeeder::class);
         $this->call(GuiasSeeder::class);
         $this->call(DemandaSistemasSeeder::class);
-        $this->call(AgendamentoSeeder::class);
-        $this->call(ChecklistPreenchimentoSeeder::class);
+        //$this->call(AgendamentoSeeder::class);
+        //$this->call(ChecklistPreenchimentoSeeder::class);
     }
 }

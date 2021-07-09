@@ -110,11 +110,21 @@ class Agendamento extends Model
             if ($model->tipo->com_checklist) {
                 Checklist::create(['agendamento_id' => $model->id]);
             }
-
         });
 
         static::updating(function ($model) {
             $model->updated_by = Auth::id();
+
+            if ($model->tipo->com_checklist) {
+                if (!Checklist::where('agendamento_id', $model->id)->exists()) {
+                    Checklist::create(['agendamento_id' => $model->id]);
+                }
+
+            }
+        });
+
+        static::deleting(function ($model) {
+            Checklist::where('agendamento_id', $model->id)->delete();
         });
 
     }

@@ -3,57 +3,67 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Auth;
 
 class Perfil extends Model
 {
     protected $table = 'usuario_perfil';
 
 //    public function usuario()
-//    {
-//        return $this->hasOne(User::class,'matricula','matricula');
-//    }
+    //    {
+    //        return $this->hasOne(User::class,'matricula','matricula');
+    //    }
 
-    public static function getIDsPorPerfilAttribute($perfil) {
+    public static function getIDsPorPerfilAttribute($perfil)
+    {
 
         $perfis = array(
             'agente' => explode(',', config('app.PERFIL_RELOG')),
             'gestor' => explode(',', config('app.PERFIL_GESTOR')),
             'admin' => explode(',', config('app.PERFIL_ADMIN')),
-            'matriz' => explode(',', config('app.PERFIL_MATRIZ'))
+            'matriz' => explode(',', config('app.PERFIL_MATRIZ')),
+            'filial_unidade' => explode(',', config('app.FILIAL_GESTOR')),
+            'filial_gestor' => explode(',', config('app.FILIAL_GESTOR_PERFIL')),
         );
 
         return $perfis[$perfil];
     }
 
-    public function getIsAdminAttribute() {
+    public function getIsAdminAttribute()
+    {
 
-        if(in_array($this->id, self::getIDsPorPerfilAttribute('admin')))
+        if (in_array($this->id, self::getIDsPorPerfilAttribute('admin'))) {
             return true;
+        }
 
         return false;
     }
 
-    public function getIsGestorAttribute() {
+    public function getIsGestorAttribute()
+    {
 
-        if(in_array($this->id, self::getIDsPorPerfilAttribute('gestor')))
+        if (in_array($this->id, self::getIDsPorPerfilAttribute('gestor'))) {
             return true;
+        }
 
         return false;
     }
 
-    public function getIsRelogAttribute() {
+    public function getIsRelogAttribute()
+    {
 
-        if(in_array($this->id, self::getIDsPorPerfilAttribute('agente')))
+        if (in_array($this->id, self::getIDsPorPerfilAttribute('agente'))) {
             return true;
+        }
 
         return false;
     }
 
-    public function getIsMatrizAttribute() {
+    public function getIsMatrizAttribute()
+    {
 
-        if(in_array($this->id, self::getIDsPorPerfilAttribute('matriz')))
+        if (in_array($this->id, self::getIDsPorPerfilAttribute('matriz'))) {
             return true;
+        }
 
         return false;
     }

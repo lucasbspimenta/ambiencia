@@ -11,7 +11,7 @@ class PainelController extends Controller
     public function index()
     {
         $user = Auth::user();
-        if (!$user->is_admin) {
+        if (!$user->is_gestor) {
             $responsaveis = UnidadeResponsavel::selectRaw('matricula,nome_responsavel,coordenador,coordenador_nome,supervisor,supervisor_nome,equipe_id,equipe_nome')
                 ->where('matricula', $user->matricula)
                 ->orWhere('coordenador', $user->matricula)

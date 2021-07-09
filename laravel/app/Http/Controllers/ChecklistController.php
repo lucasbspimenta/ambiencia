@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Checklist;
+use App\Models\UnidadeResponsavel;
 use App\Services\AgendamentoService;
 use App\Services\ChecklistItemService;
 use App\Services\ChecklistService;
@@ -69,8 +70,15 @@ class ChecklistController extends Controller
     public function edit(Checklist $checklist)
     {
         //app('debugbar')->disable();
+        $responsaveis = UnidadeResponsavel::where('unidade_id', $checklist->agendamento->unidade->id)->first();
+        $matriculas_responsaveis = [];
+        $matriculas_responsaveis[] = $checklist->agendamento->unidade->responsavel->matricula;
+        $matriculas_responsaveis[] = $responsaveis->coordenador;
+        $matriculas_responsaveis[] = $responsaveis->supervisor;
 
-        if ((boolean) $checklist->concluido || $checklist->agendamento->unidade->responsavel->matricula != Auth::user()->matricula) {
+        //dd($matriculas_responsaveis);
+
+        if ((boolean) $checklist->concluido || !in_array(Auth::user()->matricula, $matriculas_responsaveis)) {
             return redirect()->route('checklist.show', ['checklist' => $checklist->id]);
         }
 

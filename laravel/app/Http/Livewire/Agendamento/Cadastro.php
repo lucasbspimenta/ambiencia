@@ -1,7 +1,6 @@
 <?php
 
 namespace App\Http\Livewire\Agendamento;
-use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 use App\Models\Agendamento;
 use App\Services\AgendamentoService;
@@ -18,6 +17,7 @@ class Cadastro extends Component
     public $agendamento_tipos_id = '';
     public $descricao = '';
     public $agendamento_tem_checklist = false;
+    public $agendamento_checklist_finalizado = false;
 
     public $tiposagendamentos;
 
@@ -64,6 +64,7 @@ class Cadastro extends Component
             'unidade_id',
             'agendamento_tipos_id',
             'agendamento_tem_checklist',
+            'agendamento_checklist_finalizado',
         ]);
 
         //dd($this);
@@ -102,6 +103,7 @@ class Cadastro extends Component
         $this->unidade_id = $agendamento->unidade_id;
         $this->agendamento_tipos_id = $agendamento->agendamento_tipos_id;
         $this->agendamento_tem_checklist = $agendamento->checklist()->exists();
+        $this->agendamento_checklist_finalizado = ($this->agendamento_tem_checklist) ? (boolean) $agendamento->checklist->concluido : false;
 
     }
 

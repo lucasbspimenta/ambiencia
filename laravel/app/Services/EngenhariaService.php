@@ -29,7 +29,7 @@ class EngenhariaService
     public function executar()
     {
 
-        echo 'Migracao: ' . $this->demanda->migracao . PHP_EOL;
+        //echo 'Migracao: ' . $this->demanda->migracao . PHP_EOL;
 
         if (trim($this->demanda->migracao) == 'P') {
             $this->exportarDemanda();
@@ -57,7 +57,7 @@ class EngenhariaService
 
     protected function atualizarDemanda()
     {
-        DB::select("EXEC [ATUALIZA_DEMANDA_ENGENHARIA] ". $this->demanda->id ." " . $this->demanda->demanda_id); //select($this->procedure,)->insert($dados);
+        DB::select("EXEC [ATUALIZA_DEMANDA_ENGENHARIA] " . $this->demanda->id . " " . $this->demanda->demanda_id); //select($this->procedure,)->insert($dados);
     }
 
     protected function prepararDemanda()

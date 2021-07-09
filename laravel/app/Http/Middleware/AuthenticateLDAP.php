@@ -40,6 +40,10 @@ class AuthenticateLDAP
 
         if ($usuario) {
 
+            if (!$usuario->equipe) {
+                return response('Não existe equipe vinculada a sua matricula, verifique com o agente de RH', 403);
+            }
+
             if (!is_null($usuario->simulando) && User::where('matricula', '=', $usuario->simulando)->exists()) {
                 $usuario_simulador = $usuario;
                 $usuario = User::where('matricula', '=', $usuario->simulando)->first();
