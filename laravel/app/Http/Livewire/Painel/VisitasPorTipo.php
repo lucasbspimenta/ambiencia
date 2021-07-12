@@ -83,12 +83,12 @@ class VisitasPorTipo extends Component
         } else {
             if ($conta_unicos_equipe > 1) {
                 $this->visitas = $this->visitas->groupBy('equipe_nome');
-                $this->visitas->each(function ($item2, $key2) use ($key) {
+                $this->visitas->each(function ($item2, $key2) {
                     $this->contador_visitas_nivel['2|' . $key2] = $item2->groupBy('tipo_id')->map(function ($row) {
                         return $row->sum('total_tipo');
                     });
                     $this->visitas[$key2] = $item2->groupBy('supervisor_nome');
-                    $this->visitas[$key2]->each(function ($item3, $key3) use ($key, $key2) {
+                    $this->visitas[$key2]->each(function ($item3, $key3) use ($key2) {
                         $this->contador_visitas_nivel['3|' . $key3] = $item3->groupBy('tipo_id')->map(function ($row) {
                             return $row->sum('total_tipo');
                         });
@@ -103,7 +103,7 @@ class VisitasPorTipo extends Component
             } else {
                 if ($conta_unicos_supervisor > 1) {
                     $this->visitas = $this->visitas->groupBy('supervisor_nome');
-                    $this->visitas->each(function ($item3, $key3) use ($key, $key2) {
+                    $this->visitas->each(function ($item3, $key3) {
                         $this->contador_visitas_nivel['3|' . $key3] = $item3->groupBy('tipo_id')->map(function ($row) {
                             return $row->sum('total_tipo');
                         });
