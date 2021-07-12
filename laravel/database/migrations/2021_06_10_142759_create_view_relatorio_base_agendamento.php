@@ -1,8 +1,6 @@
 <?php
 
 use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Support\Facades\Schema;
 
 class CreateViewRelatorioBaseAgendamento extends Migration
 {
@@ -22,8 +20,8 @@ class CreateViewRelatorioBaseAgendamento extends Migration
               ,uresp.unidade_codigo
               ,uresp.sev_codigo as sev_codigo
               , uresp.matricula as responsavel
-              , equip.id as equipe_id
-              , equip.nome as equipe_nome
+              , uresp.equipe_id as equipe_id
+              , uresp.equipe_nome as equipe_nome
               , uresp.coordenador
               , uresp.supervisor
               ,visitado = CASE WHEN [final] < GETDATE() THEN 1 ELSE 0 END
@@ -32,7 +30,6 @@ class CreateViewRelatorioBaseAgendamento extends Migration
               ,[inicio] as agendamento_inicio
               ,[final] as agendamento_final
             FROM [unidades_responsavel] uresp
-            JOIN [equipe_unidades] equip ON uresp.unidade_id = equip.unidade_id
             LEFT JOIN [agendamentos] age ON age.unidade_id = uresp.unidade_id
         ");
     }
