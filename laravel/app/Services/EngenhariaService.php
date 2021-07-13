@@ -14,7 +14,7 @@ class EngenhariaService
 
     protected $campos = array(
         'fk_dem_origem_id' => array('obrigatorio' => true, 'metodo' => '$this->demanda->id')
-        , 'fk_unidade' => array('obrigatorio' => true, 'metodo' => '$this->demanda->unidade_id')
+        , 'fk_unidade' => array('obrigatorio' => true, 'metodo' => '$this->demanda->unidade->codigo')
         , 'matr_criacao' => array('obrigatorio' => true, 'metodo' => '$this->demanda->responsavel->matricula ?? Auth::user()->matricula')
         , 'fk_eng_tdem_id' => array('obrigatorio' => true, 'metodo' => '$this->demanda->sistema_item_id')
         , 'dem_desc' => array('obrigatorio' => true, 'metodo' => '$this->demanda->descricao')

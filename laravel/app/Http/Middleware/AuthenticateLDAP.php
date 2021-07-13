@@ -7,6 +7,7 @@ use App\Services\LDAPService;
 use Closure;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class AuthenticateLDAP
 {
@@ -51,8 +52,15 @@ class AuthenticateLDAP
                 $usuario->usuario_simulador = $usuario_simulador->matricula;
             }
 
-            Auth::login($usuario);
-            return $next($request);
+            if (
+                DB::table('acessos_autorizados')->where('identificador', $usuario->equipe->id)->where('tipo', 'EQP')->where('autorizado', true)->exists() ||
+                DB::table('acessos_autorizados')->where('identificador', $usuario->matricula)->where('tipo', 'USR')->where('autorizado', true)->exists()
+            ) {
+                Auth::login($usuario);
+                return $next($request);
+            } else {
+                return response('Acesso não autorizado para o seu perfil!: Matricula: ' . $usuario->matricula . ' - Equipe: ' . $usuario->equipe->id . '  = ' . $usuario->equipe->nome, 403);
+            }
         }
 
         return response('Não autorizado!', 403);
