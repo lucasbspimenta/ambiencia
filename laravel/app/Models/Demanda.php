@@ -81,7 +81,7 @@ class Demanda extends Model
 
     public function getSistemaItemAttribute()
     {
-        return $this->sistema->getItemById($this->sistema_item_id);
+        return ($this->sistema) ? $this->sistema->getItemById($this->sistema_item_id) : '';
     }
 
     public function getResponsavelAttribute()
@@ -117,7 +117,7 @@ class Demanda extends Model
 
     public function getDemandaUrlCompletaAttribute()
     {
-        return ($this->sistema->url_base) ? $this->sistema->url_base . '/' . $this->demanda_url : $this->demanda_url;
+        return ($this->sistema && $this->sistema->url_base) ? $this->sistema->url_base . '/' . $this->demanda_url : $this->demanda_url;
     }
 
     protected static function boot()

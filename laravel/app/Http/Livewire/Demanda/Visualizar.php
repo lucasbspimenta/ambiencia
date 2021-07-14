@@ -17,7 +17,7 @@ class Visualizar extends Component
         $this->demanda = Demanda::find($demanda_id);
     }
 
-    public function mount($demanda_id = 1)
+    public function mount($demanda_id = null)
     {
         $this->demanda = ($demanda_id) ? Demanda::find($demanda_id) : new Demanda();
     }
