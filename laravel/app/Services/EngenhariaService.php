@@ -77,11 +77,11 @@ class EngenhariaService
     {
         try {
             DB::connection($this->demanda->sistema->conexao)->beginTransaction();
-            $retorno = DB::connection($this->demanda->sistema->conexao)->select("DECLARE @dem_id int; EXEC @dem_id = " . $this->procedure . " " . implode(',', $dados) . "; SELECT @dem_id as dem_id;"); //select($this->procedure,)->insert($dados);
+            $retorno = DB::connection($this->demanda->sistema->conexao)->select("DECLARE @DEM_ID int; EXEC @DEM_ID = " . $this->procedure . " " . implode(',', $dados) . "; SELECT @DEM_ID as DEM_ID;"); //select($this->procedure,)->insert($dados);
             DB::connection($this->demanda->sistema->conexao)->commit();
 
-            if ($retorno[0] && is_numeric($retorno[0]->dem_id)) {
-                $this->demanda->demanda_id = $retorno[0]->dem_id;
+            if ($retorno[0] && is_numeric($retorno[0]->DEM_ID)) {
+                $this->demanda->demanda_id = $retorno[0]->DEM_ID;
                 $this->demanda->save();
             }
 

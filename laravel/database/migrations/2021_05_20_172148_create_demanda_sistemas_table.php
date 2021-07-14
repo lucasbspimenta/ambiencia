@@ -32,7 +32,8 @@ class CreateDemandaSistemasTable extends Migration
             $table->string('itens_filtros')->nullable()->default(null);
             $table->string('itens_campo_id_categoria')->nullable()->default(null);
             $table->string('itens_campo_id_subcategoria')->nullable()->default(null);
-            $table->string('service_class_name')->default(null);
+            $table->string('service_class_name')->nullable()->default(null);
+            $table->string('url_base')->nullable()->default(null);
             $table->timestamps();
         });
     }

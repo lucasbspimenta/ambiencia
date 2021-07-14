@@ -23,7 +23,7 @@ class CreateProcedureAtualizarDemandasEngenharia extends Migration
             DECLARE @demanda_conclusao datetime;
             DECLARE @demanda_retorno nvarchar(max);
 
-            DECLARE myCursor CURSOR FORWARD_ONLY FOR
+            DECLARE cursorEngenharia CURSOR FORWARD_ONLY FOR
                 SELECT
                     [DEM_LINK]
                     ,[DEM_SIT_NOME]
@@ -32,15 +32,15 @@ class CreateProcedureAtualizarDemandasEngenharia extends Migration
                     ,[ENG_PARECER]
                 FROM [ATENDIMENTO].[dbo].[WF_VW_ENG_PARECERES]
                 WHERE [DEM_ID] = @demanda_id_engenharia;
-            OPEN myCursor;
-            FETCH NEXT FROM myCursor INTO @demanda_url, @demanda_situacao, @demanda_prazo, @demanda_conclusao, @demanda_retorno;
+            OPEN cursorEngenharia;
+            FETCH NEXT FROM cursorEngenharia INTO @demanda_url, @demanda_situacao, @demanda_prazo, @demanda_conclusao, @demanda_retorno;
             WHILE @@FETCH_STATUS = 0 BEGIN
                 EXECUTE [dbo].[ATUALIZA_DEMANDA] @demanda_id_ambiencia ,@demanda_id_engenharia, @demanda_url, @demanda_situacao, @demanda_prazo, @demanda_conclusao, @demanda_retorno;
 
-                FETCH NEXT FROM myCursor INTO @demanda_url, @demanda_situacao, @demanda_prazo, @demanda_conclusao, @demanda_retorno;
+                FETCH NEXT FROM cursorEngenharia INTO @demanda_url, @demanda_situacao, @demanda_prazo, @demanda_conclusao, @demanda_retorno;
             END;
-            CLOSE myCursor;
-            DEALLOCATE myCursor;
+            CLOSE cursorEngenharia;
+            DEALLOCATE cursorEngenharia;
 
         END
         ");

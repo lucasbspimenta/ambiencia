@@ -27,7 +27,8 @@ class DemandaSistemasSeeder extends Seeder
                 , 'itens_campo_texto' => '[NOME_ITEM]'
                 , 'itens_filtros' => "([EHATIVO] = 'S')"
                 , 'itens_campo_id_categoria' => "[CATEGORIAID]"
-                , 'service_class_name' => "AtendimentoService",
+                , 'service_class_name' => "AtendimentoService"
+                , 'url_base' => null,
             ],
             [
                 'nome' => 'Atendimento Técnico - Engenharia'
@@ -41,7 +42,8 @@ class DemandaSistemasSeeder extends Seeder
                 , 'itens_campo_texto' => '[ENG_TDEM_NOME]'
                 , 'itens_filtros' => "([ATIVO] = 1)"
                 , 'itens_campo_id_categoria' => null
-                , 'service_class_name' => "EngenhariaService",
+                , 'service_class_name' => "EngenhariaService"
+                , 'url_base' => "http://log.df.caixa/fluxo/engenharia/",
             ],
         ];
 

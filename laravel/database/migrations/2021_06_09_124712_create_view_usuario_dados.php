@@ -1,9 +1,7 @@
 <?php
 
 use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Schema;
 
 class CreateViewUsuarioDados extends Migration
 {
@@ -15,8 +13,22 @@ class CreateViewUsuarioDados extends Migration
     public function up()
     {
         DB::unprepared('DROP VIEW IF EXISTS [usuario_dados]');
-        DB::unprepared("
-            CREATE VIEW [usuario_dados]
+
+        if (App::environment() === 'production') {
+
+            DB::unprepared("CREATE VIEW [usuario_dados]
+            AS
+            SELECT
+                rh.nu_matricula
+                ,rh.no_empregado
+                ,rh.[co_cargo]
+                ,rh.[no_funcao]
+                ,rh.[co_lot_fisica]
+                ,rh.[co_lot_adm]
+            FROM [ATENDIMENTO].[dbo].[RH_EMPREGADOS] rh
+            ");
+        } else {
+            DB::unprepared("CREATE VIEW [usuario_dados]
             AS
             SELECT
                 COALESCE(rh.nu_matricula, u.matricula) as matricula
@@ -28,6 +40,7 @@ class CreateViewUsuarioDados extends Migration
             FROM users u
             FULL OUTER JOIN [RH_UNIDADES].[dbo].[VW_RH_EMPREGADOS] rh ON UPPER(RTRIM(u.matricula)) = UPPER(RTRIM(rh.nu_matricula))
         ");
+        }
     }
 
     /**

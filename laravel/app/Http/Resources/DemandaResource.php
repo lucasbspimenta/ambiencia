@@ -22,6 +22,8 @@ class DemandaResource extends JsonResource
             'demanda_prazo' => $this->demanda_prazo,
             'demanda_conclusao' => $this->demanda_conclusao,
             'demanda_atualizacao' => $this->demanda_atualizacao,
+            'demanda_url' => $this->demanda_url,
+            'demanda_url_completa' => $this->demanda_url_completa,
             'demanda_checklist' => $this->demanda_checklist,
             'sistema_id' => $this->sistema_id,
             'sistema_nome' => $this->sistema_nome,

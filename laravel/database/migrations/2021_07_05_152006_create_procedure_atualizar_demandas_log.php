@@ -1,8 +1,6 @@
 <?php
 
 use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Support\Facades\Schema;
 
 class CreateProcedureAtualizarDemandasLog extends Migration
 {
@@ -10,7 +8,7 @@ class CreateProcedureAtualizarDemandasLog extends Migration
     {
         DB::unprepared('DROP PROCEDURE IF EXISTS [ATUALIZA_DEMANDA_LOG]');
         DB::unprepared("
-        CREATE PROCEDURE [dbo].[ATUALIZA_DEMANDA_LOG] 
+        CREATE PROCEDURE [dbo].[ATUALIZA_DEMANDA_LOG]
             @demanda_id_ambiencia bigint
             ,@demanda_id_log bigint
         AS
@@ -25,8 +23,8 @@ class CreateProcedureAtualizarDemandasLog extends Migration
             DECLARE @demanda_conclusao datetime;
             DECLARE @demanda_retorno nvarchar(max);
 
-            DECLARE myCursor CURSOR FORWARD_ONLY FOR
-                SELECT 
+            DECLARE cursosAtendimento CURSOR FORWARD_ONLY FOR
+                SELECT
                     [LOG_CHAMADO_LINK]
                     ,[LOG_CHAMADO_STATUS_NOME]
                     ,[LOG_CHAMADO_DATA_PRAZO_ATENDIMENTO]
@@ -34,15 +32,15 @@ class CreateProcedureAtualizarDemandasLog extends Migration
 
                 FROM [ATENDIMENTO].[dbo].[WS_DEMANDAS_EXTERNAS]
                 WHERE [LOG_CHAMADO_ATENDIMENTOID] = @demanda_id_log;
-            OPEN myCursor;
-            FETCH NEXT FROM myCursor INTO @demanda_url, @demanda_situacao, @demanda_prazo, @demanda_conclusao;
+            OPEN cursosAtendimento;
+            FETCH NEXT FROM cursosAtendimento INTO @demanda_url, @demanda_situacao, @demanda_prazo, @demanda_conclusao;
             WHILE @@FETCH_STATUS = 0 BEGIN
                 EXECUTE [dbo].[ATUALIZA_DEMANDA] @demanda_id_ambiencia ,@demanda_id_log, @demanda_url, @demanda_situacao, @demanda_prazo, @demanda_conclusao, @demanda_retorno;
 
-                FETCH NEXT FROM myCursor INTO @demanda_url, @demanda_situacao, @demanda_prazo, @demanda_conclusao;
+                FETCH NEXT FROM cursosAtendimento INTO @demanda_url, @demanda_situacao, @demanda_prazo, @demanda_conclusao;
             END;
-            CLOSE myCursor;
-            DEALLOCATE myCursor;
+            CLOSE cursosAtendimento;
+            DEALLOCATE cursosAtendimento;
         END
         ");
     }

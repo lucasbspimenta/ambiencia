@@ -21,21 +21,21 @@ class CriarProceduresIntegracao extends Migration
                             DECLARE @ID bigint;
                             DECLARE @DEMANDA_ID int;
 
-                            DECLARE myCursor CURSOR FORWARD_ONLY FOR
+                            DECLARE cursorDemanda CURSOR FOR
                                 SELECT
                                     id
                                     ,demanda_id
                                 FROM [dbo].demandas
                                 WHERE demanda_id = @ID_ENGENHARIA;
-                            OPEN myCursor;
-                            FETCH NEXT FROM myCursor INTO @ID, @DEMANDA_ID;
+                            OPEN cursorDemanda;
+                            FETCH NEXT FROM cursorDemanda INTO @ID, @DEMANDA_ID;
                             WHILE @@FETCH_STATUS = 0 BEGIN
                                 EXECUTE [dbo].[ATUALIZA_DEMANDA_ENGENHARIA] @ID ,@DEMANDA_ID;
 
-                                FETCH NEXT FROM myCursor INTO @ID, @DEMANDA_ID;
+                                FETCH NEXT FROM cursorDemanda INTO @ID, @DEMANDA_ID;
                             END;
-                            CLOSE myCursor;
-                            DEALLOCATE myCursor;
+                            CLOSE cursorDemanda;
+                            DEALLOCATE cursorDemanda;
                         END
                         ");
 

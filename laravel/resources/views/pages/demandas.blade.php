@@ -177,17 +177,21 @@
         const renderAcaosDemandas = (data, type, row, meta) => {
             let saida = ``;
 
-            if (data) {
-                saida +=
-                    `<a class="btn btn-xs btn-primary" href="{{ route('checklist.index') }}/${data}/alterar">Checklist</a>`;
-            } else {
-                if (row['demanda_migracao'] != 'C') {
-                    saida +=
-                        `<button onclick="excluirDemanda(${row['demanda_id']})" type="button"
-                            class="btn btn-xs btn-danger m-0 flex-shrink-1"><i class="fa fa-trash"
-                                aria-hidden="true"></i></button>`;
-                }
+            if(data)
+                saida += `<a class="btn btn-xs btn-primary mr-2" href="{{ route('checklist.index') }}/${data}/alterar">Checklist</a>`;
+
+            if (row['demanda_url'] && row['demanda_url_completa']) {
+                saida +=`<a class="btn btn-xs btn-primary mr-2" target="_blank" href="${row['demanda_url_completa']}"><i class="fa fa-external-link-alt"
+                            aria-hidden="true"></i></a>`;
             }
+        
+            if (row['demanda_migracao'] != 'C') {
+                saida +=
+                    `<button onclick="excluirDemanda(${row['demanda_id']})" type="button"
+                        class="btn btn-xs btn-danger m-0 flex-shrink-1"><i class="fa fa-trash"
+                            aria-hidden="true"></i></button>`;
+            }
+            
 
             return saida;
         }

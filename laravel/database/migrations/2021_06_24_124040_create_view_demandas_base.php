@@ -23,6 +23,8 @@ class CreateViewDemandasBase extends Migration
 			dem.demanda_prazo,
 			dem.demanda_conclusao,
 			dem.demanda_retorno,
+            dem.demanda_url,
+            demanda_url_completa = CASE WHEN dem_sis.url_base IS NOT NULL THEN dem_sis.url_base +'/'+ dem.demanda_url ELSE dem.demanda_url END,
             dem.updated_at as demanda_atualizacao,
 			demanda_checklist = (
 				SELECT TOP 1 [checklist_respostas].checklist_id
