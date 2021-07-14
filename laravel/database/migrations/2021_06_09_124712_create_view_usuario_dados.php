@@ -19,12 +19,12 @@ class CreateViewUsuarioDados extends Migration
             DB::unprepared("CREATE VIEW [usuario_dados]
             AS
             SELECT
-                rh.nu_matricula
-                ,rh.no_empregado
-                ,rh.[co_cargo]
-                ,rh.[no_funcao]
-                ,rh.[co_lot_fisica]
-                ,rh.[co_lot_adm]
+                rh.nu_matricula as matricula
+                ,rh.no_empregado as nome
+                ,rh.[co_cargo] as cargo
+                ,rh.[no_funcao] as funcao
+                ,rh.[co_lot_fisica] as fisica
+                ,rh.[co_lot_adm] as unidade
             FROM [ATENDIMENTO].[dbo].[RH_EMPREGADOS] rh
             ");
         } else {
