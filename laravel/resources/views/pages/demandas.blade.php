@@ -189,9 +189,9 @@
                 saida += `<a class="btn btn-xs btn-primary mr-2" href="{{ route('checklist.index') }}/${data}/alterar">Checklist</a>`;
 
                 
-            if (row['id'] != 'C') {
+            if (row['demanda_id']) {
                 saida +=
-                    `<button onclick="abrirVerDemanda(${row['id']})" type="button"
+                    `<button onclick="abrirVerDemanda(${row['demanda_id']})" type="button"
                         class="btn btn-xs btn-primary m-0 flex-shrink-1 mr-2"><i class="fa fa-eye"
                             aria-hidden="true"></i></button>`;
             }
@@ -243,7 +243,8 @@
                 //'render': DATATABLES_TIPO_AGENDAMENTO
             },
             {
-                "data": "demanda_prazo"
+                "data": "demanda_prazo",
+                'render': DATATABLES_DATA_BR
             },
             {
                 "data": "demanda_situacao",

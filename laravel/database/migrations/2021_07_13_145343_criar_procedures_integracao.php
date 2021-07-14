@@ -54,7 +54,8 @@ class CriarProceduresIntegracao extends Migration
                             UPDATE demandas SET
                             demanda_id = @LOG_CHAMADO_ATENDIMENTOID,
                             demanda_url = @LOG_CHAMADO_LINK,
-                            demanda_situacao = @LOG_CHAMADO_STATUS_NOME
+                            demanda_situacao = @LOG_CHAMADO_STATUS_NOME,
+                            demanda_prazo = @LOG_CHAMADO_DATA_PRAZO_ATENDIMENTO
                             WHERE id = @ID_INTERNO
                         END
                         ");
