@@ -58,7 +58,7 @@
                                                     <tr>
                                                         <th scope="col">#Cód</th>
                                                         <th scope="col">Sistema</th>
-                                                        <th scope="col">Descrição</th>
+                                                       
                                                         <th scope="col">Prazo</th>
                                                         <th scope="col">Situação</th>
                                                         <th scope="col">Unidade</th>
@@ -95,7 +95,7 @@
                                                     <tr>
                                                         <th scope="col">#Cód</th>
                                                         <th scope="col">Sistema</th>
-                                                        <th scope="col">Descrição</th>
+                                                        
                                                         <th scope="col">Situação</th>
                                                         <th scope="col">Unidade</th>
                                                         <th scope="col">Responsavel</th>
@@ -131,7 +131,7 @@
                                                     <tr>
                                                         <th scope="col">#Cód</th>
                                                         <th scope="col">Sistema</th>
-                                                        <th scope="col">Descrição</th>
+                                                       
                                                         <th scope="col">Prazo</th>
                                                         <th scope="col">Situação</th>
                                                         <th scope="col">Unidade</th>
@@ -168,6 +168,14 @@
             </div>
         </div>
     </div>
+    <div class="modal fade" id="modal_ver_demanda" tabindex="-1" role="dialog" aria-labelledby="modal_ver_demanda"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content">
+                <livewire:demanda.visualizar />
+            </div>
+        </div>
+    </div>
 @endsection
 @push('styles')
 
@@ -179,6 +187,14 @@
 
             if(data)
                 saida += `<a class="btn btn-xs btn-primary mr-2" href="{{ route('checklist.index') }}/${data}/alterar">Checklist</a>`;
+
+                
+            if (row['id'] != 'C') {
+                saida +=
+                    `<button onclick="abrirVerDemanda(${row['id']})" type="button"
+                        class="btn btn-xs btn-primary m-0 flex-shrink-1 mr-2"><i class="fa fa-eye"
+                            aria-hidden="true"></i></button>`;
+            }
 
             if (row['demanda_url'] && row['demanda_url_completa']) {
                 saida +=`<a class="btn btn-xs btn-primary mr-2" target="_blank" href="${row['demanda_url_completa']}"><i class="fa fa-external-link-alt"
@@ -218,15 +234,13 @@
         }
         const NOME_MODAL = '#modal_demanda';
         const NOME_MODEL_TRATAR_DEMANDA = '#modal_tratar_demanda';
+        const NOME_MODEL_VER_DEMANDA = '#modal_ver_demanda';
         const CONFIG_COLUNAS = [{
                 "data": "demanda_id"
             },
             {
                 "data": "sistema_nome",
                 //'render': DATATABLES_TIPO_AGENDAMENTO
-            },
-            {
-                "data": "demanda_descricao"
             },
             {
                 "data": "demanda_prazo"
@@ -255,9 +269,6 @@
             {
                 "data": "sistema_nome",
                 //'render': DATATABLES_TIPO_AGENDAMENTO
-            },
-            {
-                "data": "solicitacao"
             },
             {
                 "data": "migracao",
@@ -321,14 +332,8 @@
 
             $(NOME_MODAL).modal(options);
             $(NOME_MODAL).on('hidden.bs.modal', (e) => Livewire.emit('limpar'));
-
-            var options_tratar = {
-                backdrop: 'static',
-                keyboard: true,
-                show: false,
-                focus: true
-            };
-            $(NOME_MODEL_TRATAR_DEMANDA).modal(options_tratar);
+            $(NOME_MODEL_TRATAR_DEMANDA).modal(options);
+            $(NOME_MODEL_VER_DEMANDA).modal(options);
 
             DATATABLE = $('#tabela_andamento').DataTable({
                 dom: 'ti',
@@ -465,6 +470,17 @@
                 montaFiltrosAoIniciar(
                     DATATABLE_TRATAR)));
             $(NOME_MODEL_TRATAR_DEMANDA).modal('show');
+        }
+
+        function abrirVerDemanda(demanda_id) {
+
+            if (demanda_id)
+                Livewire.emit('definirVerDemanda', demanda_id);
+
+            $(NOME_MODEL_VER_DEMANDA).off('show.bs.modal');
+            $(NOME_MODEL_VER_DEMANDA).off('shown.bs.modal');
+            $(NOME_MODEL_VER_DEMANDA).off('hide.bs.modal');
+            $(NOME_MODEL_VER_DEMANDA).modal('show');
         }
     </script>
 @endpush

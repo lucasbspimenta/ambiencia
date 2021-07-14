@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Services\DemandaService;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 
 class Demanda extends Model
@@ -86,6 +87,37 @@ class Demanda extends Model
     public function getResponsavelAttribute()
     {
         return User::find($this->updated_by);
+    }
+
+    public function getMigracaoTextoAttribute()
+    {
+        if ($this->migracao == 'C') {
+            return 'Concluída';
+        }
+
+        if ($this->migracao == 'A') {
+            return 'Aguardando checklist';
+        }
+
+        if ($this->migracao == 'P') {
+            return 'Pendente';
+        }
+
+    }
+
+    public function getAtualizacaoFormatadoAttribute()
+    {
+        return (Carbon::canBeCreatedFromFormat($this->updated_at, 'Y-m-d H:i:s')) ? Carbon::parse($this->updated_at)->format('d/m/Y - H:i:s') : $this->updated_at;
+    }
+
+    public function getPrazoFormatadoAttribute()
+    {
+        return (Carbon::canBeCreatedFromFormat($this->demanda_prazo, 'Y-m-d H:i:s')) ? Carbon::parse($this->demanda_prazo)->format('d/m/Y - H:i:s') : $this->demanda_prazo;
+    }
+
+    public function getDemandaUrlCompletaAttribute()
+    {
+        return ($this->sistema->url_base) ? $this->sistema->url_base . '/' . $this->demanda_url : $this->demanda_url;
     }
 
     protected static function boot()
