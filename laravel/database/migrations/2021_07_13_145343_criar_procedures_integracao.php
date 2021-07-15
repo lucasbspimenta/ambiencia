@@ -41,22 +41,29 @@ class CriarProceduresIntegracao extends Migration
 
         DB::unprepared('DROP PROCEDURE IF EXISTS [PROC_RETORNO_ATENDIMENTO]');
         DB::unprepared("CREATE PROCEDURE [dbo].[PROC_RETORNO_ATENDIMENTO]
-                            @ID_INTERNO bigint,
-                            @LOG_FOI_PROCESSADO_S_N nvarchar(1),
-                            @LOG_CHAMADO_ATENDIMENTOID bigint,
-                            @LOG_CHAMADO_LINK nvarchar(max),
-                            @LOG_CHAMADO_STATUS_NOME nvarchar(300),
-                            @LOG_CHAMADO_DATA_PRAZO_ATENDIMENTO datetime
+                            @LOG_CHAMADO_ATENDIMENTOID int
                         AS
                         BEGIN
                             SET NOCOUNT ON;
 
-                            UPDATE demandas SET
-                            demanda_id = @LOG_CHAMADO_ATENDIMENTOID,
-                            demanda_url = @LOG_CHAMADO_LINK,
-                            demanda_situacao = @LOG_CHAMADO_STATUS_NOME,
-                            demanda_prazo = @LOG_CHAMADO_DATA_PRAZO_ATENDIMENTO
-                            WHERE id = @ID_INTERNO
+                            DECLARE @ID bigint;
+                            DECLARE @DEMANDA_ID int;
+
+                            DECLARE cursorDemanda CURSOR FOR
+                                SELECT
+                                    id
+                                    ,demanda_id
+                                FROM [dbo].demandas
+                                WHERE demanda_id = @LOG_CHAMADO_ATENDIMENTOID;
+                            OPEN cursorDemanda;
+                            FETCH NEXT FROM cursorDemanda INTO @ID, @DEMANDA_ID;
+                            WHILE @@FETCH_STATUS = 0 BEGIN
+                                EXECUTE [dbo].[ATUALIZA_DEMANDA_LOG] @ID ,@DEMANDA_ID;
+
+                                FETCH NEXT FROM cursorDemanda INTO @ID, @DEMANDA_ID;
+                            END;
+                            CLOSE cursorDemanda;
+                            DEALLOCATE cursorDemanda;
                         END
                         ");
     }
