@@ -64,6 +64,8 @@ class DemandaService
 
         if ($finalizados) {
             $sql .= " AND UPPER(RTRIM(demanda_situacao)) = 'FINALIZADO'";
+        } else {
+            $sql .= " AND UPPER(RTRIM(demanda_situacao)) <> 'FINALIZADO'";
         }
 
         $sql .= " ORDER BY demanda_prazo ASC, demanda_atualizacao ASC";
