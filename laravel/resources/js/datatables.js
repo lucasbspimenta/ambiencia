@@ -96,8 +96,12 @@ window.DATATABLES_PROGRESSO_AZUL = (data, type, row, meta) => {
 }
 
 window.DATATABLES_DATA_BR = (data, type, row, meta) => {
-    $dt = moment(data, "YYYY-MM-DD");
-    return  $dt.format('DD/MM/YYYY');
+    if(data){
+        $dt = moment(data, "YYYY-MM-DD");
+        return  $dt.format('DD/MM/YYYY');
+    } else {
+        return '';
+    }
 }
 
 window.DATATABLES_IDIOMA = {

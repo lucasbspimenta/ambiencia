@@ -16,7 +16,11 @@
                             <span class="badge badge-info z-depth-0" style="font-size:85%">A processar</span>
                         @endif
                         @if (trim($demanda->migracao) == 'C')
-                            <span class="badge badge-default z-depth-0" style="font-size:85%">Processado</span>
+                            @if(trim($demanda->demanda_situacao) != '')
+                                <span class="badge badge-default z-depth-0" style="font-size:85%">{{ trim($demanda->demanda_situacao) }}</span>
+                            @else
+                                <span class="badge badge-default z-depth-0" style="font-size:85%">Processado</span>
+                            @endif
                         @endif
                     </div>
                 </div>

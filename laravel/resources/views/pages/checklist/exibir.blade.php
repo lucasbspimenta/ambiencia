@@ -123,7 +123,7 @@
                     <div class="card-body collapse p-1 show" id="demandas">
                         <div class="list-group list-group-flush">
                             @forelse($checklist->demandas as $demanda)
-                                <a href="#!" class="list-group-item list-group-item-action flex-column align-items-start">
+                                <a href="javascript: void(abrirVerDemanda({{$demanda->id}}))" class="list-group-item list-group-item-action flex-column align-items-start">
                                     <div class="d-flex w-100 justify-content-between">
                                         <div class="w-100">
                                             <small
@@ -137,8 +137,11 @@
                                                     processar</span>
                                             @endif
                                             @if (trim($demanda->migracao) == 'C')
-                                                <span class="badge badge-default z-depth-0"
-                                                    style="font-size:85%">Processado</span>
+                                                @if(trim($demanda->demanda_situacao) != '')
+                                                    <span class="badge badge-default z-depth-0" style="font-size:85%">{{ trim($demanda->demanda_situacao) }}</span>
+                                                @else
+                                                    <span class="badge badge-default z-depth-0" style="font-size:85%">Processado</span>
+                                                @endif
                                             @endif
                                         </div>
                                     </div>
@@ -173,12 +176,21 @@
             </div>
         </div>
     </div>
+    <div class="modal fade" id="modal_ver_demanda" tabindex="-1" role="dialog" aria-labelledby="modal_ver_demanda"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content">
+                <livewire:demanda.visualizar />
+            </div>
+        </div>
+    </div>
 @endsection
 @push('styles')
 @endpush
 @push('scripts')
     <script>
         const NOME_MODAL_GUIA = '#modal_guia';
+        const NOME_MODEL_VER_DEMANDA = '#modal_ver_demanda';
 
         function exibirGuia(guiaID) {
             $(NOME_MODAL_GUIA).off('show.bs.modal');
@@ -186,5 +198,29 @@
             $(NOME_MODAL_GUIA).on('show.bs.modal', (e) => Livewire.emit('carregaGuia', guiaID));
             $(NOME_MODAL_GUIA).modal('show');
         }
+
+         document.addEventListener('DOMContentLoaded', function() {
+
+            var options = {
+                backdrop: 'static',
+                keyboard: true,
+                show: false,
+                focus: true
+            };
+
+            $(NOME_MODEL_VER_DEMANDA).modal(options);
+         });
+
+        function abrirVerDemanda(demanda_id) {
+
+            if (demanda_id)
+                Livewire.emit('definirVerDemanda', demanda_id);
+
+            $(NOME_MODEL_VER_DEMANDA).off('show.bs.modal');
+            $(NOME_MODEL_VER_DEMANDA).off('shown.bs.modal');
+            $(NOME_MODEL_VER_DEMANDA).off('hide.bs.modal');
+            $(NOME_MODEL_VER_DEMANDA).modal('show');
+        }
+
     </script>
 @endpush
