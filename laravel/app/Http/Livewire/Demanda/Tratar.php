@@ -3,6 +3,7 @@
 namespace App\Http\Livewire\Demanda;
 
 use App\Models\DemandaTratar;
+use App\Services\DemandaService;
 use Livewire\Component;
 
 class Tratar extends Component
@@ -41,7 +42,7 @@ class Tratar extends Component
         $this->demanda->save();
 
         if (env('MIGRAR_DEMANDAS') && env('MIGRAR_DEMANDAS') == 1 && $this->demanda->migracao == 'P') {
-            App\Services\DemandaService::processaDemandaTratada($this->demanda);
+            DemandaService::processaDemandaTratada($this->demanda);
         }
 
         $this->dispatchBrowserEvent('triggerSucessoTratamento', '');
@@ -53,5 +54,7 @@ class Tratar extends Component
         $this->resetValidation();
         $this->resetErrorBag();
         $this->reset();
+
+        $this->demanda = new DemandaTratar();
     }
 }

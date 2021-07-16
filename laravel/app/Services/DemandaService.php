@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\Demanda;
 use App\Models\DemandaTratar;
+use App\Models\User;
 use Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
@@ -103,21 +104,25 @@ class DemandaService
 
     public static function processaDemandaTratada(DemandaTratar $demanda)
     {
-        if (!is_null($demanda->resposta) && is_numeric($demanda->demanda_id) && $demanda->sistema && $demanda->sistema->conexao) {
+        $usuario = User::find($demanda->updated_by);
+
+        if (!is_null($demanda->resposta) && is_numeric($demanda->demanda_id) && $demanda->sistema && $demanda->sistema->conexao && $usuario->matricula) {
             try {
                 DB::connection($demanda->sistema->conexao)->beginTransaction();
-                DB::connection($demanda->sistema->conexao)->select("UPDATE WF_ENG_PAR_PARECERES SET ENG_SUB_ESC_RESPOSTA = '" . trim($demanda->resposta) . "' WHERE FK_DEM_ID = '" . $demanda->demanda_id . "' ");
+                DB::connection($demanda->sistema->conexao)->select("DECLARE @PARECER_ID int; EXEC @PARECER_ID = WF_ENG_RESPONDE_ESCLARECIMENTO @parecer_id=" . $demanda->demanda_id . ", @resposta='" . $demanda->resposta . "', @matr_criacao='" . $usuario->matricula . "'; SELECT @PARECER_ID as PARECER_ID;");
                 DB::connection($demanda->sistema->conexao)->commit();
 
                 $demanda->migracao = 'C';
                 $demanda->save();
 
                 return true;
+
             } catch (\Throwable $th) {
                 DB::connection($demanda->sistema->conexao)->rollBack();
                 throw new \Exception($th->getMessage(), 1);
                 return false;
             }
+
         } else {
             return false;
         }

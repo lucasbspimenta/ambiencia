@@ -38,8 +38,8 @@ class CreateViewDemandasTratar extends Migration
         FROM [demanda_tratars] dem_tratar
         JOIN dbo.demanda_sistemas AS dem_sis ON dem_sis.id = dem_tratar.sistema_id
         LEFT JOIN [users] ON users.matricula = dem_tratar.matricula
-        LEFT JOIN [unidades_responsavel] und_resp ON und_resp.unidade_codigo = dem_tratar.[unidade_id] OR dem_tratar.[matricula] = und_resp.matricula
-        LEFT JOIN dbo.unidades AS unid ON unid.codigo = dem_tratar.[unidade_id]
+        LEFT JOIN [unidades_responsavel] und_resp ON und_resp.unidade_id = dem_tratar.[unidade_id] OR dem_tratar.[matricula] = und_resp.matricula
+        LEFT JOIN dbo.unidades AS unid ON unid.id = dem_tratar.[unidade_id]
         ");
     }
 
