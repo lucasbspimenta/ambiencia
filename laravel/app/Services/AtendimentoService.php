@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Demanda;
+use App\Models\DemandaSistema;
 use Illuminate\Support\Facades\DB;
 
 class AtendimentoService
@@ -104,5 +105,30 @@ class AtendimentoService
             throw new \Exception($th->getMessage(), 1);
         }
 
+    }
+
+    public static function atendimentoEmAndamentoUnidade($unidade_id)
+    {
+        $sistema = DemandaSistema::where('service_class_name', substr(static::class, strrpos(static::class, '\\') + 1))->first();
+
+        $retorno = DB::connection($sistema->conexao)->select("SELECT * FROM [dbo].[VW_CHAMADOS_EM_ATENDIMENTO] WHERE ID_UNIDADE = '" . $unidade_id . "' ");
+
+        $demandas = [];
+        foreach ($retorno as $chamado_retornado) {
+            $demanda = new Demanda();
+            $demanda->unidade_id = $unidade_id;
+            $demanda->migracao = 'C';
+            $demanda->sistema_id = $sistema->id;
+            $demanda->sistema_item_id = $chamado_retornado->BANCOCONHECIMENTOID;
+            $demanda->demanda_id = $chamado_retornado->ATENDIMENTOID;
+            $demanda->demanda_url = $chamado_retornado->LINK;
+            $demanda->demanda_situacao = $chamado_retornado->SITUACAO_DEMANDA;
+            $demanda->demanda_prazo = $chamado_retornado->DATA_PRAZO;
+            $demanda->demanda_retorno = '';
+            $demanda->demanda_conclusao = $chamado_retornado->DATA_FIM;
+            $demanda->descricao = $chamado_retornado->DESCRICAO ?? 'Chamado sem descrição';
+            $demandas[] = $demanda;
+        }
+        return $demandas;
     }
 }

@@ -6,6 +6,7 @@ use App\Services\DemandaService;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 
 class Demanda extends Model
 {
@@ -67,6 +68,11 @@ class Demanda extends Model
     public function getDadosCompletosAttribute()
     {
         return $this->sistema->nome . ' | ' . $this->sistema_item->nome;
+    }
+
+    public function getDadosComDescricaoAttribute()
+    {
+        return $this->sistema_item->nome . ' | ' . Str::of($this->descricao)->limit(50);
     }
 
     public function sistema()

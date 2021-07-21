@@ -30,13 +30,14 @@ class Vinculadas extends Component
         //$resposta->demandas()->detach($demanda_id);
 
         $demandaService = new DemandaService();
-        $respostas_para_atualizar = $demandaService->findById($demanda_id)->respostas->where('checklist_id',$this->checklist->id)->pluck('id');
-        $demanda_de_outros_checklist = $demandaService->findById($demanda_id)->respostas->where('checklist_id','!=',$this->checklist->id)->count();
+        $respostas_para_atualizar = $demandaService->findById($demanda_id)->respostas->where('checklist_id', $this->checklist->id)->pluck('id');
+        $demanda_de_outros_checklist = $demandaService->findById($demanda_id)->respostas->where('checklist_id', '!=', $this->checklist->id)->count();
 
-        if($demanda_de_outros_checklist > 0)
+        if ($demanda_de_outros_checklist > 0) {
             $demandaService->findById($demanda_id)->respostas()->detach($respostas_para_atualizar);
-        else
+        } else {
             $demandaService->excluir($demanda_id);
+        }
 
         $this->dispatchBrowserEvent('triggerSucessoExclusao');
         $this->dispatchBrowserEvent('atualizarResposta', ['resposta_id' => $respostas_para_atualizar]);
@@ -48,7 +49,7 @@ class Vinculadas extends Component
         $resposta = ChecklistResposta::with('demandas')->find($resposta_id);
         $resposta->demandas()->detach($demanda_id);
 
-        $this->dispatchBrowserEvent('triggerSucesso','Item desvinculado com sucesso');
+        $this->dispatchBrowserEvent('triggerSucesso', 'Item desvinculado com sucesso');
         $this->dispatchBrowserEvent('atualizarResposta', ['resposta_id' => $resposta_id]);
         $this->checklist->load('demandas');
     }
