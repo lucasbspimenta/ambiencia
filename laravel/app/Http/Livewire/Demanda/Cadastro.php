@@ -6,23 +6,13 @@ use App\Models\ChecklistResposta;
 use App\Models\Demanda;
 use App\Models\DemandaSistema;
 use App\Models\Unidade;
+use App\Services\AtendimentoService;
 use App\Services\DemandaService;
-use Exception;
 use Livewire\Component;
 
 class Cadastro extends Component
 {
-    public $demanda_id;
-
-    public $sistemas = [];
-    public $categorias = [];
-    public $subcategorias = [];
-    public $itens = [];
-    public $demandaExistentes = [];
-
-    public $sistema;
-    public $resposta;
-
+    public $vinculada_a_resposta = false;
     public $unidade_id;
     public $sistema_id;
     public $categoriaSelecionado;
@@ -30,19 +20,25 @@ class Cadastro extends Component
     public $sistema_item_id;
     public $descricao;
     public $checklist_resposta_id;
-    public $demanda_antiga;
+
+    public $demandaExistentes = [];
+    public $sistemas = [];
+    public $demanda_nova = 'S';
+    public $demanda_vinculacao = 'C';
+    public $resposta;
+    public $unidade;
+    public $demandaExistenteSelecionada;
 
     protected $listeners = ['limpar' => 'limpar', 'defineResposta' => 'defineResposta', 'defineDemanda' => 'defineDemanda', 'excluirExterno' => 'excluirExterno'];
 
     public function rules()
     {
-
-        return ($this->resposta && $this->resposta->id) ? Demanda::VALIDATION_RULES + ['checklist_resposta_id' => ['required']] : Demanda::VALIDATION_RULES;
+        return ($this->resposta && $this->resposta->id) ? Demanda::VALIDATION_RULES + ['resposta' => ['required']] : Demanda::VALIDATION_RULES;
     }
 
     public function messages()
     {
-        return ($this->resposta && $this->resposta->id) ? Demanda::VALIDATION_MESSAGES + ['checklist_resposta_id.required' => 'Demanda deve estar vinculada ao item'] : Demanda::VALIDATION_MESSAGES;
+        return ($this->resposta && $this->resposta->id) ? Demanda::VALIDATION_MESSAGES + ['resposta.required' => 'Demanda deve estar vinculada ao item'] : Demanda::VALIDATION_MESSAGES;
     }
 
     public function render()
@@ -53,73 +49,118 @@ class Cadastro extends Component
     public function mount($unidades = null)
     {
         $this->sistemas = DemandaSistema::all() ?? [];
-        $this->sistema_id = null;
-        $this->categoriaSelecionado = null;
-        $this->subcategoriaSelecionado = null;
-        $this->sistema_item_id = null;
-        $this->unidade_id = null;
-        $this->demanda_antiga = null;
     }
 
-    public function updatedSistemaId($value)
+    public function updatedSistemaId()
     {
-        $this->sistema_id = $value;
-        $this->sistema = DemandaSistema::find($value);
-        //dd($value, $this->sistema);
+        $this->reset(['categoriaSelecionado', 'subcategoriaSelecionado', 'sistema_item_id', 'demanda_nova', 'demanda_vinculacao']);
+        if ($this->sistema_id) {
+            $sistema_selecionado = $this->sistemas->where('id', $this->sistema_id)->first();
+            if ($sistema_selecionado->itens->count() == 1) {
+                //dd($sistema_selecionado->itens->first());
+                $this->sistema_item_id = $sistema_selecionado->itens->first()->id;
+            }
+        }
     }
 
-    public function defineResposta($id)
+    public function updatedUnidadeId()
     {
-        $this->checklist_resposta_id = $id;
-        $this->resposta = ChecklistResposta::find($id);
-        $this->unidade_id = $this->resposta->checklist->agendamento->unidade->id;
-        $this->demandaExistentes = $this->resposta->checklist->agendamento->unidade->demandas;
+        $this->unidade = Unidade::findOrFail($this->unidade_id);
     }
 
-    public function defineDemanda($id)
+    public function updatedDemandaVinculacao()
     {
-        $demandaService = new DemandaService();
-        $demanda = $demandaService->findById($this->demanda_id);
-        $this->demanda_id = $demanda->id;
+        if ($this->unidade_id && $this->unidade && $this->demanda_nova != 'S') {
+            if ($this->demanda_vinculacao == 'D') {
+
+                if ($this->sistema_id == 1) {
+                    $this->demandaExistentes = AtendimentoService::atendimentoEmAndamentoUnidade($this->unidade_id);
+                } else {
+                    $this->demandaExistentes = [];
+                }
+
+            } elseif ($this->demanda_vinculacao == 'C') {
+                $this->demandaExistentes = $this->resposta->checklist->demandas->where('sistema_id', $this->sistema_id);
+            } else {
+                $this->reset(['demandaExistentes', 'demandaExistenteSelecionada']);
+            }
+        } else {
+            $this->reset(['demandaExistentes', 'demandaExistenteSelecionada']);
+        }
+    }
+
+    public function updatedDemandaNova()
+    {
+        $this->updatedDemandaVinculacao();
+    }
+
+    public function hydrateDemandaVinculacao()
+    {
+        $this->updatedDemandaVinculacao();
     }
 
     public function salvar()
     {
-        if ($this->demanda_antiga) {
-            $this->resposta->demandas()->attach($this->demanda_antiga);
-            $this->emit('atualizar')->to('demanda.vinculadas');
-            $this->dispatchBrowserEvent('triggerSucesso', $this->resposta->item->nome);
-            $this->limpar();
-            $this->dispatchBrowserEvent('atualizarResposta', ['resposta_id' => $this->checklist_resposta_id]);
-            return true;
+        if ($this->demanda_nova == 'S') {
+            $id = $this->salvarDemandaNova();
+        } else {
+
+            if ($this->demanda_vinculacao == 'C') {
+                $id = $this->demandaExistenteSelecionada;
+            }
+
+            if ($this->demanda_vinculacao == 'D') {
+                $id = $this->vinculaDemandaExterna();
+            }
         }
 
-        $data = $this->validate();
-        $demandaService = new DemandaService();
+        if ($id) {
+            if ($this->vinculada_a_resposta) {
+                $this->vinculaDemanda($id);
+            } else {
+                $this->dispatchBrowserEvent('triggerSucesso', '&nbsp;');
+                $this->limpar();
+            }
+        } else {
+            $this->dispatchBrowserEvent('triggerError', 'Não foi possivel criar demanda');
+        }
+    }
 
-        if (!$this->resposta) {
+    protected function salvarDemandaNova()
+    {
+        $data = $this->validate();
+
+        if (!$this->vinculada_a_resposta) {
             $data['migracao'] = 'P';
         }
 
+        $demandaService = new DemandaService();
         try {
+            $demanda = $demandaService->criar($data);
+            return $demanda->id;
+        } catch (Exception $e) {
+            $this->dispatchBrowserEvent('triggerError', $e->getMessage());
+        }
+    }
 
-            if ($this->demanda_id && $demandaService->existsById($this->demanda_id)) {
-                $demanda = $demandaService->atualizar($data, $this->demanda_id);
-            } else {
-                $demanda = $demandaService->criar($data);
-            }
+    protected function vinculaDemanda($demanda_id)
+    {
+        $this->resposta->demandas()->attach($demanda_id);
+        $this->emit('atualizar')->to('demanda.vinculadas');
+        $this->dispatchBrowserEvent('triggerSucesso', $this->resposta->item->nome);
+        $this->limpar();
+        $this->dispatchBrowserEvent('atualizarResposta', ['resposta_id' => $this->checklist_resposta_id]);
+    }
 
-            if ($this->resposta && $this->resposta->id) {
-                $this->resposta->demandas()->attach($demanda->id);
-                $this->emit('atualizar')->to('demanda.vinculadas');
-                $this->dispatchBrowserEvent('triggerSucesso', $this->resposta->item->nome);
-                $this->limpar();
-                $this->dispatchBrowserEvent('atualizarResposta', ['resposta_id' => $this->checklist_resposta_id]);
-            } else {
-                $this->dispatchBrowserEvent('triggerSucesso', '');
-                $this->limpar();
-            }
-
+    protected function vinculaDemandaExterna()
+    {
+        $dem = $this->demandaExistentes[$this->demandaExistenteSelecionada];
+        $data = $dem->attributesToArray();
+//        dd($data);
+        $demandaService = new DemandaService();
+        try {
+            $demanda = $demandaService->criar($data);
+            return $demanda->id;
         } catch (Exception $e) {
             $this->dispatchBrowserEvent('triggerError', $e->getMessage());
         }
@@ -129,26 +170,19 @@ class Cadastro extends Component
     {
         $this->resetValidation();
         $this->resetErrorBag();
-        //$this->reset();
-
-        $this->sistema = new DemandaSistema();
-        $this->resposta = new ChecklistResposta();
+        $this->reset();
         $this->sistemas = DemandaSistema::all() ?? [];
-
-        $this->demanda_id = null;
-        $this->sistema_id = null;
-        $this->categoriaSelecionado = null;
-        $this->subcategoriaSelecionado = null;
-        $this->sistema_item_id = null;
-        $this->checklist_resposta_id = null;
-        $this->unidade_id = null;
-        $this->descricao = '';
     }
 
-    public function excluirExterno($demanda_id)
+    public function defineResposta($id)
     {
-        $demandaService = new DemandaService();
-        $demandaService->excluir($demanda_id);
-        $this->dispatchBrowserEvent('triggerSucessoExclusao');
+        $this->resposta = ChecklistResposta::find($id);
+        if ($this->resposta) {
+            $this->checklist_resposta_id = $id;
+            $this->vinculada_a_resposta = 'S';
+            $this->unidade_id = $this->resposta->checklist->agendamento->unidade->id;
+            $this->unidade = Unidade::find($this->unidade_id);
+            $this->demandaExistentes = $this->resposta->checklist->agendamento->unidade->demandas;
+        }
     }
 }

@@ -83,12 +83,13 @@ class EngenhariaService
             if ($retorno[0] && is_numeric($retorno[0]->DEM_ID)) {
                 $this->demanda->demanda_id = $retorno[0]->DEM_ID;
                 $this->demanda->save();
+
+                $this->atualizarDemanda();
             }
 
         } catch (\Throwable $th) {
             DB::connection($this->demanda->sistema->conexao)->rollBack();
             throw new \Exception($th->getMessage(), 1);
         }
-
     }
 }

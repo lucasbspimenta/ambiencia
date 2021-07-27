@@ -26055,70 +26055,86 @@ form.was-validated select:valid ~ .select2-container--bootstrap4 .select2-select
 @-webkit-keyframes passing-through {
   0% {
     opacity: 0;
+    -webkit-transform: translateY(40px);
     transform: translateY(40px);
   }
   30%, 70% {
     opacity: 1;
+    -webkit-transform: translateY(0px);
     transform: translateY(0px);
   }
   100% {
     opacity: 0;
+    -webkit-transform: translateY(-40px);
     transform: translateY(-40px);
   }
 }
 @keyframes passing-through {
   0% {
     opacity: 0;
+    -webkit-transform: translateY(40px);
     transform: translateY(40px);
   }
   30%, 70% {
     opacity: 1;
+    -webkit-transform: translateY(0px);
     transform: translateY(0px);
   }
   100% {
     opacity: 0;
+    -webkit-transform: translateY(-40px);
     transform: translateY(-40px);
   }
 }
 @-webkit-keyframes slide-in {
   0% {
     opacity: 0;
+    -webkit-transform: translateY(40px);
     transform: translateY(40px);
   }
   30% {
     opacity: 1;
+    -webkit-transform: translateY(0px);
     transform: translateY(0px);
   }
 }
 @keyframes slide-in {
   0% {
     opacity: 0;
+    -webkit-transform: translateY(40px);
     transform: translateY(40px);
   }
   30% {
     opacity: 1;
+    -webkit-transform: translateY(0px);
     transform: translateY(0px);
   }
 }
 @-webkit-keyframes pulse {
   0% {
+    -webkit-transform: scale(1);
     transform: scale(1);
   }
   10% {
+    -webkit-transform: scale(1.1);
     transform: scale(1.1);
   }
   20% {
+    -webkit-transform: scale(1);
     transform: scale(1);
   }
 }
 @keyframes pulse {
   0% {
+    -webkit-transform: scale(1);
     transform: scale(1);
   }
   10% {
+    -webkit-transform: scale(1.1);
     transform: scale(1.1);
   }
   20% {
+    -webkit-transform: scale(1);
     transform: scale(1);
   }
 }
@@ -26241,6 +26257,7 @@ form.was-validated select:valid ~ .select2-container--bootstrap4 .select2-select
   border-radius: 3px;
 }
 .dropzone .dz-preview:hover .dz-image img {
+  -webkit-transform: scale(1.05, 1.05);
   transform: scale(1.05, 1.05);
   -webkit-filter: blur(8px);
   filter: blur(8px);
