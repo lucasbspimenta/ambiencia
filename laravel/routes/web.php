@@ -29,7 +29,7 @@ use Illuminate\Support\Facades\Route;
 |
  */
 
-Route::middleware(['web', 'auth.caixa'])->group(function () {
+Route::middleware(['chrome','web', 'auth.caixa'])->group(function () {
 
     Route::get('/', [PainelController::class, 'index'])->name('index');
 
