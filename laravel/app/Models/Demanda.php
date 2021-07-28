@@ -118,7 +118,7 @@ class Demanda extends Model
 
     public function getPrazoFormatadoAttribute()
     {
-        return (Carbon::canBeCreatedFromFormat($this->demanda_prazo, 'Y-m-d H:i:s')) ? Carbon::parse($this->demanda_prazo)->format('d/m/Y - H:i:s') : $this->demanda_prazo;
+        return (Carbon::canBeCreatedFromFormat($this->demanda_prazo, 'Y-m-d')) ? Carbon::parse($this->demanda_prazo)->format('d/m/Y') : $this->demanda_prazo;
     }
 
     public function getDemandaUrlCompletaAttribute()

@@ -64,9 +64,9 @@ class DemandaService
         }
 
         if ($finalizados) {
-            $sql .= " AND UPPER(RTRIM(demanda_situacao)) = 'FINALIZADO'";
+            $sql .= " AND (UPPER(RTRIM(demanda_situacao)) = 'FINALIZADO' OR UPPER(RTRIM(demanda_situacao)) = 'CONCLUÍDA')";
         } else {
-            $sql .= " AND UPPER(RTRIM(demanda_situacao)) <> 'FINALIZADO'";
+            $sql .= " AND (UPPER(RTRIM(demanda_situacao)) <> 'FINALIZADO' AND UPPER(RTRIM(demanda_situacao)) <> 'CONCLUÍDA')";
         }
 
         $sql .= " ORDER BY demanda_prazo ASC, demanda_atualizacao ASC";
